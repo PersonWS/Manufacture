@@ -134,14 +134,17 @@ namespace ScrewMachineManagementSystem
                     string fileName = "";
                     if (string.IsNullOrEmpty(fileNameOnCurrentDir))
                     {
-                        fileName = path + "\\Log" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                        fileName = path + "\\Log";
                     }
                     else
                     {
-                        fileName = path + "\\" + fileNameOnCurrentDir + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                        fileName = path + "\\" + fileNameOnCurrentDir ;
                     }
-
-
+                    if (!Directory.Exists(fileName))     // 返回bool类型，存在返回true，不存在返回false
+                    {
+                        Directory.CreateDirectory(fileName);      //不存在则创建路径
+                    }
+                    fileName+= DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
                     using (System.IO.FileStream file = new System.IO.FileStream(fileName, FileMode.Append, FileAccess.Write))
                     {
                         System.IO.StreamWriter sw = new StreamWriter(file);

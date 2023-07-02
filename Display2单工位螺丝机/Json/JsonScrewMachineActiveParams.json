@@ -1,0 +1,89 @@
+{
+  "explain": "拧紧，每个step步骤的地址=decaddress+5*i",
+  "Active": [
+    {
+      "Id": 1,
+      "Name": "Tighten",
+
+      "StepNums": 7,
+      "StepItems": [
+        {
+          "Name": "拧紧圈数",
+          "DecAddress": 4060
+        },
+        {
+          "Name": "拧紧速度",
+          "DecAddress": 4061
+        },
+        {
+          "Name": "扭力",
+          "DecAddress": 4062
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4063
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4064
+        }
+      ]
+    },
+
+    {
+      "Id": 2,
+      "Name": "Unscrew",
+      "StepNums": 5,
+      "StepItems": [
+        {
+          "Name": "拧松行程",
+          "DecAddress": 4110
+        },
+        {
+          "Name": "拧松速度",
+          "DecAddress": 4111
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4112
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4113
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4114
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "Name": "Free",
+      "StepNums": 5,
+      "StepItems": [
+        {
+          "Name": "自由行程",
+          "DecAddress": 4130
+        },
+        {
+          "Name": "自由速度",
+          "DecAddress": 4131
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4132
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4133
+        },
+        {
+          "Name": "保留",
+          "DecAddress": 4134
+        }
+      ]
+    }
+  ]
+
+}

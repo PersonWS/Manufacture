@@ -1,0 +1,200 @@
+{
+  "TaskAddrInterval": 150,
+  "explain": "任务0地址，下一个任务 taskIndex 的地址=DecAddress+TaskAddrInterval*taskIndex",
+  "TaskItem": [
+    {
+      "Id": 1,
+      "TaskName": "Tighten",
+      "TaskDataItem": [
+        {
+          "itemid": 1,
+          "Name": "拧紧的模式",
+          "DecAddress": 4000
+        },
+        {
+          "itemid": 2,
+          "Name": "拧紧旋转方向",
+          "DecAddress": 4001
+        },
+        {
+          "itemid": 3,
+          "Name": "目标扭力",
+          "DecAddress": 4002
+        },
+        {
+          "itemid": 4,
+          "Name": "是否开启入牙功能(保留参数)",
+          "DecAddress": 4003
+        },
+        {
+          "itemid": 5,
+          "Name": "初始检出量(保留参数)",
+          "DecAddress": 4004
+        },
+        {
+          "itemid": 6,
+          "Name": "是否开启攻丝功能",
+          "DecAddress": 4005
+        },
+        {
+          "itemid": 7,
+          "Name": "初始攻丝扭矩(保留参数)",
+          "DecAddress": 4006
+        },
+        {
+          "itemid": 8,
+          "Name": "攻丝免检扭矩圈数",
+          "DecAddress": 4007
+        },
+        {
+          "itemid": 9,
+          "Name": "扭力保持时间",
+          "DecAddress": 4008
+        },
+        {
+          "itemid": 10,
+          "Name": "浮高界定圈数",
+          "DecAddress": 4009
+        },
+        {
+          "itemid": 11,
+          "Name": "滑牙界定圈数",
+          "DecAddress": 4010
+        },
+        {
+          "itemid": 12,
+          "Name": "浮高后拧紧角度(保留参数)",
+          "DecAddress": 4011
+        },
+        {
+          "itemid": 13,
+          "Name": "触发速度切换的扭力比值",
+          "DecAddress": 4012
+        },
+        {
+          "itemid": 14,
+          "Name": "切换后速度(保留参数)",
+          "DecAddress": 4013
+        },
+        {
+          "itemid": 15,
+          "Name": "扭力补偿值",
+          "DecAddress": 4014
+        },
+        {
+          "itemid": 16,
+          "Name": "正转的Step的实际数量",
+          "DecAddress": 4015
+        },
+        {
+          "itemid": 17,
+          "Name": "开启浮高滑牙检测",
+          "DecAddress": 4016
+        },
+        {
+          "itemid": 18,
+          "Name": "拧紧后保护电批的回退角度(保留参数)",
+          "DecAddress": 4017
+        },
+        {
+          "itemid": 19,
+          "Name": "是否开启IO方式的分段扭力功能",
+          "DecAddress": 4018
+        },
+        {
+          "itemid": 20,
+          "Name": "IO方式的第一段扭力",
+          "DecAddress": 4019
+        },
+        {
+          "itemid": 21,
+          "Name": "触发速度切换的扭力",
+          "DecAddress": 4020
+        },
+        {
+          "itemid": 22,
+          "Name": "触发速度切换的速度比值",
+          "DecAddress": 4021
+        },
+        {
+          "itemid": 23,
+          "Name": "待机调整时间",
+          "DecAddress": 4022
+        },
+        {
+          "itemid": 24,
+          "Name": "工件螺丝数量",
+          "DecAddress": 4023
+        },
+        {
+          "itemid": 25,
+          "Name": "是否开启IO触发圈数计数",
+          "DecAddress": 4024
+        },
+        {
+          "itemid": 26,
+          "Name": "IO触发的目标圈数",
+          "DecAddress": 4025
+        },
+        {
+          "itemid": 27,
+          "Name": "扭力偏差上限(手持式上用)",
+          "DecAddress": 4026
+        },
+        {
+          "itemid": 28,
+          "Name": "扭力偏差下限(手持式上用)",
+          "DecAddress": 4027
+        },
+        {
+          "itemid": 29,
+          "Name": "扭力免检圈数",
+          "DecAddress": 4028
+        }
+
+      ]
+    },
+    {
+      "Id": 2,
+      "TaskName": "Unscrew",
+      "TaskData": [
+        {
+          "itemid": 1,
+          "Name": "拧松旋转方向（保留参数）",
+          "DecAddress": 4040
+        },
+        {
+          "itemid": 2,
+          "Name": "拧松目标扭力（保留参数）",
+          "DecAddress": 4041
+        },
+        {
+          "itemid": 3,
+          "Name": "反转的Step的实际数量",
+          "DecAddress": 4042
+        },
+        {
+          "itemid": 4,
+          "Name": "拧松有效触发的扭力阀值",
+          "DecAddress": 4043
+        },
+        {
+          "itemid": 5,
+          "Name": "拧松有效触发的保持时间",
+          "DecAddress": 4044
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "TaskName": "Free",
+      "TaskData": [
+        {
+          "itemid": 1,
+          "Name": "拧松旋转方向（保留参数）",
+          "DecAddress": 4050
+        }
+      ]
+    }
+  ]
+}

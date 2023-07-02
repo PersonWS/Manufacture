@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0EA7E14B-A0D5-4518-8816-728F0B3516B8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ScrewMachineManagementSystem</RootNamespace>
+    <AssemblyName>Display2单工位</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>abncu-hkalz-002.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NFPublicLib">
+      <HintPath>..\Display2三工位螺丝机\bin\Debug\NFPublicLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NModbus4.2.1.0\lib\net40\NModbus4.dll</HintPath>
+    </Reference>
+    <Reference Include="S7.Net, Version=0.14.0.0, Culture=neutral, PublicKeyToken=d5812d469e84c693, processorArchitecture=MSIL">
+      <HintPath>packages\S7netplus.0.14.0\lib\net452\S7.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SplashScreen">
+      <HintPath>.\SplashScreen.dll</HintPath>
+    </Reference>
+    <Reference Include="SV_Interlocking_Main_64, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\electric-screwdriver-0615\SV_Interlocking_Main_64.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.CodeDom, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.CodeDom.6.0.0\lib\net461\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Configuration.ConfigurationManager.6.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Data.SQLite, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\System.Data.SQLite.EF6.1.0.116.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\System.Data.SQLite.Linq.1.0.116.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Security.Permissions.6.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="thinger.DataConvertLib, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\thinger.DataConvertLib.4.0.1\lib\net46\thinger.DataConvertLib.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ByteArray.cs" />
+    <Compile Include="CheckUtil.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Controller\CONT_PatchScrews.cs" />
+    <Compile Include="Controller\CONT_AlarmPoints.cs" />
+    <Compile Include="Controller\CONT_CylinderNumberRatios.cs" />
+    <Compile Include="Controller\CONT_DSVInterlockingInfo.cs" />
+    <Compile Include="Controller\CONT_IOInfo.cs" />
+    <Compile Include="Controller\CONT_IOInfo2.cs" />
+    <Compile Include="Controller\CONT_Log.cs" />
+    <Compile Include="Controller\CONT_ModbusObject.cs" />
+    <Compile Include="Controller\CONT_ProductInfo.cs" />
+    <Compile Include="Controller\CONT_ScrewMachineStepData.cs" />
+    <Compile Include="Controller\CONT_ScrewMachineStepList.cs" />
+    <Compile Include="Controller\CONT_ScrewMachineTaskData.cs" />
+    <Compile Include="Controller\CONT_ScrewMachineTaskList.cs" />
+    <Compile Include="Controller\CONT_SystemParam.cs" />
+    <Compile Include="Controller\CONT_UUT_RESULT.cs" />
+    <Compile Include="Controller\CONT_WaveParamTable.cs" />
+    <Compile Include="Controller\CONT_WorkTaskDetail.cs" />
+    <Compile Include="Controller\CONT_WorkTaskInfo.cs" />
+    <Compile Include="Controller\CONT_TorisionUnits.cs" />
+    <Compile Include="Controller\CONT_TPTaskInfo.cs" />
+    <Compile Include="Controller\CONT_UserTable.cs" />
+    <Compile Include="DNKE_DKTCP.cs" />
+    <Compile Include="FormActionCardPoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormActionCardPoints.Designer.cs">
+      <DependentUpon>FormActionCardPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlarmPoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlarmPoints.Designer.cs">
+      <DependentUpon>FormAlarmPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlartList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlartList.Designer.cs">
+      <DependentUpon>FormAlartList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlermQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlermQuery.Designer.cs">
+      <DependentUpon>FormAlermQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDSVInterlockingConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDSVInterlockingConfig.Designer.cs">
+      <DependentUpon>FormDSVInterlockingConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGetInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGetInfo.designer.cs">
+      <DependentUpon>FormGetInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHostInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHostInfo.Designer.cs">
+      <DependentUpon>FormHostInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInputPoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInputPoints.Designer.cs">
+      <DependentUpon>FormInputPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormModbusConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModbusConfig.Designer.cs">
+      <DependentUpon>FormModbusConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormNewTaskOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNewTaskOrder.Designer.cs">
+      <DependentUpon>FormNewTaskOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPartOneEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPartOneEdit.Designer.cs">
+      <DependentUpon>FormPartOneEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPatchScrews.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPatchScrews.Designer.cs">
+      <DependentUpon>FormPatchScrews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProductEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProductEdit.Designer.cs">
+      <DependentUpon>FormProductEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProductInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProductInfo.Designer.cs">
+      <DependentUpon>FormProductInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReporter.Designer.cs">
+      <DependentUpon>FormReporter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMotionController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMotionController.Designer.cs">
+      <DependentUpon>FormMotionController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSeletY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSeletY.Designer.cs">
+      <DependentUpon>FormSeletY.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShieldData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShieldData.Designer.cs">
+      <DependentUpon>FormShieldData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSwitchRecipes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSwitchRecipes.Designer.cs">
+      <DependentUpon>FormSwitchRecipes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSystem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSystem.Designer.cs">
+      <DependentUpon>FormSystem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUser.Designer.cs">
+      <DependentUpon>FormUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormUserEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUserEdit.Designer.cs">
+      <DependentUpon>FormUserEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormWorkingIDCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormWorkingIDCode.Designer.cs">
+      <DependentUpon>FormWorkingIDCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPartEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPartEdit.Designer.cs">
+      <DependentUpon>FormPartEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IpTransferTool.cs" />
+    <Compile Include="ListViewxc.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListViewxc.Designer.cs">
+      <DependentUpon>ListViewxc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogHelper.cs" />
+    <Compile Include="MessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageDialog.designer.cs">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageDialog_Active.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageDialog_Active.designer.cs">
+      <DependentUpon>MessageDialog_Active.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageDialog_Servo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageDialog_Servo.designer.cs">
+      <DependentUpon>MessageDialog_Servo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageResponseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageResponseDialog.designer.cs">
+      <DependentUpon>MessageResponseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MoDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\AlarmPoints.cs" />
+    <Compile Include="Model\CylinderNumberRatios.cs" />
+    <Compile Include="Model\DSVInterlockingInfo.cs" />
+    <Compile Include="Model\IOInfo.cs" />
+    <Compile Include="Model\IOInfo2.cs" />
+    <Compile Include="Model\Log.cs" />
+    <Compile Include="Model\ModbusObject.cs" />
+    <Compile Include="Model\ModelParam.cs" />
+    <Compile Include="Model\Mscrewdriver.cs" />
+    <Compile Include="Model\PatchScrews.cs" />
+    <Compile Include="Model\ProductInfo.cs" />
+    <Compile Include="Model\JsonScrewMachineTaskData.cs" />
+    <Compile Include="Model\JsonScrewMachineStepData.cs" />
+    <Compile Include="Model\ResultJsonInfo.cs" />
+    <Compile Include="Model\ScrewMachineStepData.cs" />
+    <Compile Include="Model\screwmachineSteplist.cs" />
+    <Compile Include="Model\screwmachinetaskdata.cs" />
+    <Compile Include="Model\screwmachinetasklist.cs" />
+    <Compile Include="Model\SystemParam.cs" />
+    <Compile Include="Model\UUT_RESULT.cs" />
+    <Compile Include="Model\WaveParamTable.cs" />
+    <Compile Include="Model\WorkTaskDetail.cs" />
+    <Compile Include="Model\WorkTaskInfo.cs" />
+    <Compile Include="Model\TorisionUnits.cs" />
+    <Compile Include="Model\TPTaskInfo.cs" />
+    <Compile Include="Model\UserTable.cs" />
+    <Compile Include="Model\ZoneColumn.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="S7NetPlus.cs" />
+    <Compile Include="SiemensPLC.cs" />
+    <Compile Include="SV_Interlocking.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="utility.cs" />
+    <EmbeddedResource Include="FormActionCardPoints.resx">
+      <DependentUpon>FormActionCardPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlarmPoints.resx">
+      <DependentUpon>FormAlarmPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlartList.resx">
+      <DependentUpon>FormAlartList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlermQuery.resx">
+      <DependentUpon>FormAlermQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDSVInterlockingConfig.resx">
+      <DependentUpon>FormDSVInterlockingConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGetInfo.resx">
+      <DependentUpon>FormGetInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHostInfo.resx">
+      <DependentUpon>FormHostInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInputPoints.resx">
+      <DependentUpon>FormInputPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormModbusConfig.resx">
+      <DependentUpon>FormModbusConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMotionController.resx">
+      <DependentUpon>FormMotionController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNewTaskOrder.resx">
+      <DependentUpon>FormNewTaskOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPartOneEdit.resx">
+      <DependentUpon>FormPartOneEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPatchScrews.resx">
+      <DependentUpon>FormPatchScrews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProductEdit.resx">
+      <DependentUpon>FormProductEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProductInfo.resx">
+      <DependentUpon>FormProductInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReporter.resx">
+      <DependentUpon>FormReporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSeletY.resx">
+      <DependentUpon>FormSeletY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShieldData.resx">
+      <DependentUpon>FormShieldData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSwitchRecipes.resx">
+      <DependentUpon>FormSwitchRecipes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSystem.resx">
+      <DependentUpon>FormSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUser.resx">
+      <DependentUpon>FormUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUserEdit.resx">
+      <DependentUpon>FormUserEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormWorkingIDCode.resx">
+      <DependentUpon>FormWorkingIDCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPartEdit.resx">
+      <DependentUpon>FormPartEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageDialog.resx">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageDialog_Active.resx">
+      <DependentUpon>MessageDialog_Active.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageDialog_Servo.resx">
+      <DependentUpon>MessageDialog_Servo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageResponseDialog.resx">
+      <DependentUpon>MessageResponseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="DOC\display2线三工位工位FS-DS-01%281%29.xlsx" />
+    <None Include="DOC\display2线双工位FS-DS-02.xlsx" />
+    <None Include="DOC\DK-AC使用说明书-20220120 .pdf" />
+    <None Include="DOC\HF智能电批使用说明.pdf" />
+    <None Include="DOC\IP分配表 %28version 1%29918%281%29%281%29.xlsx" />
+    <None Include="DOC\扩展IIO.xlsx" />
+    <None Include="DOC\扫码打印工具.zip" />
+    <None Include="DOC\电批锁紧方案.xlsx" />
+    <None Include="DOC\问题0512.xlsx" />
+    <None Include="Json\JsonScrewMachineActiveParams.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Json\JsonScrewMachineTaskParams.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Json\JsonModbusObject.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Fonts\QuartzMS.TTF" />
+    <None Include="systemdb.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="20220815.txt" />
+    <Content Include="abncu-hkalz-002.ico" />
+    <Content Include="linode %281%29.png" />
+    <Content Include="logo-1.png" />
+    <Content Include="SV_Interlocking_Main_64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="user%28已去底%29.png" />
+    <Content Include="systemParam.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NewTask.png" />
+    <None Include="scancode.jpg" />
+    <None Include="logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="LBIndustrialCtrls\LBIndustrialCtrls.csproj">
+      <Project>{b4218bc9-9736-42b9-bc99-7903fdbeba28}</Project>
+      <Name>LBIndustrialCtrls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+</Project>

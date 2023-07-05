@@ -18,7 +18,7 @@ namespace sln_BYSJJ
             int Result;
             //snap7初始化
             s7Client = new S7Client();
-            Result = s7Client.ConnectTo("10.217.12.10", 0, 1);
+            Result = s7Client.ConnectTo("10.217.17.59", 0, 1);
             //Result = s7Client.ConnectTo("127.0.0.1", 0, 1);
             if (Result == 0)
             {

@@ -42,3 +42,12 @@ E:\FB-项目\25.德赛西威\Display2线工控软件源代码V3.0\Display2线工
 E:\FB-项目\25.德赛西威\Display2线工控软件源代码V3.0\Display2线工控软件源代码\sln_TP\SplashScreen\obj\Debug\SplashScreen.csproj.CoreCompileInputs.cache
 E:\FB-项目\25.德赛西威\Display2线工控软件源代码V3.0\Display2线工控软件源代码\sln_TP\SplashScreen\obj\Debug\SplashScreen.dll
 E:\FB-项目\25.德赛西威\Display2线工控软件源代码V3.0\Display2线工控软件源代码\sln_TP\SplashScreen\obj\Debug\SplashScreen.pdb
+E:\A_MANU\sln_TP\SplashScreen\bin\Debug\SplashScreen.dll
+E:\A_MANU\sln_TP\SplashScreen\bin\Debug\SplashScreen.pdb
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.csprojAssemblyReference.cache
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.Properties.Resources.resources
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.SplashScreen.resources
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.csproj.GenerateResource.cache
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.csproj.CoreCompileInputs.cache
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.dll
+E:\A_MANU\sln_TP\SplashScreen\obj\Debug\SplashScreen.pdb

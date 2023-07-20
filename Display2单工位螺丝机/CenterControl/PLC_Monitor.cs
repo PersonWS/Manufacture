@@ -178,13 +178,31 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 break;
                             case PLC_Point_Type.T_Byte://按照byte来读取
                                 Task<byte[]> re = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, item.Length);
-                                if (re.Result != null && re.Result.Length > 0 && re.Result[0] != (byte)item.value)
+                                if (re.Result != null && re.Result.Length > 0 )
                                 {
-                                    if (pointValueChanged != null)
+                                    //验证 是否为bool元素
+                                    if (item.plcRealType == PLC_Point_Type.T_Bool)
                                     {
-                                        item.value = re.Result[0];
-                                        ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
+                                        string binaryStr = ByteToBinaryString(re.Result[0]);
+                                        bool value = Convert.ToBoolean(binaryStr[item.BitAdress]);
+                                        if (value!= (bool)item.value)
+                                        {
+                                            item.value = value;
+                                            ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
+                                        }
                                     }
+                                    else
+                                    {
+                                        if (re.Result[0] != (byte)item.value)
+                                        {
+                                            if (pointValueChanged != null)
+                                            {
+                                                item.value = re.Result[0];
+                                                ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
+                                            }
+                                        }
+                                    }
+
                                 }
                                 break;
                             case PLC_Point_Type.T_Int:
@@ -254,6 +272,22 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
         }
 
+
+        public static string ByteToBinaryString(byte data)
+        {
+            string str = "";
+
+            for (int i = 0; i < 8; i++)
+            {
+                //右移 与1相与 从右向左一位一位取    目的数.ToString
+                var t = ((data >> (7 - i)) & 1).ToString();
+
+                //字符串拼接
+                str += t;
+            }
+
+            return str;
+        }
 
 
     }

@@ -68,9 +68,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         public event Func<string, string> Need_lastProcessName_Request;
         /// <summary>
-        /// 保存加工结果是否成功
+        /// 保存加工结果是否成功,传出1的string为SN码,传出2的string为加工结果
         /// </summary>
-        public event Func<bool> SaveInformationToMES_Result_Request;
+        public event Func<string, string, bool> SaveInformationToMES_Result_Request;
 
         public static object obj = new object();
         /// <summary>
@@ -120,41 +120,78 @@ namespace ScrewMachineManagementSystem.CenterControl
                     switch (point.VarName)
                     {
                         case "SN码请求"://SN码请求 为1 时，置位所有需要写入的数据
-                            if ((int)point.value == 1)
+                            if ((bool)point.value == true)
                             {
                                 SN_CodeRequest();
                             }
+                            else
+                            { MessageOutPutMethod(string.Format("SN:{0} SN码请求复位  0", _SN_code)); }
                             break;
-                        case "开始加工请求"://开始加工请求  需要向外部请求该SN码的过站信息，是否为本工序上一站
+                        case "开始加工请求"://开始加工请求  , 需要向外部请求该SN码的过站信息，是否为本工序上一站
                             if ((bool)point.value == true)
                             {
                                 ManufactureRequest();
                             }
+                            else
+                            { MessageOutPutMethod(string.Format("SN:{0} 开始加工请求复位  0", _SN_code)); }
                             break;
-                        case "结果OK"://SN码请求 为1 时，置位所有需要写入的数据
+                        case "结果OK"://结果OK 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
                             {
-                                if ((bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value)
-                                {
-                                    MessageOutPutMethod(string.Format("")
-                                }
+                                ManufactureResultOutput();
                             }
+                            else
+                            { MessageOutPutMethod(string.Format("SN:{0} 结果OK请求复位  0", _SN_code)); }
                             break;
                         case "结果NG"://SN码请求 为1 时，置位所有需要写入的数据
+                            if ((bool)point.value == true)
+                            {
+                                ManufactureResultOutput();
+                            }
+                            else
+                            { MessageOutPutMethod(string.Format("SN:{0} 结果NG请求复位  0", _SN_code)); }
                             break;
 
                         default:
                             break;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    MessageOutPutMethod(string.Format("SN:{0}  pointName:{1}  执行时发生错误 ，ex={2}", _SN_code, point.VarName, ex.ToString()));
                 }
 
             }
         }
+        /// <summary>
+        /// 加工结果输出
+        /// </summary>
+        private void ManufactureResultOutput()
+        {
+            if ((bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value && (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果OK"].value)
+            {
+                MessageOutPutMethod(string.Format("SN:{0} OK NG 同时输出", _SN_code));
+            }
+            else
+            {
+                string result = (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value ? "NG" : "OK";
+                if (SaveInformationToMES_Result_Request != null)
+                {
+                    bool a = SaveInformationToMES_Result_Request(_SN_code, result);
+                    BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"].value = 1;
+                    if (_plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]))
+                    {
+                        MessageOutPutMethod("PLC 加工结果收到 写入成功");
+                    }
+
+
+                }
+                else
+                { MessageOutPutMethod("向MES传递并保存信息失败，请检查【SaveInformationToMES_Result_Request】事件是否已订阅"); }
+
+            }
+        }
+
         /// <summary>
         /// 当sn码请求置位为1时 ,清除历史数据
         /// </summary>
@@ -258,7 +295,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
             }
             else
-            { MessageOutPutMethod(string.Format("SN:{0}收到加工请求，但外部未传入上一道工序名称，请检查【Need_lastProcessName_Request】事件是否已订阅",_SN_code)); }
+            { MessageOutPutMethod(string.Format("SN:{0}收到加工请求，但外部未传入上一道工序名称，请检查【Need_lastProcessName_Request】事件是否已订阅", _SN_code)); }
         }
 
         private void WriteFailCallBack(PLC_Point p)

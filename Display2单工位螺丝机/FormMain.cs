@@ -555,7 +555,9 @@ namespace ScrewMachineManagementSystem
         /// <param name="e"></param>
         private void timer2_Tick(object sender, EventArgs e)
         {
+            /* 本次项目取消报警 ws 2023-7-14
             checkMotionControlMachiningStatus();
+            */
         }
         /// <summary>
         /// 按钮动作的确认操作
@@ -996,7 +998,7 @@ namespace ScrewMachineManagementSystem
                 //socketSender.Connect(point);
                 //2023-07-02 解决socket通讯不正常时连接时间过长的问题 ws
                 socketSender.BeginConnect(point, ConnectCallBackMethod, socketSender);
-                if (TimeoutObject.WaitOne(3, false))
+                if (TimeoutObject.WaitOne(10, false))
                 {
                     FillInfoLog("电批连接成功");
                     lbLed1.LedColor = Color.Lime;
@@ -1010,7 +1012,7 @@ namespace ScrewMachineManagementSystem
                 else
                 {
                     lbLed1.LedColor = Color.Gray;
-                    FillInfoLog("电批连接失败，connect time out" );
+                    FillInfoLog("电批连接失败，connect time out");
                 }
 
 
@@ -1027,6 +1029,9 @@ namespace ScrewMachineManagementSystem
         {
             TimeoutObject.Set();
         }
+
+
+        #region 电批数据接收处理
         /// <summary>
         /// 电批数据接收处理
         /// </summary>
@@ -1382,6 +1387,7 @@ namespace ScrewMachineManagementSystem
             }
         }
 
+        #endregion
 
         /// <summary>
         /// 上传mes
@@ -1484,7 +1490,7 @@ namespace ScrewMachineManagementSystem
         /// <param name="sk"></param>
         void PlcAlarmRe(Object sk)
         {
-            while (true)
+            while (true) //读取PLC报警功能取消  2023-7-11 ws 改为false
             {
                 try
                 {

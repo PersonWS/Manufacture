@@ -26,7 +26,7 @@ namespace PDAMaster
         /// <summary>
         /// plc ip
         /// </summary>
-        public static string PLC_IP = "192.168.1.100";
+        public static string PLC_IP = "10.217.17.5";
         /// <summary>
         /// plc port
         /// </summary>
@@ -46,11 +46,11 @@ namespace PDAMaster
         /// <summary>
         /// 电批地址1
         /// </summary>
-        public static string ScrewMachineIP1 = "192.168.1.100";
+        public static string ScrewMachineIP1 = "10.217.17.8";
         /// <summary>
         /// 电批端口1
         /// </summary>
-        public static int ScrewMachinePort1 = 0;
+        public static int ScrewMachinePort1 = 5000;
         /// <summary>
         /// 电批1标志
         /// </summary>

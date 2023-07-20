@@ -71,9 +71,10 @@ namespace ScrewMachineManagementSystem
             FormLogin f = new FormLogin();
             if (f.ShowDialog() == DialogResult.OK)
             {
-                Application.Run(new FormMain());
                 f.Dispose();
                 f.Close();
+                Application.Run(new FormMain());
+
             }
             // Application.Run(new FormLogin());
             //界面转换

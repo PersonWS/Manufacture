@@ -17,10 +17,10 @@
 		<Remark>起始任务号</Remark>
 	</param>
 	<param PID="4" ParamName="PLC_IP">
-		<DefaultValue>10.217.12.110</DefaultValue>
+		<DefaultValue>10.217.17.5</DefaultValue>
 		<Description>PLC网络IP</Description>
-		<Remark>PLC网络IP</Remark>
-	</param>
+		<Remark>PLC网络IP</Remark>;
+  </param>
 	<param PID="5" ParamName="PLC_Port">
 		<DefaultValue>0</DefaultValue>
 		<Description>PLC网络端口</Description>
@@ -32,7 +32,7 @@
 		<Remark>丹尼克尔电批数量</Remark>
 	</param>
 	<param PID="7" ParamName="ScrewMachineIP1">
-		<DefaultValue>10.217.12.115</DefaultValue>
+		<DefaultValue>10.217.17.8</DefaultValue>
 		<Description>电批网络地址</Description>
 		<Remark>电批网络地址</Remark>
 	</param>

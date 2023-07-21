@@ -15,16 +15,13 @@ namespace ScrewMachineManagementSystem.CenterControl
     {
         PLC_Monitor _plc_monitor;
 
-        PLC_Connect _plcConnect;
-        /// <summary>
-        /// 需要采集的PLC点位
-        /// </summary>
-        List<PLC_Point> _gatherPLC_Point;
+        public PLC_Monitor PLC_Monitor
+        { get { return _plc_monitor; } }
 
-        /// <summary>
-        /// 需要写入的PLC点位
-        /// </summary>
-        List<PLC_Point> _writePLC_Point;
+        PLC_Connect _plcConnect;
+
+        public PLC_Connect PLC_Connect
+        { get { return _plcConnect; } }
 
         private bool _isBusinessStart = false;
 
@@ -33,9 +30,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         public string _SN_code = "";
         /// <summary>
-        /// 过站信息校验是否通过， PLC重新开始申请SN则为false
+        /// 允许加工还是禁止加工， PLC重新开始申请SN则为false
         /// </summary>
-        public bool _lastProcessCheck = false;
+        public bool _manufacturePermission = false;
         /// <summary>
         /// 互锁信息校验是否通过， PLC重新开始申请SN则为false
         /// </summary>
@@ -94,8 +91,6 @@ namespace ScrewMachineManagementSystem.CenterControl
         private void Initialize()
         {
             _listWriteFailedPoint = new List<PLC_Point>();
-            this._gatherPLC_Point = BusinessNeedPlcPoint.GatherPLC_Point;
-            this._writePLC_Point = BusinessNeedPlcPoint.WritePLC_Point;
         }
 
         public bool BusinessStart()
@@ -116,7 +111,7 @@ namespace ScrewMachineManagementSystem.CenterControl
 
             _plc_monitor.pointValueChanged -= PointValueChanged;
             _plc_monitor.pointValueChanged += PointValueChanged;
-            return _plc_monitor.Start(BusinessNeedPlcPoint.GatherPLC_Point);//启动监控
+            return _plc_monitor.Start();//启动监控
 
 
         }
@@ -135,7 +130,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 SN_CodeRequest();
                             }
                             else
-                            { MessageOutPutMethod(string.Format("SN:{0} SN码请求复位  0", _SN_code)); }
+                            { MessageOutPutMethod(string.Format("SN:{0} SN码请求信号 复位  0", _SN_code)); }
                             break;
                         case "开始加工请求"://开始加工请求  , 需要向外部请求该SN码的过站信息，是否为本工序上一站
                             if ((bool)point.value == true)
@@ -143,7 +138,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 ManufactureRequest();
                             }
                             else
-                            { MessageOutPutMethod(string.Format("SN:{0} 开始加工请求复位  0", _SN_code)); }
+                            { MessageOutPutMethod(string.Format("SN:{0} 开始加工请求信号 复位  0", _SN_code)); }
                             break;
                         case "结果OK"://结果OK 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
@@ -151,7 +146,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 ManufactureResultOutput();
                             }
                             else
-                            { MessageOutPutMethod(string.Format("SN:{0} 结果OK请求复位  0", _SN_code)); }
+                            { MessageOutPutMethod(string.Format("SN:{0} 结果OK信号  复位  0", _SN_code)); }
                             break;
                         case "结果NG"://SN码请求 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
@@ -159,7 +154,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 ManufactureResultOutput();
                             }
                             else
-                            { MessageOutPutMethod(string.Format("SN:{0} 结果NG请求复位  0", _SN_code)); }
+                            { MessageOutPutMethod(string.Format("SN:{0} 结果NG信号  复位  0", _SN_code)); }
                             break;
 
                         default:
@@ -178,12 +173,22 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         private void ManufactureResultOutput()
         {
-            if ((bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value && (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果OK"].value)
+            if ((bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value==true && (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果OK"].value==true)
             {
                 MessageOutPutMethod(string.Format("SN:{0} OK NG 同时输出", _SN_code));
             }
             else
             {
+                if (string.IsNullOrEmpty(_SN_code))
+                {
+                    MessageOutPutMethod("SN码未输入时检测到 OK / NG 信号输出，不处理");
+                    return;
+                }
+                if (!_manufacturePermission)
+                {
+                    MessageOutPutMethod("不允许加工时， OK / NG 信号输出，不处理");
+                    return;
+                }
                 string result = (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value ? "NG" : "OK";
                 if (SaveInformationToMES_Result_Request != null)
                 {
@@ -236,7 +241,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"].value = 0;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]);
             _manufactureResult = null;
-            _lastProcessCheck = false;
+            _manufacturePermission = false;
             _resultUpload = false;
             MessageOutPutMethod("PLC 加工结果收到 已清除");
             if (Need_SN_Request != null)//向外部请求SN码
@@ -340,7 +345,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         public void BusinessStop()
         {
             _plc_monitor.Stop();//停止监控
-
+            _plcConnect.DisConnect();
 
         }
 

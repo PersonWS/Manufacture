@@ -47,16 +47,18 @@ namespace ScrewMachineManagementSystem.CenterControl
             try
             {
                 PlcEntity.Open();
+                IsConnected = true;
                 if (PlcConnected!=null)
                 {
                     PlcConnected(this);
-                    IsConnected = true;
                 }
+                MessageOutPutMethod(string.Format("PLC:{0} 已连接", this.PlcEntity.IP));
                 return true;
             }
             catch (Exception ex)
             {
-                MessageOutPutMethod("Connect failed" + ex.ToString());
+                MessageOutPutMethod(string.Format("PLC:{0} 连接失败 \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
+                IsConnected = false;
                 return false;
             }
         }
@@ -68,6 +70,11 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 PlcEntity.Close();
                 IsConnected = false;
+                if (PlcDisConnected != null)
+                {
+                    PlcDisConnected(this);
+                }
+                MessageOutPutMethod(string.Format("PLC:{0} 连接已断开", this.PlcEntity.IP));
                 return true;
             }
             catch (Exception ex)

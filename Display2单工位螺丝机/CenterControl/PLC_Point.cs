@@ -27,6 +27,11 @@ namespace ScrewMachineManagementSystem.CenterControl
         public PLC_Point_Type plcWriteType;
 
         /// <summary>
+        /// 点位的操作类型  只读  只写  读写
+        /// </summary>
+        public PLC_Point_Operate_Type plcOperateType;
+
+        /// <summary>
         /// DB块的地址
         /// </summary>
         public int DataBlock;
@@ -111,5 +116,12 @@ namespace ScrewMachineManagementSystem.CenterControl
         T_Ints = 22,
         T_Word =31,
         T_String=100
+    }
+
+    public enum PLC_Point_Operate_Type
+    {
+        ReadOnly = 1,
+        writeOnly = 2,
+        readAndWrite = 3,
     }
 }

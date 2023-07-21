@@ -42,10 +42,6 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// defender 心跳检测记录
         /// </summary>
         long _heartbeat_defender = 0;
-        /// <summary>
-        /// 需要进行监视的点位
-        /// </summary>
-        private List<PLC_Point> _listForMonitorPoint;
 
         bool _isMonitor = false;
 
@@ -66,6 +62,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             this._monitorInterval = monitorInterval;
             ThreadPool.SetMaxThreads(10, 20);
             _plcConnectEntity = connect;
+            
         }
 
         ~PLC_Monitor()
@@ -74,7 +71,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             _isDefender = false;
         }
 
-        public bool Start(List<PLC_Point> monitorPoint)
+        public bool Start()
         {
             if (!ConnectPlc())
             {
@@ -82,7 +79,6 @@ namespace ScrewMachineManagementSystem.CenterControl
             };
             _isMonitor = true;
             _isDefender = true;
-            this._listForMonitorPoint = monitorPoint;
             StartMonitorThread();
             StartDefenderThread();
             return true;
@@ -94,14 +90,14 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 if (PlcConnectEntity != null && !PlcConnectEntity.PlcEntity.IsConnected)
                 {
-                    PlcConnectEntity.Connect();
+                   return PlcConnectEntity.Connect();
                 }
                 else if (PlcConnectEntity == null)
                 {
                     MessageOutPutMethod("PLC_Monitor--Start _plcConnectEntity is null");
+                    return false;
                 }
                 return true;
-
             }
             catch (Exception es)
             {
@@ -161,9 +157,10 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             while (_isMonitor)
             {
+                _heartBeat_engine++;
                     for (int i = 0; i < BusinessNeedPlcPoint.Dic_gatherPLC_Point.Count; i++)
                     {
-                        if (!PlcConnectEntity.PlcEntity.IsConnected)
+                        if (!PlcConnectEntity.IsConnected)
                         {
                             PlcConnectEntity.Connect();
                             continue;
@@ -184,8 +181,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                                         if (item.plcRealType == PLC_Point_Type.T_Bool)
                                         {
                                             string binaryStr = ByteToBinaryString(re[0]);
-                                            bool value = binaryStr[item.BitAdress].ToString() == "1" ? true : false;
-                                            if (value != (bool)item.value)
+                                            bool value = binaryStr[7-item.BitAdress].ToString() == "1" ? true : false;
+                                            if (item.value==null||value != (bool)item.value)
                                             {
                                                 item.value = value;
                                                 ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
@@ -202,7 +199,6 @@ namespace ScrewMachineManagementSystem.CenterControl
                                                 }
                                             }
                                         }
-
                                     }
                                     break;
                                 case PLC_Point_Type.T_Int:
@@ -210,11 +206,11 @@ namespace ScrewMachineManagementSystem.CenterControl
                                 case PLC_Point_Type.T_Word:
                                     break;
                                 case PLC_Point_Type.T_String://按照string来读取
-                                    Task<byte[]> sre1 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
-                                    if (sre1.Result != null && sre1.Result.Length > 0 && sre1.Result[0] != (byte)item.value)
+                                    byte[] sre1 = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
+                                    if (sre1 != null && sre1.Length > 0)
                                     {
-                                        Task<byte[]> sre2 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1.Result[0]);
-                                        string str = Encoding.ASCII.GetString(sre2.Result);
+                                        byte[] sre2 = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress+2, sre1[0]);
+                                        string str = Encoding.ASCII.GetString(sre2).Replace("\0","");
                                         if (str != (string)item.value)
                                         {
                                             if (pointValueChanged != null)
@@ -234,7 +230,7 @@ namespace ScrewMachineManagementSystem.CenterControl
 
                         if (e.HResult == -2146233088)
                         {
-                            PlcConnectEntity.PlcEntity.Close();
+                            PlcConnectEntity.DisConnect();
                         }
                         MessageOutPutMethod(e.ToString());
                     }
@@ -253,7 +249,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             while (_isDefender)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(30000);
                 if (_heartbeat_defender != _heartBeat_engine)
                 {
                     _heartbeat_defender = _heartBeat_engine;
@@ -262,6 +258,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     if (_isMonitor)
                     {
+                        MessageOutPutMethod("Defender 检测到_heartBeat_engine 停止，重新启动监视线程StartMonitorThread");
                         StartMonitorThread();
                     }
                 }

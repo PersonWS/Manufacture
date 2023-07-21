@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using ScrewMachineManagementSystem.CenterControl;
 
 namespace ScrewMachineManagementSystem
 {
@@ -18,6 +19,7 @@ namespace ScrewMachineManagementSystem
 
         static void Main()
         {
+            Application.Run(new CenterDemo());return;
 
             Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             if (processes.Length > 1)

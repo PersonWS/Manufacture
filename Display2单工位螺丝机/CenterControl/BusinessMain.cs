@@ -77,7 +77,14 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 写入失败列表
         /// </summary>
         List<PLC_Point> _listWriteFailedPoint;
-
+        /// <summary>
+        /// 数据点写入失败时的最大复写次数
+        /// </summary>
+        private readonly int _maxWriteCount = 5;
+        /// <summary>
+        /// 写入失败后，下次写入的间隔  ms
+        /// </summary>
+        private readonly int _maxWriteInterval = 200;
 
         public BusinessMain()
         {
@@ -93,13 +100,16 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public bool BusinessStart()
         {
-            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plcConnect = new PLC_Connect(CpuType.S71200, "192.168.31.254", ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plc_monitor = new PLC_Monitor(_plcConnect, 200);
             _plcConnect.MessageOutput -= MessageOutput;
             _plcConnect.MessageOutput += MessageOutput;
 
             _plcConnect.PointWriteFail -= WriteFailCallBack;
             _plcConnect.PointWriteFail += WriteFailCallBack;
+
+
 
             _plc_monitor.MessageOutput -= MessageOutput;
             _plc_monitor.MessageOutput += MessageOutput;
@@ -179,9 +189,13 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     bool a = SaveInformationToMES_Result_Request(_SN_code, result);
                     BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"].value = 1;
-                    if (_plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]))
+                    if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]))//写入成功 
                     {
                         MessageOutPutMethod("PLC 加工结果收到 写入成功");
+                    }
+                    else
+                    {
+                        MessageOutPutMethod("PLC 加工结果收到 写入失败");
                     }
 
 
@@ -192,33 +206,35 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
         }
 
+
         /// <summary>
         /// 当sn码请求置位为1时 ,清除历史数据
         /// </summary>
         public void SN_CodeRequest()
         {
+            
             //首先清除上一次的所有指令
             BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"].value = "\0\0\0\0\0\0\0\0";
-            _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"]);
+            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"]);
             _SN_code = "";
             MessageOutPutMethod("PLC SN码已清除");
 
             BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"].value = 0;
-            _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
+            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
 
             MessageOutPutMethod("PLC 允许加工请求 已清除");
 
             BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"].value = 0;
-            _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
+            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
             MessageOutPutMethod("PLC 禁止加工请求 已清除");
 
             BusinessNeedPlcPoint.Dic_writePLC_Point["互锁结果"].value = 0;
-            _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["互锁结果"]);
+            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["互锁结果"]);
             _interlockCheck = false;
             MessageOutPutMethod("PLC 互锁结果 已清除");
 
             BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"].value = 0;
-            _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]);
+            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["加工结果收到"]);
             _manufactureResult = null;
             _lastProcessCheck = false;
             _resultUpload = false;
@@ -227,7 +243,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 string snCode = Need_SN_Request();
                 BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"].value = snCode;
-                if (_plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"]))
+                if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["写入SN码"]))
                 {
                     MessageOutPutMethod(string.Format("SN写入成功，写入的SN;{0}", snCode));
                     _SN_code = snCode;
@@ -260,9 +276,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     MessageOutPutMethod(string.Format("SN:{0}  上一工序符合要求，准备开始写入加工指令", _SN_code));
                     BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"].value = 0;
-                    bool a = _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
+                    bool a = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
                     BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"].value = 1;
-                    bool b = _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
+                    bool b = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
                     if (a && b)
                     {
                         MessageOutPutMethod(string.Format("SN:{0}  PLC 允许加工请求 写入成功", _SN_code));
@@ -275,12 +291,12 @@ namespace ScrewMachineManagementSystem.CenterControl
                 else
                 {
                     BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"].value = 1;
-                    bool a = _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
+                    bool a = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["禁止加工请求"]);
                     bool b = false;
                     if (a)
                     {
                         BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"].value = 0;
-                        b = _plcConnect.WriteData(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
+                        b = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_writePLC_Point["允许加工请求"]);
                     }
                     if (b)
                     {
@@ -297,6 +313,24 @@ namespace ScrewMachineManagementSystem.CenterControl
             else
             { MessageOutPutMethod(string.Format("SN:{0}收到加工请求，但外部未传入上一道工序名称，请检查【Need_lastProcessName_Request】事件是否已订阅", _SN_code)); }
         }
+        
+        /// <summary>
+        /// 写入数据，如果写入失败则尝试再次写入
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        private bool WriteData_RetryLimit5(PLC_Point p)
+        {
+            bool isWriteSuccess = false; int writecount = 0;
+            while (!isWriteSuccess && writecount < _maxWriteCount)
+            {
+                isWriteSuccess = _plcConnect.WriteData(p);
+            }
+            System.Threading.Thread.Sleep(_maxWriteInterval);
+
+            return isWriteSuccess;
+        }
+
 
         private void WriteFailCallBack(PLC_Point p)
         {

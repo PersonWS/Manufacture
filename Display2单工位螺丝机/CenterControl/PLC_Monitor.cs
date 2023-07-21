@@ -130,7 +130,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
             }
             _thread_engine = new Thread(Monitor);
-            _thread_defend.Name = "thread_engine";
+            _thread_engine.Name = "thread_engine";
             _thread_engine.IsBackground = true;
             _thread_engine.Start();
         }
@@ -161,79 +161,86 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             while (_isMonitor)
             {
-                try
-                {
-                    if (!PlcConnectEntity.PlcEntity.IsConnected)
+                    for (int i = 0; i < BusinessNeedPlcPoint.Dic_gatherPLC_Point.Count; i++)
                     {
-                        PlcConnectEntity.Connect();
-                        continue;
-                    }
-                    foreach (var i in BusinessNeedPlcPoint.Dic_gatherPLC_Point)
-                    {
-                        PLC_Point item = i.Value;
-                        switch (item.plcReadType)
+                        if (!PlcConnectEntity.PlcEntity.IsConnected)
                         {
-                            case PLC_Point_Type.T_Bool://按照bool来读取
-                                
-                                break;
-                            case PLC_Point_Type.T_Byte://按照byte来读取
-                                Task<byte[]> re = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, item.Length);
-                                if (re.Result != null && re.Result.Length > 0 )
-                                {
-                                    //验证 是否为bool元素
-                                    if (item.plcRealType == PLC_Point_Type.T_Bool)
+                            PlcConnectEntity.Connect();
+                            continue;
+                        }
+                        try
+                        {
+                            PLC_Point item = BusinessNeedPlcPoint.Dic_gatherPLC_Point[BusinessNeedPlcPoint.Dic_gatherPLC_Point.Keys.ElementAt(i)];
+                            switch (item.plcReadType)
+                            {
+                                case PLC_Point_Type.T_Bool://按照bool来读取
+
+                                    break;
+                                case PLC_Point_Type.T_Byte://按照byte来读取
+                                    byte[] re = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, item.Length);
+                                    if (re != null && re.Length > 0)
                                     {
-                                        string binaryStr = ByteToBinaryString(re.Result[0]);
-                                        bool value = Convert.ToBoolean(binaryStr[item.BitAdress]);
-                                        if (value!= (bool)item.value)
+                                        //验证 是否为bool元素
+                                        if (item.plcRealType == PLC_Point_Type.T_Bool)
                                         {
-                                            item.value = value;
-                                            ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (re.Result[0] != (byte)item.value)
-                                        {
-                                            if (pointValueChanged != null)
+                                            string binaryStr = ByteToBinaryString(re[0]);
+                                            bool value = binaryStr[item.BitAdress].ToString() == "1" ? true : false;
+                                            if (value != (bool)item.value)
                                             {
-                                                item.value = re.Result[0];
+                                                item.value = value;
                                                 ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
                                             }
                                         }
-                                    }
-
-                                }
-                                break;
-                            case PLC_Point_Type.T_Int:
-                                break;
-                            case PLC_Point_Type.T_Word:
-                                break;
-                            case PLC_Point_Type.T_String://按照string来读取
-                                Task<byte[]> sre1 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
-                                if (sre1.Result != null && sre1.Result.Length > 0 && sre1.Result[0] != (byte)item.value)
-                                {
-                                    Task<byte[]> sre2 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1.Result[0]);
-                                    string str = Encoding.ASCII.GetString(sre2.Result);
-                                    if (str != (string)item.value)
-                                    {
-                                        if (pointValueChanged != null)
+                                        else
                                         {
-                                            item.value = str;
-                                            pointValueChanged(item);
+                                            if (re[0] != (byte)item.value)
+                                            {
+                                                if (pointValueChanged != null)
+                                                {
+                                                    item.value = re[0];
+                                                    ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    break;
+                                case PLC_Point_Type.T_Int:
+                                    break;
+                                case PLC_Point_Type.T_Word:
+                                    break;
+                                case PLC_Point_Type.T_String://按照string来读取
+                                    Task<byte[]> sre1 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
+                                    if (sre1.Result != null && sre1.Result.Length > 0 && sre1.Result[0] != (byte)item.value)
+                                    {
+                                        Task<byte[]> sre2 = PlcConnectEntity.PlcEntity.ReadBytesAsync(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1.Result[0]);
+                                        string str = Encoding.ASCII.GetString(sre2.Result);
+                                        if (str != (string)item.value)
+                                        {
+                                            if (pointValueChanged != null)
+                                            {
+                                                item.value = str;
+                                                pointValueChanged(item);
+                                            }
                                         }
                                     }
-                                }
-                                break;
-                            default:
-                                break;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                }
-                catch (Exception)
-                {
+                        catch (Exception e)
+                        {
 
+                        if (e.HResult == -2146233088)
+                        {
+                            PlcConnectEntity.PlcEntity.Close();
+                        }
+                        MessageOutPutMethod(e.ToString());
+                    }
+                      
                 }
+                Thread.Sleep(_monitorInterval);
 
             }
 
@@ -273,19 +280,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         }
 
 
-        public static string ByteToBinaryString(byte data)
+        public string ByteToBinaryString(byte data)
         {
-            string str = "";
-
-            for (int i = 0; i < 8; i++)
-            {
-                //右移 与1相与 从右向左一位一位取    目的数.ToString
-                var t = ((data >> (7 - i)) & 1).ToString();
-
-                //字符串拼接
-                str += t;
-            }
-
+            string str = Convert.ToString(data, 2).PadLeft(8, '0');
             return str;
         }
 

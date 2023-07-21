@@ -17,10 +17,20 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public Plc PlcEntity { get => _plcEntity;  }
 
+        public bool IsConnected=false;
+
         /// <summary>
         /// 输出操作信息
         /// </summary>
         public event Action<string> MessageOutput;
+        /// <summary>
+        /// PLC成功进行了连接
+        /// </summary>
+        public event Action<PLC_Connect> PlcConnected;
+        /// <summary>
+        /// PLC连接断开
+        /// </summary>
+        public event Action<PLC_Connect> PlcDisConnected;
 
         public event PointValueChangedEventHnadler PointWriteFail;
 
@@ -37,6 +47,11 @@ namespace ScrewMachineManagementSystem.CenterControl
             try
             {
                 PlcEntity.Open();
+                if (PlcConnected!=null)
+                {
+                    PlcConnected(this);
+                    IsConnected = true;
+                }
                 return true;
             }
             catch (Exception ex)
@@ -52,6 +67,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             try
             {
                 PlcEntity.Close();
+                IsConnected = false;
                 return true;
             }
             catch (Exception ex)
@@ -70,7 +86,6 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case PLC_Point_Type.T_Bool:
                         _plcEntity.WriteBit(p.dataType, p.DataBlock, p.DataAdress, p.BitAdress, (bool)p.value);
                         return true;
-                        break;
                     case PLC_Point_Type.T_Byte:
                         break;
                     case PLC_Point_Type.T_Bytes:
@@ -84,10 +99,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case PLC_Point_Type.T_String:
                         _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, Encoding.ASCII.GetBytes((string)p.value));
                         return true;
-                        break;
                     default:
                         return false;
-                        break;
                 }
                 return false;
                  // _plcEntity.Write
@@ -95,6 +108,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             catch (Exception ex)
             {
                 WriteFail(p);
+
                 MessageOutPutMethod("PLC_Connect-- WriteData error ex=" + ex.ToString());
                 return false;
             }

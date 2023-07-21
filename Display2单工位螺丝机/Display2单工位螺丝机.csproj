@@ -123,6 +123,12 @@
     <Compile Include="ByteArray.cs" />
     <Compile Include="CenterControl\BusinessMain.cs" />
     <Compile Include="CenterControl\BusinessNeedPlcPoint.cs" />
+    <Compile Include="CenterControl\CenterDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CenterControl\CenterDemo.Designer.cs">
+      <DependentUpon>CenterDemo.cs</DependentUpon>
+    </Compile>
     <Compile Include="CenterControl\PLC_Connect.cs" />
     <Compile Include="CenterControl\PLC_Monitor.cs" />
     <Compile Include="CenterControl\PLC_Point.cs" />
@@ -380,6 +386,9 @@
     <Compile Include="SV_Interlocking.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="utility.cs" />
+    <EmbeddedResource Include="CenterControl\CenterDemo.resx">
+      <DependentUpon>CenterDemo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormActionCardPoints.resx">
       <DependentUpon>FormActionCardPoints.cs</DependentUpon>
     </EmbeddedResource>

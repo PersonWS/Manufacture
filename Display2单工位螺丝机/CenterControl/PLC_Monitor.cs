@@ -90,7 +90,9 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 if (PlcConnectEntity != null && !PlcConnectEntity.PlcEntity.IsConnected)
                 {
+                    MessageOutPutMethod(string.Format("PLC :{0} ,准备进行连接...", this.PlcConnectEntity.PlcEntity.IP));
                    return PlcConnectEntity.Connect();
+
                 }
                 else if (PlcConnectEntity == null)
                 {

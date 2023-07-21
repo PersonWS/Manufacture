@@ -104,7 +104,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             _writePLC_Point = new List<PLC_Point>();
             _dic_writePLC_Point = new Dictionary<string, PLC_Point>();
             PLC_Point p11 = new PLC_Point();
-            p11.VarName = "写入SN码";
+            p11.VarName = "SN码";
             p11.dataType = S7.Net.DataType.DataBlock;
             p11.DataBlock = 2002;
             p11.DataAdress = 1;
@@ -113,7 +113,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             p11.plcOperateType = PLC_Point_Operate_Type.readAndWrite;
             //p1.plcAnalysisType = PLC_Point_Type.T_Bool;
             //_writePLC_Point.Add(p1);
-            _dic_PLC_Point.Add("写入SN码", p11);
+            _dic_PLC_Point.Add("SN码", p11);
 
             PLC_Point p12 = new PLC_Point();
             p12.VarName = "允许加工请求";
@@ -175,7 +175,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             _writePLC_Point = new List<PLC_Point>();
             _dic_writePLC_Point = new Dictionary<string, PLC_Point>();
             PLC_Point p1 = new PLC_Point();
-            p1.VarName = "写入SN码";
+            p1.VarName = "SN码";
             p1.dataType = S7.Net.DataType.DataBlock;
             p1.DataBlock = 2002;
             p1.DataAdress = 1;
@@ -183,7 +183,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             p1.plcWriteType = PLC_Point_Type.T_String;
             //p1.plcAnalysisType = PLC_Point_Type.T_Bool;
             _writePLC_Point.Add(p1);
-            _dic_writePLC_Point.Add("写入SN码", p1);
+            _dic_writePLC_Point.Add("SN码", p1);
 
             PLC_Point p2 = new PLC_Point();
             p2.VarName = "允许加工请求";

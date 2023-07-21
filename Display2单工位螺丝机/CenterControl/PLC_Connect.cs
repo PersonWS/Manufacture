@@ -10,14 +10,14 @@ using System.Threading;
 
 namespace ScrewMachineManagementSystem.CenterControl
 {
-    
+
     public class PLC_Connect
     {
         S7.Net.Plc _plcEntity;
 
-        public Plc PlcEntity { get => _plcEntity;  }
+        public Plc PlcEntity { get => _plcEntity; }
 
-        public bool IsConnected=false;
+        public bool IsConnected = false;
 
         /// <summary>
         /// 输出操作信息
@@ -48,16 +48,16 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 PlcEntity.Open();
                 IsConnected = true;
-                if (PlcConnected!=null)
+                if (PlcConnected != null)
                 {
                     PlcConnected(this);
                 }
-                MessageOutPutMethod(string.Format("PLC:{0} 已连接", this.PlcEntity.IP));
+                MessageOutPutMethod(string.Format("PLC:{0} 连接成功！", this.PlcEntity.IP));
                 return true;
             }
             catch (Exception ex)
             {
-                MessageOutPutMethod(string.Format("PLC:{0} 连接失败 \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
+                MessageOutPutMethod(string.Format("PLC:{0} 连接失败！ \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
                 IsConnected = false;
                 return false;
             }
@@ -104,13 +104,13 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case PLC_Point_Type.T_Word:
                         break;
                     case PLC_Point_Type.T_String:
-                        _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, Encoding.ASCII.GetBytes((string)p.value));
+                        _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress + 2, Encoding.ASCII.GetBytes((string)p.value));
                         return true;
                     default:
                         return false;
                 }
                 return false;
-                 // _plcEntity.Write
+                // _plcEntity.Write
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         private void MessageOutPutMethod(string s)
         {
-            if (MessageOutput!=null)
+            if (MessageOutput != null)
             {
                 MessageOutput(s);
             }

@@ -160,6 +160,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         //向PLC输入SN
         private string Need_SN_Request()
         {
+            ShowMessage("收到SN码写入请求，请输入SN码并确认");
             _bool_need_SN_Request = false;
             this.Invoke(new Action(() => { lab_snWrite_apply.ForeColor = _color_ON; }));
             while (!_bool_need_SN_Request)
@@ -167,7 +168,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                 Thread.Sleep(500);
             }
             this.Invoke(new Action(() => { lab_snWrite_apply.ForeColor = _color_OFF; }));
+            ShowMessage("SN码输入完成");
             return _SN_Number;
+
         }
 
         private bool _bool_Need_lastProcessName_Request = false;
@@ -175,6 +178,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 获取上一工序名称 传出的string为SN码
         private string Need_lastProcessName_Request(string SN)
         {
+            ShowMessage("收到上一工序校验及互锁请求，请输入上一工序号并确认");
             _bool_Need_lastProcessName_Request = false;
             this.Invoke(new Action(() =>
             {
@@ -192,6 +196,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 lab_manufactureDeny_apply.ForeColor = _color_OFF;
                 lab_interlock_apply.ForeColor = _color_OFF;
             }));
+            ShowMessage("上一工序输入完成");
             return _lastProcessName;
         }
 
@@ -202,6 +207,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         private bool SaveInformationToMES_Result_Request(string SN, string manufactureResult)
         {
+            ShowMessage("收到加工完成，保存加工结果请求，请保存并确认");
             _bool_SaveInformationToMES_Result_Request = false;
             this.Invoke(new Action(() =>
             {
@@ -215,6 +221,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 lab_manufactureResultRecept_apply.ForeColor = _color_OFF;
             }));
+            ShowMessage("保存加工信息完成");
             return _bool_SaveInformationToMES_Result;
         }
 
@@ -241,11 +248,35 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         private void btn_StopCenterControl_Click(object sender, EventArgs e)
         {
-
+            _isMonitor = false;
             _businessMain.BusinessStop();
             Thread.Sleep(500);
             ShowMessage("主服务已停止");
-            _isMonitor = false;
+
+            //刷新label显示
+            foreach (var item in this.Controls)
+            {
+                if (item.GetType() == typeof(Label))
+                {
+                    if (((Label)item).Text == "●")
+                    {
+                        ((Label)item).ForeColor = Color.Red;
+                    }
+                }
+                else if (item.GetType() == typeof(GroupBox))
+                {
+                    foreach (var item2 in ((GroupBox)item).Controls)
+                    {
+                        if (item2.GetType() == typeof(Label))
+                        {
+                            if (((Label)item2).Text == "●")
+                            {
+                                ((Label)item2).ForeColor = _color_OFF;
+                            }
+                        }
+                    }
+                }
+            }
 
         }
 

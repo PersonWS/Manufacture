@@ -193,7 +193,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 30);
+            this.label10.Location = new System.Drawing.Point(12, 22);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(119, 12);
             this.label10.TabIndex = 11;
@@ -204,7 +204,7 @@
             this.lab_PLC_ConnectState.AutoSize = true;
             this.lab_PLC_ConnectState.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lab_PLC_ConnectState.ForeColor = System.Drawing.Color.Red;
-            this.lab_PLC_ConnectState.Location = new System.Drawing.Point(134, 28);
+            this.lab_PLC_ConnectState.Location = new System.Drawing.Point(134, 20);
             this.lab_PLC_ConnectState.Name = "lab_PLC_ConnectState";
             this.lab_PLC_ConnectState.Size = new System.Drawing.Size(28, 19);
             this.lab_PLC_ConnectState.TabIndex = 12;
@@ -618,6 +618,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txt_showMessage);
             this.Name = "CenterDemo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CenterDemo|螺丝机(装饰条)";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

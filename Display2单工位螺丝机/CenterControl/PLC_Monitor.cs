@@ -168,66 +168,15 @@ namespace ScrewMachineManagementSystem.CenterControl
                             continue;
                         }
                         try
+                    {
+                        PLC_Point item = BusinessNeedPlcPoint.Dic_gatherPLC_Point[BusinessNeedPlcPoint.Dic_gatherPLC_Point.Keys.ElementAt(i)];
+                         PlcConnectEntity.ReadData(ref item);
+                        if (pointValueChanged != null && item.isValueChanged)
                         {
-                            PLC_Point item = BusinessNeedPlcPoint.Dic_gatherPLC_Point[BusinessNeedPlcPoint.Dic_gatherPLC_Point.Keys.ElementAt(i)];
-                            switch (item.plcReadType)
-                            {
-                                case PLC_Point_Type.T_Bool://按照bool来读取
-
-                                    break;
-                                case PLC_Point_Type.T_Byte://按照byte来读取
-                                    byte[] re = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, item.Length);
-                                    if (re != null && re.Length > 0)
-                                    {
-                                        //验证 是否为bool元素
-                                        if (item.plcRealType == PLC_Point_Type.T_Bool)
-                                        {
-                                            string binaryStr = ByteToBinaryString(re[0]);
-                                            bool value = binaryStr[7-item.BitAdress].ToString() == "1" ? true : false;
-                                            if (item.value==null||value != (bool)item.value)
-                                            {
-                                                item.value = value;
-                                                ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (re[0] != (byte)item.value)
-                                            {
-                                                if (pointValueChanged != null)
-                                                {
-                                                    item.value = re[0];
-                                                    ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
-                                                }
-                                            }
-                                        }
-                                    }
-                                    break;
-                                case PLC_Point_Type.T_Int:
-                                    break;
-                                case PLC_Point_Type.T_Word:
-                                    break;
-                                case PLC_Point_Type.T_String://按照string来读取
-                                    byte[] sre1 = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
-                                    if (sre1 != null && sre1.Length > 0)
-                                    {
-                                        byte[] sre2 = PlcConnectEntity.PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress+2, sre1[0]);
-                                        string str = Encoding.ASCII.GetString(sre2).Replace("\0","");
-                                        if (str != (string)item.value)
-                                        {
-                                            if (pointValueChanged != null)
-                                            {
-                                                item.value = str;
-                                                pointValueChanged(item);
-                                            }
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                            ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
                         }
-                        catch (Exception e)
+                    }
+                    catch (Exception e)
                         {
 
                         if (e.HResult == -2146233088)
@@ -243,6 +192,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
 
         }
+        
 
         /// <summary>
         /// 守护线程
@@ -279,11 +229,6 @@ namespace ScrewMachineManagementSystem.CenterControl
         }
 
 
-        public string ByteToBinaryString(byte data)
-        {
-            string str = Convert.ToString(data, 2).PadLeft(8, '0');
-            return str;
-        }
 
 
     }

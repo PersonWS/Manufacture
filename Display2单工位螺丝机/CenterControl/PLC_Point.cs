@@ -59,8 +59,19 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 附加说明
         /// </summary>
         public string remark;
+        /// <summary>
+        /// 本次读取时，值是否发生了变化
+        /// </summary>
+        public bool isValueChanged=false;
+        /// <summary>
+        /// 是否读取成功
+        /// </summary>
+        public bool isReadSucess = false;
 
-
+        /// <summary>
+        /// 是否读取成功
+        /// </summary>
+        public bool isWriteSucess = false;
         /*
         /// <summary>
         /// 按照业务获得实际的名称

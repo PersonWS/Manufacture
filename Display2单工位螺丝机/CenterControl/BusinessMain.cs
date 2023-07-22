@@ -128,6 +128,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         case "SN码请求"://SN码请求 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
                             {
+                                MessageOutPutMethod(string.Format("PLC:{0} 发出SN码请求", PLC_Connect.PlcEntity.IP));
                                 SN_CodeRequest();
                             }
                             else
@@ -136,6 +137,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         case "开始加工请求"://开始加工请求  , 需要向外部请求该SN码的过站信息，是否为本工序上一站
                             if ((bool)point.value == true)
                             {
+                                MessageOutPutMethod(string.Format("SN:{0} 发出  开始加工请求", _SN_code));
                                 ManufactureRequest();
                             }
                             else
@@ -144,6 +146,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         case "结果OK"://结果OK 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
                             {
+                                MessageOutPutMethod(string.Format("SN:{0} 加工完成，加工结果：OK", _SN_code));
                                 ManufactureResultOutput();
                             }
                             else
@@ -152,6 +155,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         case "结果NG"://SN码请求 为1 时，置位所有需要写入的数据
                             if ((bool)point.value == true)
                             {
+                                MessageOutPutMethod(string.Format("SN:{0} 加工完成，加工结果：NG", _SN_code));
                                 ManufactureResultOutput();
                             }
                             else
@@ -242,9 +246,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         public void SN_CodeRequest()
         {
-
+            MessageOutPutMethod("SN码写入前,清理上次的遗留状态，清理开始...");
             //首先清除上一次的所有指令
-            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = "\0\0\0\0\0\0\0\0";
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28] );
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
             _SN_code = "";
             MessageOutPutMethod("PLC SN码已清除");

@@ -19,6 +19,8 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public bool IsConnected = false;
 
+        private bool _isWriting = false;
+
         /// <summary>
         /// 输出操作信息
         /// </summary>
@@ -33,6 +35,8 @@ namespace ScrewMachineManagementSystem.CenterControl
         public event Action<PLC_Connect> PlcDisConnected;
 
         public event PointValueChangedEventHnadler PointWriteFail;
+
+        private static readonly object _obj2 = new object();
 
         public PLC_Connect(CpuType type, string ip, short rack, short slot, int port = 102)
         {
@@ -68,6 +72,10 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             try
             {
+                while (_isWriting)
+                {
+                    Thread.Sleep(50);
+                }
                 PlcEntity.Close();
                 IsConnected = false;
                 if (PlcDisConnected != null)
@@ -84,41 +92,125 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
         }
 
-        public bool WriteData(PLC_Point p)
+        public void ReadData(ref PLC_Point item)
         {
+            item.isValueChanged = false;
+            item.isReadSucess = false;
             try
             {
-                switch (p.plcWriteType)
+                switch (item.plcReadType)
                 {
-                    case PLC_Point_Type.T_Bool:
-                        _plcEntity.WriteBit(p.dataType, p.DataBlock, p.DataAdress, p.BitAdress, (bool)p.value);
-                        return true;
-                    case PLC_Point_Type.T_Byte:
+                    case PLC_Point_Type.T_Bool://按照bool来读取
+
                         break;
-                    case PLC_Point_Type.T_Bytes:
+                    case PLC_Point_Type.T_Byte://按照byte来读取
+                        byte[] re = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, item.Length);
+                        item.isReadSucess = true;
+                        if (re != null && re.Length > 0)
+                        {
+                            //验证 是否为bool元素
+                            if (item.plcRealType == PLC_Point_Type.T_Bool)
+                            {
+                                string binaryStr = ByteToBinaryString(re[0]);
+                                bool value = binaryStr[7 - item.BitAdress].ToString() == "1" ? true : false;
+                                if (item.value == null || value != (bool)item.value)
+                                {
+                                    item.value = value;
+                                    item.isValueChanged = true;
+                                }
+                            }
+                            else
+                            {
+                                if (re[0] != (byte)item.value)
+                                {
+                                    item.isValueChanged = true;
+                                    item.value = re[0];
+                                }
+                            }
+                        }
                         break;
                     case PLC_Point_Type.T_Int:
                         break;
-                    case PLC_Point_Type.T_Ints:
-                        break;
                     case PLC_Point_Type.T_Word:
                         break;
-                    case PLC_Point_Type.T_String:
-                        _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress + 2, Encoding.ASCII.GetBytes((string)p.value));
-                        return true;
+                    case PLC_Point_Type.T_String://按照string来读取
+                        byte[] sre1 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
+                        item.isReadSucess = true;
+                        if (sre1 != null && sre1.Length > 0)
+                        {
+                            byte[] sre2 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress , sre1[0]);
+                            string str = Encoding.ASCII.GetString(sre2.Skip(2).Take(sre2.Length-2).ToArray()).Replace("\0", "");
+                            if (str != (string)item.value)
+                            {
+                                item.value = str;
+                                item.isValueChanged = true;
+                            }
+                        }
+                        break;
                     default:
-                        return false;
+                        break;
                 }
-                return false;
-                // _plcEntity.Write
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                WriteFail(p);
 
-                MessageOutPutMethod("PLC_Connect-- WriteData error ex=" + ex.ToString());
-                return false;
+                throw e;
             }
+
+        }
+
+        public bool WriteData(PLC_Point p)
+        {
+            lock (_obj2)
+            {
+                _isWriting = true;
+                try
+                {
+                    if (!_plcEntity.IsConnected)
+                    {
+                        return false;
+                    }
+                    switch (p.plcWriteType)
+                    {
+                        case PLC_Point_Type.T_Bool:
+                            _plcEntity.WriteBit(p.dataType, p.DataBlock, p.DataAdress, p.BitAdress, (bool)p.value);
+                            return true;
+                        case PLC_Point_Type.T_Byte:
+                            break;
+                        case PLC_Point_Type.T_Bytes:
+                            break;
+                        case PLC_Point_Type.T_Int:
+                            break;
+                        case PLC_Point_Type.T_Ints:
+                            break;
+                        case PLC_Point_Type.T_Word:
+                            break;
+                        case PLC_Point_Type.T_String:
+                            //生成byte[]
+                            List<byte> stringList = new List<byte>();
+                            stringList.AddRange(new byte[] { 28, (byte)((string)p.value).Length });
+                            stringList.AddRange(Encoding.ASCII.GetBytes((string)p.value));
+                            _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress , stringList.ToArray());
+                            return true;
+                        default:
+                            return false;
+                    }
+                    return false;
+                    // _plcEntity.Write
+                }
+                catch (Exception ex)
+                {
+                    WriteFail(p);
+
+                    MessageOutPutMethod("PLC_Connect-- WriteData error ex=" + ex.ToString());
+                    return false;
+                }
+                finally
+                {
+                    _isWriting = false;
+                }
+            }
+           
         }
 
 
@@ -135,6 +227,11 @@ namespace ScrewMachineManagementSystem.CenterControl
             {
                 PointWriteFail(p);
             }
+        }
+        public string ByteToBinaryString(byte data)
+        {
+            string str = Convert.ToString(data, 2).PadLeft(8, '0');
+            return str;
         }
 
 

@@ -1002,7 +1002,8 @@ namespace ScrewMachineManagementSystem
                 {
                     FillInfoLog("电批连接成功");
                     lbLed1.LedColor = Color.Lime;
-                    //    socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
+                    socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
+                    LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                     //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
                     //Start a new thread and keep receiving messages sent by the server
                     Thread Client_Td = new Thread(ReciveMessages);
@@ -1038,6 +1039,20 @@ namespace ScrewMachineManagementSystem
         /// <param name="sk"></param>
         void ReciveMessages(Object sk)
         {
+            byte[] b2 = new byte[2048];
+
+            int r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            //订阅运行状态
+            LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
+            int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
+            r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            //订阅拧紧结果
+            LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
+            r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
+            r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
             while (true)
             {
                 string sflag = "";
@@ -1052,6 +1067,7 @@ namespace ScrewMachineManagementSystem
                     {
                         byte[] b = new byte[r];
                         Array.Copy(buffer, b, r);
+                        LogUtility.ErrorLog_custom(BitConverter.ToString(b));
                         if (b[0] == 2 && b[r - 1] == 3)
                         {
                             //02 00 00 00 00 54   30 32 30 31    30 30 31 3D    30 2C 30 2C 30 2C 30 3B       30 30 32 3D 31 2C 33 3B 03

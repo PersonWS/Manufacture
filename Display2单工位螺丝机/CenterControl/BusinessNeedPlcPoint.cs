@@ -107,7 +107,8 @@ namespace ScrewMachineManagementSystem.CenterControl
             p11.VarName = "SN码";
             p11.dataType = S7.Net.DataType.DataBlock;
             p11.DataBlock = 2002;
-            p11.DataAdress = 1;
+            p11.DataAdress = 2;
+            p11.maxLength = 28;
             p11.plcReadType = PLC_Point_Type.T_String;
             p11.plcWriteType = PLC_Point_Type.T_String;
             p11.plcOperateType = PLC_Point_Operate_Type.readAndWrite;

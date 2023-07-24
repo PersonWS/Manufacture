@@ -138,8 +138,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                         item.isReadSucess = true;
                         if (sre1 != null && sre1.Length > 0)
                         {
-                            byte[] sre2 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress , sre1[0]);
-                            string str = Encoding.ASCII.GetString(sre2.Skip(2).Take(sre2.Length-2).ToArray()).Replace("\0", "");
+                            byte[] sre2 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1[0] + 2);
+                            string str = Encoding.ASCII.GetString(sre2.Skip(2).Take(sre2.Length - 2).ToArray()).Replace("\0", "");
                             if (str != (string)item.value)
                             {
                                 item.value = str;
@@ -188,9 +188,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                         case PLC_Point_Type.T_String:
                             //生成byte[]
                             List<byte> stringList = new List<byte>();
-                            stringList.AddRange(new byte[] { 28, (byte)((string)p.value).Length });
+                            stringList.AddRange(new byte[] { p.maxLength, (byte)((string)p.value).Length });
                             stringList.AddRange(Encoding.ASCII.GetBytes((string)p.value));
-                            _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress , stringList.ToArray());
+                            _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, stringList.ToArray());
                             return true;
                         default:
                             return false;
@@ -210,7 +210,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     _isWriting = false;
                 }
             }
-           
+
         }
 
 

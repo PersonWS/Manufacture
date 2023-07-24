@@ -8,6 +8,9 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
+using System.Diagnostics;
+using System.Text;
+using System.Threading;
 
 namespace ScrewMachineManagementSystem
 {
@@ -31,7 +34,7 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// 登录用户信息
         /// </summary>
-        public static string SystemName= "Display2单工位螺丝机";
+        public static string SystemName = "Display2单工位螺丝机";
         /// <summary>
         /// 参数列表
         /// </summary>
@@ -100,7 +103,7 @@ namespace ScrewMachineManagementSystem
         ///// T正在回原点中，F已回原点
         ///// </summary>
         //public static bool bool_Homeing = false;
-        
+
         /// <summary>
         /// 心跳
         /// </summary>
@@ -147,12 +150,12 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// 扫码form是否被人为关闭，T人为未扫码关掉，F正常扫码后关掉
         /// </summary>
-        public static bool FormScanSNFormisClosed= false;
+        public static bool FormScanSNFormisClosed = false;
 
         /// <summary>
         /// 清除扭力数据表格
         /// </summary>
-        public static bool boolClearDataGridView=false;
+        public static bool boolClearDataGridView = false;
         /// <summary>
         /// 是否有报警信号
         /// </summary>
@@ -175,7 +178,7 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         public static Model.struckScanProductSN struckProduceProduct = new Model.struckScanProductSN();
 
-     
+
 
         /// <summary>
         /// 数据库路径   app.config connectionStrings
@@ -412,11 +415,11 @@ namespace ScrewMachineManagementSystem
                         case "Checking_PLC_MES":
                             ConfigurationKeys.Checking_PLC_MES = Convert.ToInt32(pm.DefaultValue);
                             break;
-                        //case "MCodeLength":
-                        //    ConfigurationKeys.MCodeLength = Convert.ToInt32(pm.DefaultValue);
-                        //    break;
+                            //case "MCodeLength":
+                            //    ConfigurationKeys.MCodeLength = Convert.ToInt32(pm.DefaultValue);
+                            //    break;
 
-                            
+
 
                     }
                 }
@@ -428,4 +431,266 @@ namespace ScrewMachineManagementSystem
             }
         }
     }
-}
+
+
+        public delegate void LogHappenEventHandler(string log);
+        public class LogUtility
+        {
+            private static readonly object obj = new object();
+
+            public static event LogHappenEventHandler LogHappenEvent;
+
+            /// <summary>
+            /// 异常日志工具类
+            /// </summary>
+            /// <param name="ex"></param>
+            public static void ErrorLog(Exception ex, string tag = "")
+            {
+                ThreadPool.QueueUserWorkItem((o) =>
+                {
+                    if (LogHappenEvent != null)
+                    {
+                        LogHappenEvent(o.ToString());
+                    }
+                }, ex.ToString() + tag);
+
+                try
+                {
+                    lock (obj)
+                    {
+
+                        using (System.IO.FileStream file = new System.IO.FileStream(GetFileName(), FileMode.Append, FileAccess.Write))
+                        {
+                            System.IO.StreamWriter sw = new StreamWriter(file);
+                            sw.WriteLine("当前时间：" + DateTime.Now.ToString());
+                            sw.WriteLine("异常信息：" + ex.Message);
+                            sw.WriteLine("异常对象：" + ex.Source);
+                            sw.WriteLine("调用堆栈：\n" + ex.StackTrace.Trim());
+                            sw.WriteLine("触发方法：" + ex.TargetSite);
+                            sw.WriteLine("Tag：" + tag);
+                            sw.WriteLine();
+                            sw.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteLog(e.Message, EventLogEntryType.Error);
+                }
+            }
+
+            /// <summary>
+            /// 用户自定义错误代码 2017-10-17 add by ws
+            /// </summary>
+            /// <param name="error_custom"></param>
+            public static void ErrorLog_custom(string error_custom)
+            {
+                ThreadPool.QueueUserWorkItem((o) =>
+                {
+                    if (LogHappenEvent != null)
+                    {
+                        LogHappenEvent(o.ToString());
+                    }
+                }, error_custom);
+                try
+                {
+                    lock (obj)
+                    {
+                        using (System.IO.FileStream file = new System.IO.FileStream(GetFileName(), FileMode.Append, FileAccess.Write))
+                        {
+                            System.IO.StreamWriter sw = new StreamWriter(file);
+                            sw.WriteLine("当前时间：" + DateTime.Now.ToString());
+                            sw.WriteLine("提示信息：" + error_custom);
+                            sw.WriteLine();
+                            sw.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteLog(e.Message, EventLogEntryType.Error);
+                }
+            }
+
+            /// <summary>
+            /// 在当前运行目录下./log/，指定的文件名来记录日志
+            /// </summary>
+            /// <param name="fileNameOnCurrentDir"></param>
+            /// <param name="error_custom"></param>
+            public static void ErrorLog_custom(string error_custom, string fileNameOnCurrentDir)
+            {
+                ThreadPool.QueueUserWorkItem((o) =>
+                {
+                    if (LogHappenEvent != null)
+                    {
+                        LogHappenEvent(o.ToString());
+                    }
+                }, error_custom);
+                try
+                {
+                    lock (obj)
+                    {
+                        string path = Assembly.GetExecutingAssembly().Location;
+                        path = System.IO.Path.Combine(path.Substring(0, path.LastIndexOf('\\')), "Log");
+                        System.IO.Directory.CreateDirectory(path);
+                        string fileName = "";
+                        if (string.IsNullOrEmpty(fileNameOnCurrentDir))
+                        {
+                            fileName = path + "\\Log" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                        }
+                        else
+                        {
+                            fileName = path + "\\" + fileNameOnCurrentDir + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                        }
+
+
+                        using (System.IO.FileStream file = new System.IO.FileStream(fileName, FileMode.Append, FileAccess.Write))
+                        {
+                            System.IO.StreamWriter sw = new StreamWriter(file);
+                            sw.WriteLine("当前时间：" + DateTime.Now.ToString());
+                            sw.WriteLine("提示信息：" + error_custom);
+                            sw.WriteLine();
+                            sw.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteLog(e.Message, EventLogEntryType.Error);
+                }
+            }
+
+
+            public static void UsrLogRecord(byte[][] array)
+            {
+
+                try
+                {
+                    lock (obj)
+                    {
+                        using (System.IO.FileStream file = new System.IO.FileStream(GetUsrLogFileName(), FileMode.Append, FileAccess.Write))
+                        {
+                            System.IO.StreamWriter sw = new StreamWriter(file);
+
+                            for (int i = 0; i < array.Length; i++)
+                            {
+                                string[] sa = (Encoding.ASCII.GetString(array[i])).Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                                for (int j = 0; j < sa.Length; j++)
+                                {
+                                    if (sa[j] != null && sa[j].Length > 5)
+                                    {
+                                        sw.Write(string.Format("{0} : {1} \r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), sa[j]));
+                                    }
+
+                                }
+
+                            }
+
+                            sw.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteLog(e.Message, EventLogEntryType.Error);
+                }
+            }
+
+            public static void UsrLogRecord(string[] s)
+            {
+
+                try
+                {
+                    lock (obj)
+                    {
+                        using (System.IO.FileStream file = new System.IO.FileStream(GetUsrLogFileName(), FileMode.Append, FileAccess.Write))
+                        {
+                            System.IO.StreamWriter sw = new StreamWriter(file);
+                            for (int i = 0; i < s.Length; i++)
+                            {
+                                sw.Write(string.Format("{0} : {1} \r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), s[i]));
+                            }
+
+                            sw.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteLog(e.Message, EventLogEntryType.Error);
+                }
+            }
+
+            private static string GetFileName()
+            {
+                string path = Assembly.GetExecutingAssembly().Location;
+                path = System.IO.Path.Combine(path.Substring(0, path.LastIndexOf('\\')), "Log");
+                System.IO.Directory.CreateDirectory(path);
+                string fileName = path + "\\Log" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                return fileName;
+
+            }
+
+            private static string GetUsrLogFileName()
+            {
+                string path = Assembly.GetExecutingAssembly().Location;
+                path = System.IO.Path.Combine(path.Substring(0, path.LastIndexOf('\\')), "Log");
+                System.IO.Directory.CreateDirectory(path);
+                string fileName = path + "\\UsrLog" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                return fileName;
+
+            }
+
+
+            /// <summary>
+            /// 记录日志
+            /// </summary>
+            /// <param name="strMessag"></param>
+            /// <param name="type"></param>
+            public static void WriteLog(string strMessag, EventLogEntryType type)
+            {
+
+                //Warning转义为调试信息
+                //if (type == EventLogEntryType.Warning)
+                //{
+                //    return;
+                //}
+                EventLog eventLog = new EventLog();
+                try
+                {
+                    if (!EventLog.SourceExists("OPCService"))
+                    {
+                        EventLog.CreateEventSource("OPCService", "");
+
+                    }
+                    eventLog.Source = "OPCService";
+                    eventLog.WriteEntry(strMessag, type);
+                    eventLog.Close();
+                }
+                catch
+                { }
+
+
+            }
+
+            /// <summary>
+            /// 清理日志
+            /// </summary>
+            public static void ClearLog()
+            {
+
+
+                EventLog eventLog = new EventLog();
+                if (!EventLog.SourceExists("ServiceOPC"))
+                {
+                    EventLog.CreateEventSource("ServiceOPC", "");
+
+                }
+                eventLog.Source = "ServiceOPC";
+                eventLog.Close();
+
+            }
+
+
+        }
+    }

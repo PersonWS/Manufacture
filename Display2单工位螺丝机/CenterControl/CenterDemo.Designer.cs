@@ -44,7 +44,15 @@
             this.btn_StopCenterControl = new System.Windows.Forms.Button();
             this.btn_clearLog = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lab_manufactureResultRecept_apply = new System.Windows.Forms.Label();
+            this.lab_interlock_apply = new System.Windows.Forms.Label();
+            this.lab_manufactureDeny_apply = new System.Windows.Forms.Label();
+            this.lab_manufacturePermission_apply = new System.Windows.Forms.Label();
+            this.lab_snWrite_apply = new System.Windows.Forms.Label();
             this.lab_manufactureResultRecept = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -55,14 +63,6 @@
             this.lab_interlock = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.lab_manufactureDeny = new System.Windows.Forms.Label();
-            this.lab_snWrite_apply = new System.Windows.Forms.Label();
-            this.lab_manufacturePermission_apply = new System.Windows.Forms.Label();
-            this.lab_manufactureDeny_apply = new System.Windows.Forms.Label();
-            this.lab_interlock_apply = new System.Windows.Forms.Label();
-            this.lab_manufactureResultRecept_apply = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.lab_sn = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -75,8 +75,8 @@
             this.btn_set_lastProcessName = new System.Windows.Forms.Button();
             this.btn_saveReult = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
+            this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -248,6 +248,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC-->PC[DB2001]";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(157, 13);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "状态";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label12);
@@ -273,6 +282,79 @@
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "PC-->PLC[DB2002]";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(181, 15);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 20;
+            this.label12.Text = "申请";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(146, 15);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "状态";
+            // 
+            // lab_manufactureResultRecept_apply
+            // 
+            this.lab_manufactureResultRecept_apply.AutoSize = true;
+            this.lab_manufactureResultRecept_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_manufactureResultRecept_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureResultRecept_apply.Location = new System.Drawing.Point(181, 198);
+            this.lab_manufactureResultRecept_apply.Name = "lab_manufactureResultRecept_apply";
+            this.lab_manufactureResultRecept_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_manufactureResultRecept_apply.TabIndex = 17;
+            this.lab_manufactureResultRecept_apply.Text = "●";
+            // 
+            // lab_interlock_apply
+            // 
+            this.lab_interlock_apply.AutoSize = true;
+            this.lab_interlock_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_interlock_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_interlock_apply.Location = new System.Drawing.Point(181, 158);
+            this.lab_interlock_apply.Name = "lab_interlock_apply";
+            this.lab_interlock_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_interlock_apply.TabIndex = 16;
+            this.lab_interlock_apply.Text = "●";
+            // 
+            // lab_manufactureDeny_apply
+            // 
+            this.lab_manufactureDeny_apply.AutoSize = true;
+            this.lab_manufactureDeny_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_manufactureDeny_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureDeny_apply.Location = new System.Drawing.Point(181, 118);
+            this.lab_manufactureDeny_apply.Name = "lab_manufactureDeny_apply";
+            this.lab_manufactureDeny_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_manufactureDeny_apply.TabIndex = 15;
+            this.lab_manufactureDeny_apply.Text = "●";
+            // 
+            // lab_manufacturePermission_apply
+            // 
+            this.lab_manufacturePermission_apply.AutoSize = true;
+            this.lab_manufacturePermission_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_manufacturePermission_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufacturePermission_apply.Location = new System.Drawing.Point(181, 78);
+            this.lab_manufacturePermission_apply.Name = "lab_manufacturePermission_apply";
+            this.lab_manufacturePermission_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_manufacturePermission_apply.TabIndex = 14;
+            this.lab_manufacturePermission_apply.Text = "●";
+            // 
+            // lab_snWrite_apply
+            // 
+            this.lab_snWrite_apply.AutoSize = true;
+            this.lab_snWrite_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_snWrite_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_snWrite_apply.Location = new System.Drawing.Point(181, 38);
+            this.lab_snWrite_apply.Name = "lab_snWrite_apply";
+            this.lab_snWrite_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_snWrite_apply.TabIndex = 13;
+            this.lab_snWrite_apply.Text = "●";
             // 
             // lab_manufactureResultRecept
             // 
@@ -374,92 +456,10 @@
             this.lab_manufactureDeny.TabIndex = 9;
             this.lab_manufactureDeny.Text = "●";
             // 
-            // lab_snWrite_apply
-            // 
-            this.lab_snWrite_apply.AutoSize = true;
-            this.lab_snWrite_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_snWrite_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_snWrite_apply.Location = new System.Drawing.Point(181, 38);
-            this.lab_snWrite_apply.Name = "lab_snWrite_apply";
-            this.lab_snWrite_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_snWrite_apply.TabIndex = 13;
-            this.lab_snWrite_apply.Text = "●";
-            // 
-            // lab_manufacturePermission_apply
-            // 
-            this.lab_manufacturePermission_apply.AutoSize = true;
-            this.lab_manufacturePermission_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_manufacturePermission_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_manufacturePermission_apply.Location = new System.Drawing.Point(181, 78);
-            this.lab_manufacturePermission_apply.Name = "lab_manufacturePermission_apply";
-            this.lab_manufacturePermission_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_manufacturePermission_apply.TabIndex = 14;
-            this.lab_manufacturePermission_apply.Text = "●";
-            // 
-            // lab_manufactureDeny_apply
-            // 
-            this.lab_manufactureDeny_apply.AutoSize = true;
-            this.lab_manufactureDeny_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_manufactureDeny_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_manufactureDeny_apply.Location = new System.Drawing.Point(181, 118);
-            this.lab_manufactureDeny_apply.Name = "lab_manufactureDeny_apply";
-            this.lab_manufactureDeny_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_manufactureDeny_apply.TabIndex = 15;
-            this.lab_manufactureDeny_apply.Text = "●";
-            // 
-            // lab_interlock_apply
-            // 
-            this.lab_interlock_apply.AutoSize = true;
-            this.lab_interlock_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_interlock_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_interlock_apply.Location = new System.Drawing.Point(181, 158);
-            this.lab_interlock_apply.Name = "lab_interlock_apply";
-            this.lab_interlock_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_interlock_apply.TabIndex = 16;
-            this.lab_interlock_apply.Text = "●";
-            // 
-            // lab_manufactureResultRecept_apply
-            // 
-            this.lab_manufactureResultRecept_apply.AutoSize = true;
-            this.lab_manufactureResultRecept_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_manufactureResultRecept_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_manufactureResultRecept_apply.Location = new System.Drawing.Point(181, 198);
-            this.lab_manufactureResultRecept_apply.Name = "lab_manufactureResultRecept_apply";
-            this.lab_manufactureResultRecept_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_manufactureResultRecept_apply.TabIndex = 17;
-            this.lab_manufactureResultRecept_apply.Text = "●";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(157, 13);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 12);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "状态";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(146, 15);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 12);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "状态";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(181, 15);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(29, 12);
-            this.label12.TabIndex = 20;
-            this.label12.Text = "申请";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(246, 12);
+            this.label14.Location = new System.Drawing.Point(224, 12);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(95, 12);
             this.label14.TabIndex = 17;
@@ -468,7 +468,7 @@
             // lab_sn
             // 
             this.lab_sn.AutoSize = true;
-            this.lab_sn.Location = new System.Drawing.Point(347, 12);
+            this.lab_sn.Location = new System.Drawing.Point(325, 12);
             this.lab_sn.Name = "lab_sn";
             this.lab_sn.Size = new System.Drawing.Size(11, 12);
             this.lab_sn.TabIndex = 18;
@@ -477,7 +477,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(246, 35);
+            this.label16.Location = new System.Drawing.Point(224, 35);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(95, 12);
             this.label16.TabIndex = 19;
@@ -486,7 +486,7 @@
             // lab_lastProcessName
             // 
             this.lab_lastProcessName.AutoSize = true;
-            this.lab_lastProcessName.Location = new System.Drawing.Point(347, 34);
+            this.lab_lastProcessName.Location = new System.Drawing.Point(325, 34);
             this.lab_lastProcessName.Name = "lab_lastProcessName";
             this.lab_lastProcessName.Size = new System.Drawing.Size(11, 12);
             this.lab_lastProcessName.TabIndex = 20;
@@ -571,16 +571,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
             // 
-            // btn_ForceManufacturePermission
-            // 
-            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(14, 20);
-            this.btn_ForceManufacturePermission.Name = "btn_ForceManufacturePermission";
-            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(136, 68);
-            this.btn_ForceManufacturePermission.TabIndex = 29;
-            this.btn_ForceManufacturePermission.Text = "强制允许加工";
-            this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
-            this.btn_ForceManufacturePermission.Click += new System.EventHandler(this.btn_ForceManufacturePermission_Click);
-            // 
             // btn_forceResultOK
             // 
             this.btn_forceResultOK.Location = new System.Drawing.Point(156, 20);
@@ -590,6 +580,16 @@
             this.btn_forceResultOK.Text = "强制结果收到";
             this.btn_forceResultOK.UseVisualStyleBackColor = true;
             this.btn_forceResultOK.Click += new System.EventHandler(this.btn_forceResultOK_Click);
+            // 
+            // btn_ForceManufacturePermission
+            // 
+            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(14, 20);
+            this.btn_ForceManufacturePermission.Name = "btn_ForceManufacturePermission";
+            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(136, 68);
+            this.btn_ForceManufacturePermission.TabIndex = 29;
+            this.btn_ForceManufacturePermission.Text = "强制允许加工";
+            this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
+            this.btn_ForceManufacturePermission.Click += new System.EventHandler(this.btn_ForceManufacturePermission_Click);
             // 
             // CenterDemo
             // 

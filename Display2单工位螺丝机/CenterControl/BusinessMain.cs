@@ -339,7 +339,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 bool a = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"]);
                 BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"].value = true;
                 bool b = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"]);
-                BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"].value = true;
+                BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"].value = false;
                 bool c = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"]);
                 if (a && b && c)
                 {
@@ -359,7 +359,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"].value = true;
                 bool a = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"]);
                 bool b = false;
-                BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"].value = false;
+                BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"].value = true;
                 bool c = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"]);
                 if (a)
                 {

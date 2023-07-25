@@ -2644,19 +2644,19 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="chart1" Row="4" RowSpan="2" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="groupBox7" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox8" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="panel7" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="groupBox2" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelTime" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="pictureBoxLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panelTop" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox1" Row="2" RowSpan="2" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="groupBoxProject" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox3" Row="4" RowSpan="2" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox4" Row="7" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox5" Row="7" RowSpan="2" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="7" RowSpan="2" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox6" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,269,Percent,100,Absolute,491" /&gt;&lt;Rows Styles="Absolute,46,Absolute,61,Percent,100,Absolute,210,Absolute,141,Absolute,36,Absolute,187,Absolute,168,Absolute,31,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>164, 17</value>
   </metadata>
   <metadata name="timerScanSN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>107, 17</value>
+    <value>251, 17</value>
   </metadata>
   <metadata name="timerRTU.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>235, 17</value>
+    <value>372, 17</value>
   </metadata>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>342, 17</value>
+    <value>474, 17</value>
   </metadata>
   <metadata name="timer3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>432, 17</value>
+    <value>561, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

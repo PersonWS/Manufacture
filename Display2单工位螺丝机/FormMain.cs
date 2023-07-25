@@ -23,7 +23,12 @@ namespace ScrewMachineManagementSystem
             SetStyle(ControlStyles.AllPaintingInWmPaint, true); // 禁止擦除背景.
             SetStyle(ControlStyles.DoubleBuffer, true); // 双缓冲
             CheckForIllegalCrossThreadCalls = false;
+            InitilizeScrewDataTable();
         }
+        #region 定义2
+        DataTable _dt_screwDataTable;
+        #endregion
+
 
         #region 变量定义
         /// <summary>
@@ -69,6 +74,7 @@ namespace ScrewMachineManagementSystem
         /// 左右工位名称
         /// </summary>
         string[] stationName = new string[2] { "工位", "工位" };
+
 
         /// <summary>
         /// SN码扫描状态，T不能再次扫码
@@ -273,10 +279,10 @@ namespace ScrewMachineManagementSystem
             chart1.Series[1].Points.AddXY(0, 0);
             comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
             TcpConnect();
-            //if (socketSender.Connected)     //联通成功，与电批建立连接
-            //{
-            //    socketSender.Send(DNKE_DKTCP.Cmd_Connect);
-            //}
+            if (socketSender.Connected)     //联通成功，与电批建立连接
+            {
+                socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+            }
             PlcConnect();
 
             SystemInit();
@@ -300,6 +306,10 @@ namespace ScrewMachineManagementSystem
 
         private void label8_Click(object sender, EventArgs e)
         {
+            Byte [] b = new byte[100];
+            List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+            ShowScrewData(ack);
+            /*
             //停止才能重新登录
             if (!isRun && utility.LoginModeEngineer)
             {
@@ -308,6 +318,7 @@ namespace ScrewMachineManagementSystem
             }
             else
                 utility.ShowMessage("请停止运行，并启用工程模式！");
+                */
         }
 
         private void labelRefresh_Click(object sender, EventArgs e)
@@ -1001,7 +1012,7 @@ namespace ScrewMachineManagementSystem
                 //socketSender.Connect(point);
                 //2023-07-02 解决socket通讯不正常时连接时间过长的问题 ws
                 socketSender.BeginConnect(point, ConnectCallBackMethod, socketSender);
-                if (TimeoutObject.WaitOne(5000, false))
+                if (TimeoutObject.WaitOne(2000, false))
                 {
                     FillInfoLog("电批连接成功");
                     lbLed1.LedColor = Color.Lime;
@@ -1009,7 +1020,7 @@ namespace ScrewMachineManagementSystem
                     LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                     //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
                     //Start a new thread and keep receiving messages sent by the server
-                    Thread Client_Td = new Thread(ReciveMessages2);
+                    Thread Client_Td = new Thread(ReciveMessages);
                     Client_Td.IsBackground = true;
                     Client_Td.Start();
                 }
@@ -1090,7 +1101,10 @@ namespace ScrewMachineManagementSystem
         private List<ScrewDriverData_ACK> AnalysisScrewACK_Data(byte[] array)
         {
             List<ScrewDriverData_ACK> ack = new List<ScrewDriverData_ACK>();
-            //string s1 = "02-00-00-00-23-54-30-32-30-31-30-30-31-3D-31-2C-30-2C-31-2C-30-3B-30-30-32-3D-30-2C-30-3B-30-30-33-3D-30-2C-30-2C-30-3B-03-02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-33-2C-31-32-37-35-2E-39-37-37-2C-31-2E-36-34-38-2C-31-36-33-36-2E-33-36-37-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-31-33-36-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-35-36-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-37-33-2E-33-38-30-2C-30-2E-35-33-35-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-33-2C-38-37-2E-36-36-33-2C-30-2E-31-32-33-3B-30-31-30-35-31-3D-31-3B-03";
+            //string s1 = "02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-36-2C-31-31-39-36-2E-33-33-36-2C-31-2E-36-33-38-2C-31-35-37-33-2E-33-34-32-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-34-30-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-30-39-2E-37-38-31-2C-30-2E-35-32-33-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-36-2C-38-37-2E-36-36-33-2C-30-2E-31-32-36-3B-30-31-30-35-31-3D-31-3B-03";
+
+
+
             try
             {
                 string s1 = BitConverter.ToString(array);
@@ -1181,24 +1195,28 @@ namespace ScrewMachineManagementSystem
         /// <returns></returns>
         private System.Data.DataTable GenerateScrewDataTabel(ScrewWorkResult result)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("序号");
-            dt.Columns.Add("角度");
-            dt.Columns.Add("扭力");
-            dt.Columns.Add("扭力结果");
-            dt.Columns.Add("其他");
-            dt.Columns.Add("耗时(S)");
+            _dt_screwDataTable.Rows.Clear();
             foreach (ScrewWorkResult_StageResult item in result.StageResultList)
             {
-                DataRow dr = dt.NewRow();
+                DataRow dr = _dt_screwDataTable.NewRow();
                 dr["序号"] = item.stage;
                 dr["角度"] = item.Angle;
-                dr["扭力"] = item.Torque;
+                dr["扭力"] = (Math.Round(Convert.ToDouble(item.Torque) / 0.098,3)).ToString();
                 dr["扭力结果"] = item.result;
                 dr["耗时(S)"] = item.Time;
-                dt.Rows.Add(dr);
+                _dt_screwDataTable.Rows.Add(dr);
             }
-            return dt;
+
+            DataRow dr2 = _dt_screwDataTable.NewRow();
+            dr2["序号"] = "";
+            dr2["角度"] = result.workResult.Angle;
+            dr2["扭力"] = (Math.Round( Convert.ToDouble( result.workResult.Torque)/0.098,3)).ToString();
+            dr2["扭力结果"] = result.workResult.result;
+            //dr2["其他"] = result.workResult.MonitorAngle;
+            dr2["耗时(S)"] = result.workResult.Time;
+            _dt_screwDataTable.Rows.Add(dr2);
+
+            return _dt_screwDataTable;
         }
         #endregion
 
@@ -1238,6 +1256,9 @@ namespace ScrewMachineManagementSystem
                         byte[] b = new byte[r];
                         Array.Copy(buffer, b, r);
                         LogUtility.ErrorLog_custom(BitConverter.ToString(b));
+                        List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+                        ShowScrewData(ack);
+                        /*
                         if (b[0] == 2 && b[r - 1] == 3)
                         {
                             //02 00 00 00 00 54   30 32 30 31    30 30 31 3D    30 2C 30 2C 30 2C 30 3B       30 30 32 3D 31 2C 33 3B 03
@@ -1564,6 +1585,7 @@ namespace ScrewMachineManagementSystem
                             //    FillInfoLog(tcpResults);
                             //}));
                         }
+                        */
                     }
                 }
                 catch (Exception ex)
@@ -2052,6 +2074,17 @@ namespace ScrewMachineManagementSystem
         {
             CenterControl.CenterDemo demo = new CenterControl.CenterDemo();
             demo.Show();
+        }
+
+        private void InitilizeScrewDataTable()
+        {
+            _dt_screwDataTable = new DataTable();
+            _dt_screwDataTable.Columns.Add("序号");
+            _dt_screwDataTable.Columns.Add("角度");
+            _dt_screwDataTable.Columns.Add("扭力");
+            _dt_screwDataTable.Columns.Add("扭力结果");
+            _dt_screwDataTable.Columns.Add("其他");
+            _dt_screwDataTable.Columns.Add("耗时(S)");
         }
     }
 }

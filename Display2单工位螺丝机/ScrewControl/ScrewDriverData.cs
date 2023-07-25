@@ -249,7 +249,7 @@ namespace ScrewMachineManagementSystem
                     runState = "准备运行";
                 }
                 else if (strB[0] == "0" && strB[1] == "1")
-                { runState = "准备运行"; }
+                { runState = "正在运行"; }
                 else
                 { LogUtility.ErrorLog_custom(string.Format("设备状态异常，获得编码为：{0},{1}", strB[0], strB[1])); }
                 if (strB[2] == "1" && strB[3] == "0")
@@ -259,7 +259,7 @@ namespace ScrewMachineManagementSystem
                 else if (strB[2] == "0" && strB[3] == "1")
                 { workResult = "拧紧不合格"; }
                 else
-                { LogUtility.ErrorLog_custom(string.Format("设备拧紧结果状态异常，获得编码为：{0},{1}", strB[0], strB[1])); }
+                { workResult = ""; }
             }
             string[] strC = strA[1].Split(',');
             if (strC.Length == 2)

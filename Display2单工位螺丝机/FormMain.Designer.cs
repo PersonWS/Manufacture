@@ -77,6 +77,7 @@ namespace ScrewMachineManagementSystem
             this.labelStartSingle = new System.Windows.Forms.Label();
             this.labelSNInspectionStatus = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.lab_centerControl = new System.Windows.Forms.Label();
             this.labelResetNumber = new System.Windows.Forms.Label();
             this.labelRefresh = new System.Windows.Forms.Label();
             this.labelAlermQuery = new System.Windows.Forms.Label();
@@ -117,7 +118,6 @@ namespace ScrewMachineManagementSystem
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.sqLiteCommand1 = new System.Data.SQLite.SQLiteCommand();
-            this.lab_centerControl = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.groupBoxProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -522,6 +522,15 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.panel7, "panel7");
             this.panel7.Name = "panel7";
             // 
+            // lab_centerControl
+            // 
+            this.lab_centerControl.BackColor = System.Drawing.Color.Transparent;
+            this.lab_centerControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lab_centerControl.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.lab_centerControl, "lab_centerControl");
+            this.lab_centerControl.Name = "lab_centerControl";
+            this.lab_centerControl.Click += new System.EventHandler(this.lab_centerControl_Click);
+            // 
             // labelResetNumber
             // 
             this.labelResetNumber.BackColor = System.Drawing.Color.Transparent;
@@ -876,15 +885,6 @@ namespace ScrewMachineManagementSystem
             // sqLiteCommand1
             // 
             this.sqLiteCommand1.CommandText = null;
-            // 
-            // lab_centerControl
-            // 
-            this.lab_centerControl.BackColor = System.Drawing.Color.Transparent;
-            this.lab_centerControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lab_centerControl.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.lab_centerControl, "lab_centerControl");
-            this.lab_centerControl.Name = "lab_centerControl";
-            this.lab_centerControl.Click += new System.EventHandler(this.lab_centerControl_Click);
             // 
             // FormMain
             // 

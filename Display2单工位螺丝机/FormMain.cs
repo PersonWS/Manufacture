@@ -313,6 +313,11 @@ namespace ScrewMachineManagementSystem
 
         private string Need_SN_Request()
         {
+            //申请触发时，清空电批的数据
+            if (_dt_screwDataTable!=null)
+            {
+                _dt_screwDataTable.Rows.Clear();
+            }
             string SN_Number = "";
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码

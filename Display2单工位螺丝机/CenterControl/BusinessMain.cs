@@ -27,6 +27,8 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         private bool _isBusinessStart = false;
 
+        public bool IsBusinessStart { get { return _isBusinessStart; } }
+
         /// <summary>
         /// SN码，如果没获得或者  PLC重新开始申请SN则为空
         /// </summary>
@@ -115,6 +117,11 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public bool BusinessStart()
         {
+            if (_isBusinessStart)
+            {
+                MessageOutPutMethod("Business already  Start ");
+                return true;
+            }
             // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plc_monitor = new PLC_Monitor(_plcConnect, 200);
@@ -132,15 +139,19 @@ namespace ScrewMachineManagementSystem.CenterControl
             _plc_monitor.pointValueChanged -= PointValueChanged;
             _plc_monitor.pointValueChanged += PointValueChanged;
             MessageOutPutMethod("正在启动PLC点位监控服务...");
-            return _plc_monitor.Start();//启动监控
-
+            bool a= _plc_monitor.Start();//启动监控
+            if (a)
+            {
+                _isBusinessStart = true;
+            }
+            return a;
 
         }
 
         private void PointValueChanged(PLC_Point point)
         {
-            lock (obj)
-            {
+            //lock (obj)
+            //{
                 try
                 {
                     switch (point.VarName)
@@ -191,7 +202,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     MessageOutPutMethod(string.Format("SN:{0}  pointName:{1}  执行时发生错误 ，ex={2}", _SN_code, point.VarName, ex.ToString()));
                 }
 
-            }
+            //}
         }
         /// <summary>
         /// 加工结果输出
@@ -467,6 +478,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             _plc_monitor.Stop();//停止监控
             _plcConnect.DisConnect();
+            _isBusinessStart = false;
 
         }
 

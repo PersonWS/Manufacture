@@ -29,23 +29,35 @@ namespace ScrewMachineManagementSystem.CenterControl
             InitializeComponent();
             //DisableButton();
         }
+        ~CenterDemo()
+        {
+            if (_businessMain!=null)
+            {
+                _businessMain.Need_SN_Request -= Need_SN_Request;
+                _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
+                _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
+                _businessMain.MessageOutput -= MessageOutput;
+
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            lab_lastProcessName.Text = BusinessMain._lastProcessName;
-            if (_isMonitor)
-            {
-                ShowMessage("主服务已启动");
-                return;
-            }
             _businessMain = BusinessMain.GetInstance();
+            lab_lastProcessName.Text = BusinessMain._lastProcessName;
+
+
             _businessMain.MessageOutput += MessageOutput;
             //订阅关键事件
+            _businessMain.Need_SN_Request -= Need_SN_Request;
             _businessMain.Need_SN_Request += Need_SN_Request;
+            _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
             _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
+            _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
             _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
             _isMonitor = true;
             ShowMessage("准备启动主服务...");
+
             if (_businessMain.BusinessStart())
             {
                 ShowMessage("主服务成功启动");
@@ -238,13 +250,20 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         private void ShowMessage(string s)
         {
-            this.Invoke(new Action(() =>
+            try
             {
+                this.Invoke(new Action(() =>
+                {
 
-                txt_showMessage.AppendText(string.Format("{0}：{1}\r\n\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), s));
+                    txt_showMessage.AppendText(string.Format("{0}：{1}\r\n\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), s));
 
-                txt_showMessage.ScrollToCaret();
-            }));
+                    txt_showMessage.ScrollToCaret();
+                }));
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         private void btn_StopCenterControl_Click(object sender, EventArgs e)

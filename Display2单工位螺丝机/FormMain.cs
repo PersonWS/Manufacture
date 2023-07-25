@@ -1195,24 +1195,27 @@ namespace ScrewMachineManagementSystem
         /// <returns></returns>
         private System.Data.DataTable GenerateScrewDataTabel(ScrewWorkResult result)
         {
-            _dt_screwDataTable.Rows.Clear();
+            //_dt_screwDataTable.Rows.Clear();
+            /*
             foreach (ScrewWorkResult_StageResult item in result.StageResultList)
             {
                 DataRow dr = _dt_screwDataTable.NewRow();
                 dr["序号"] = item.stage;
                 dr["角度"] = item.Angle;
-                dr["扭力"] = (Math.Round(Convert.ToDouble(item.Torque) / 0.098,3)).ToString();
+                double t1 = 0;double.TryParse(item.Torque,out t1);
+                dr["扭力"] = (Math.Round(t1,3)).ToString();
                 dr["扭力结果"] = item.result;
                 dr["耗时(S)"] = item.Time;
                 _dt_screwDataTable.Rows.Add(dr);
             }
-
+            */
             DataRow dr2 = _dt_screwDataTable.NewRow();
-            dr2["序号"] = "";
+            dr2["序号"] = _dt_screwDataTable.Rows.Count+1;
             dr2["角度"] = result.workResult.Angle;
-            dr2["扭力"] = (Math.Round( Convert.ToDouble( result.workResult.Torque)/0.098,3)).ToString();
+            double t2 = 0; double.TryParse(result.workResult.Torque, out t2);
+            dr2["扭力"] = (Math.Round( t2,3)).ToString();
             dr2["扭力结果"] = result.workResult.result;
-            //dr2["其他"] = result.workResult.MonitorAngle;
+            dr2["其他"] = result.workResult.MonitorAngle;
             dr2["耗时(S)"] = result.workResult.Time;
             _dt_screwDataTable.Rows.Add(dr2);
 

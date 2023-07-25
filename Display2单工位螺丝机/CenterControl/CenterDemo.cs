@@ -38,7 +38,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 ShowMessage("主服务已启动");
                 return;
             }
-            _businessMain = new BusinessMain();
+            _businessMain = BusinessMain.GetInstance();
             _businessMain.MessageOutput += MessageOutput;
             //订阅关键事件
             _businessMain.Need_SN_Request += Need_SN_Request;

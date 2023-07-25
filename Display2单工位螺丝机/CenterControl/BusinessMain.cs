@@ -13,6 +13,7 @@ namespace ScrewMachineManagementSystem.CenterControl
     /// </summary>
     public class BusinessMain
     {
+        private static  BusinessMain businessMain;
         PLC_Monitor _plc_monitor;
 
         public PLC_Monitor PLC_Monitor
@@ -23,6 +24,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         public PLC_Connect PLC_Connect
         { get { return _plcConnect; } }
 
+
         private bool _isBusinessStart = false;
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <summary>
         /// 允许加工还是禁止加工， PLC重新开始申请SN则为false
         /// </summary>
-        public bool _manufacturePermission = false;
+        public bool _isManufacturePermission = false;
         /// <summary>
         /// 互锁信息校验是否通过， PLC重新开始申请SN则为false
         /// </summary>
@@ -40,12 +42,12 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <summary>
         /// 产品加工结果  ture 为OK  ，false为NG   PLC重新开始申请SN则为NULL
         /// </summary>
-        public bool? _manufactureResult = null;
+        public bool _isManufactureResult = false;
 
         /// <summary>
         /// 加工结果是否上传给MES， PLC重新开始申请SN则为false
         /// </summary>
-        public bool _resultUpload = false;
+        public bool _isResultUpload = false;
 
         /// <summary>
         /// 过站信息校验，记录上一工序的名称
@@ -82,11 +84,29 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 写入失败后，下次写入的间隔  ms
         /// </summary>
         private readonly int _maxWriteInterval = 200;
+        /// <summary>
+        /// 同时注册的实例
+        /// </summary>
+        private static int _registerID = 0;
+        /// <summary>
+        /// 同时注册的实例
+        /// </summary>
+        public static int RegisterID { get { return _registerID; } }
 
-        public BusinessMain()
+        private BusinessMain()
         {
             Initialize();
         }
+        public static BusinessMain GetInstance()
+        {
+            if (businessMain==null)
+            {
+                businessMain = new BusinessMain();
+            }
+            _registerID++;
+            return businessMain;
+        }
+
 
         private void Initialize()
         {
@@ -195,9 +215,11 @@ namespace ScrewMachineManagementSystem.CenterControl
                     return;
                 }
                 string result = (bool)BusinessNeedPlcPoint.Dic_gatherPLC_Point["结果NG"].value ? "NG" : "OK";
+                
                 if (SaveInformationToMES_Result_Request != null)
                 {
                     bool a = SaveInformationToMES_Result_Request(_SN_code, result);
+
                     ManufactureResultWriteToPLC(_SN_code, a, false);
 
                 }
@@ -250,7 +272,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             //首先清除上一次的所有指令
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28]);
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
-            _SN_code = "";
+
             MessageOutPutMethod("PLC SN码已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"].value = false;
@@ -269,13 +291,19 @@ namespace ScrewMachineManagementSystem.CenterControl
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["加工结果收到"].value = false;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["加工结果收到"]);
-            _manufactureResult = null;
-            _manufacturePermission = false;
-            _resultUpload = false;
+            _SN_code = "";
+            _isManufacturePermission = false;
+            _isResultUpload = false;
+            _isManufactureResult = false;
             MessageOutPutMethod("PLC 加工结果收到 已清除");
             if (Need_SN_Request != null)//向外部请求SN码
             {
                 string snCode = Need_SN_Request();
+                if (!string.IsNullOrEmpty( _SN_code))//如果
+                {
+                    MessageOutPutMethod(string.Format( "已获得SN:{0} ,本次传入的SN:{1}不生效",_SN_code,snCode));
+                    return;
+                }
                 if (string.IsNullOrEmpty(snCode))
                 {
                     MessageOutPutMethod("外部传入SN为空，即将重新发起SN申请");
@@ -288,6 +316,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         MessageOutPutMethod("SN写入失败，即将重新发起SN申请");
                         point.value = false;
                     }
+
                 }
             }
             else
@@ -330,6 +359,11 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (Need_lastProcessName_Request != null)
             {
                 string lastProcessIn = Need_lastProcessName_Request(_SN_code);//通过SN号获得上一工序名称
+                if (_isManufacturePermission)
+                {
+                    MessageOutPutMethod(string.Format("SN:{0} ,开始加工已申请，本次申请不生效", _SN_code));
+                    return;
+                } 
                 if (string.IsNullOrEmpty(lastProcessIn))
                 {
                     MessageOutPutMethod("外部传入的上一工序为空，即将重新发起工序校验申请");
@@ -341,6 +375,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                     MessageOutPutMethod("写入工序校验结果失败，即将重新发起工序校验申请");
                     point.value = false;
                 }
+                else
+                { _isManufacturePermission = true; }
             }
             else
             { MessageOutPutMethod(string.Format("SN:{0}收到加工请求，但外部未传入上一道工序名称，请检查【Need_lastProcessName_Request】事件是否已订阅", _SN_code)); }

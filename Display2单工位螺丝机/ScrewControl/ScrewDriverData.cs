@@ -331,7 +331,7 @@ namespace ScrewMachineManagementSystem
                     switch (strA[2].Split('=')[1])
                     {
                         case "00":
-                            ngCode = "未定义";
+                            ngCode = "";
                             break;
 
                         case "01":
@@ -345,6 +345,9 @@ namespace ScrewMachineManagementSystem
                             break;
                         case "04":
                             ngCode = "最终角度过小";
+                            break;
+                        default:
+                            ngCode = "";
                             break;
                     }
                 }

@@ -129,7 +129,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                             if ((bool)point.value == true)
                             {
                                 MessageOutPutMethod(string.Format("PLC:{0} 发出SN码请求", PLC_Connect.PlcEntity.IP));
-                                SN_CodeRequest();
+                                SN_CodeRequest(point);
                             }
                             else
                             { MessageOutPutMethod(string.Format("SN:{0} SN码请求信号 复位  0", _SN_code)); }
@@ -138,7 +138,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                             if ((bool)point.value == true)
                             {
                                 MessageOutPutMethod(string.Format("SN:{0} 发出  开始加工请求", _SN_code));
-                                ManufactureRequest();
+                                ManufactureRequest(point);
                             }
                             else
                             { MessageOutPutMethod(string.Format("SN:{0} 开始加工请求信号 复位  0", _SN_code)); }
@@ -244,11 +244,11 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <summary>
         /// 当sn码请求置位为1时 ,清除历史数据
         /// </summary>
-        public void SN_CodeRequest()
+        public void SN_CodeRequest(PLC_Point point)
         {
             MessageOutPutMethod("SN码写入前,清理上次的遗留状态，清理开始...");
             //首先清除上一次的所有指令
-            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28] );
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28]);
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
             _SN_code = "";
             MessageOutPutMethod("PLC SN码已清除");
@@ -276,8 +276,19 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (Need_SN_Request != null)//向外部请求SN码
             {
                 string snCode = Need_SN_Request();
-
-                WriteSN_ToPLC(snCode);
+                if (string.IsNullOrEmpty(snCode))
+                {
+                    MessageOutPutMethod("外部传入SN为空，即将重新发起SN申请");
+                    point.value = false;
+                }
+                else
+                {
+                    if (!WriteSN_ToPLC(snCode))
+                    {
+                        MessageOutPutMethod("SN写入失败，即将重新发起SN申请");
+                        point.value = false;
+                    }
+                }
             }
             else
             { MessageOutPutMethod("外部未传入SN，请检查【Need_SN_Request】事件是否已订阅"); }
@@ -308,7 +319,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <summary>
         /// 开始加工申请逻辑
         /// </summary>
-        public void ManufactureRequest()
+        public void ManufactureRequest(PLC_Point point)
         {
             //检查SN码是否已写入
             if (string.IsNullOrEmpty(_SN_code))
@@ -319,7 +330,17 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (Need_lastProcessName_Request != null)
             {
                 string lastProcessIn = Need_lastProcessName_Request(_SN_code);//通过SN号获得上一工序名称
-                LastProcessNameCheck(lastProcessIn);
+                if (string.IsNullOrEmpty(lastProcessIn))
+                {
+                    MessageOutPutMethod("外部传入的上一工序为空，即将重新发起工序校验申请");
+                    point.value = false;
+                    return;
+                }
+                if (!LastProcessNameCheck(lastProcessIn))
+                {
+                    MessageOutPutMethod("写入工序校验结果失败，即将重新发起工序校验申请");
+                    point.value = false;
+                }
             }
             else
             { MessageOutPutMethod(string.Format("SN:{0}收到加工请求，但外部未传入上一道工序名称，请检查【Need_lastProcessName_Request】事件是否已订阅", _SN_code)); }
@@ -355,7 +376,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
             else
             {
-                MessageOutPutMethod(string.Format( "产品工序校验失败！  SN:{0}  需要的上道工序为{1} ,实际上道工序为：{2}", _SN_code,_lastProcessName,lastProcessName));
+                MessageOutPutMethod(string.Format("产品工序校验失败！  SN:{0}  需要的上道工序为{1} ,实际上道工序为：{2}", _SN_code, _lastProcessName, lastProcessName));
                 BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"].value = true;
                 bool a = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"]);
                 bool b = false;
@@ -366,7 +387,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"].value = false;
                     b = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"]);
                 }
-                if (b&&c)
+                if (b && c)
                 {
                     MessageOutPutMethod(string.Format("SN:{0}  PLC 禁止加工请求 写入成功", _SN_code));
                     return true;

@@ -77,7 +77,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_SNForceWrite = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -213,12 +213,14 @@
             // 
             // btn_StopCenterControl
             // 
+            this.btn_StopCenterControl.Enabled = false;
             this.btn_StopCenterControl.Location = new System.Drawing.Point(638, 2);
             this.btn_StopCenterControl.Name = "btn_StopCenterControl";
             this.btn_StopCenterControl.Size = new System.Drawing.Size(136, 68);
             this.btn_StopCenterControl.TabIndex = 13;
             this.btn_StopCenterControl.Text = "StopCenterControl";
             this.btn_StopCenterControl.UseVisualStyleBackColor = true;
+            this.btn_StopCenterControl.UseWaitCursor = true;
             this.btn_StopCenterControl.Click += new System.EventHandler(this.btn_StopCenterControl_Click);
             // 
             // btn_clearLog
@@ -495,6 +497,7 @@
             // 
             // btn_sn_set
             // 
+            this.btn_sn_set.Enabled = false;
             this.btn_sn_set.Location = new System.Drawing.Point(638, 76);
             this.btn_sn_set.Name = "btn_sn_set";
             this.btn_sn_set.Size = new System.Drawing.Size(136, 68);
@@ -543,6 +546,7 @@
             // 
             // btn_set_lastProcessName
             // 
+            this.btn_set_lastProcessName.Enabled = false;
             this.btn_set_lastProcessName.Location = new System.Drawing.Point(638, 152);
             this.btn_set_lastProcessName.Name = "btn_set_lastProcessName";
             this.btn_set_lastProcessName.Size = new System.Drawing.Size(136, 68);
@@ -553,6 +557,7 @@
             // 
             // btn_saveReult
             // 
+            this.btn_saveReult.Enabled = false;
             this.btn_saveReult.Location = new System.Drawing.Point(638, 226);
             this.btn_saveReult.Name = "btn_saveReult";
             this.btn_saveReult.Size = new System.Drawing.Size(136, 68);
@@ -563,6 +568,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btn_SNForceWrite);
             this.groupBox3.Controls.Add(this.btn_forceResultOK);
             this.groupBox3.Controls.Add(this.btn_ForceManufacturePermission);
             this.groupBox3.Location = new System.Drawing.Point(14, 299);
@@ -574,7 +580,8 @@
             // 
             // btn_forceResultOK
             // 
-            this.btn_forceResultOK.Location = new System.Drawing.Point(156, 20);
+            this.btn_forceResultOK.Enabled = false;
+            this.btn_forceResultOK.Location = new System.Drawing.Point(322, 20);
             this.btn_forceResultOK.Name = "btn_forceResultOK";
             this.btn_forceResultOK.Size = new System.Drawing.Size(136, 68);
             this.btn_forceResultOK.TabIndex = 30;
@@ -584,7 +591,8 @@
             // 
             // btn_ForceManufacturePermission
             // 
-            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(14, 20);
+            this.btn_ForceManufacturePermission.Enabled = false;
+            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(180, 20);
             this.btn_ForceManufacturePermission.Name = "btn_ForceManufacturePermission";
             this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(136, 68);
             this.btn_ForceManufacturePermission.TabIndex = 29;
@@ -592,22 +600,22 @@
             this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
             this.btn_ForceManufacturePermission.Click += new System.EventHandler(this.btn_ForceManufacturePermission_Click);
             // 
-            // button1
+            // btn_SNForceWrite
             // 
-            this.button1.Location = new System.Drawing.Point(501, 319);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 68);
-            this.button1.TabIndex = 31;
-            this.button1.Text = "电批测试";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.btn_SNForceWrite.Enabled = false;
+            this.btn_SNForceWrite.Location = new System.Drawing.Point(38, 20);
+            this.btn_SNForceWrite.Name = "btn_SNForceWrite";
+            this.btn_SNForceWrite.Size = new System.Drawing.Size(136, 68);
+            this.btn_SNForceWrite.TabIndex = 31;
+            this.btn_SNForceWrite.Text = "强制SN写入";
+            this.btn_SNForceWrite.UseVisualStyleBackColor = true;
+            this.btn_SNForceWrite.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 599);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btn_saveReult);
             this.Controls.Add(this.label18);
@@ -693,6 +701,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btn_ForceManufacturePermission;
         private System.Windows.Forms.Button btn_forceResultOK;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_SNForceWrite;
     }
 }

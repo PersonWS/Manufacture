@@ -894,6 +894,9 @@
   <data name="chart1.Text" xml:space="preserve">
     <value>chart1</value>
   </data>
+  <data name="chart1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;chart1.Name" xml:space="preserve">
     <value>chart1</value>
   </data>
@@ -1338,6 +1341,9 @@
   <data name="groupBox8.Text" xml:space="preserve">
     <value>状态</value>
   </data>
+  <data name="groupBox8.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;groupBox8.Name" xml:space="preserve">
     <value>groupBox8</value>
   </data>
@@ -1634,6 +1640,9 @@
   </data>
   <data name="labelHomeStaus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
+  </data>
+  <data name="labelHomeStaus.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;labelHomeStaus.Name" xml:space="preserve">
     <value>labelHomeStaus</value>

@@ -77,6 +77,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -591,11 +592,22 @@
             this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
             this.btn_ForceManufacturePermission.Click += new System.EventHandler(this.btn_ForceManufacturePermission_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(501, 319);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(136, 68);
+            this.button1.TabIndex = 31;
+            this.button1.Text = "电批测试";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 599);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btn_saveReult);
             this.Controls.Add(this.label18);
@@ -681,5 +693,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btn_ForceManufacturePermission;
         private System.Windows.Forms.Button btn_forceResultOK;
+        private System.Windows.Forms.Button button1;
     }
 }

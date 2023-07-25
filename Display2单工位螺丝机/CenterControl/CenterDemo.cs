@@ -324,5 +324,35 @@ namespace ScrewMachineManagementSystem.CenterControl
             _bool_SaveInformationToMES_Result_Request = true;
             _bool_SaveInformationToMES_Result = true;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            string s1 = "02-00-00-00-23-54-30-32-30-31-30-30-31-3D-31-2C-30-2C-31-2C-30-3B-30-30-32-3D-30-2C-30-3B-30-30-33-3D-30-2C-30-2C-30-3B-03-02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-33-2C-31-32-37-35-2E-39-37-37-2C-31-2E-36-34-38-2C-31-36-33-36-2E-33-36-37-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-31-33-36-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-35-36-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-37-33-2E-33-38-30-2C-30-2E-35-33-35-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-33-2C-38-37-2E-36-36-33-2C-30-2E-31-32-33-3B-30-31-30-35-31-3D-31-3B-03";
+            string[] s2 = s1.Split(new string[] { "03" }, StringSplitOptions.None);
+            List<byte[]> byteArray = new List<byte[]>();
+            for (int i = 0; i < s2.Length-1; i++)
+            {
+                string str = s2[i] += "03";
+                if (str[0]=='-')
+                {
+                    str = str.Substring(1, str.Length - 1);
+                }
+                string[] split = str.Split('-');
+                byte[] by = new byte[ split.Length];
+                for (int j = 0; j < split.Length; j++)
+                {
+                    by[j] =(byte) Convert.ToInt32(split[j], 16);
+                }
+                byteArray.Add(by);
+            }
+            List<ScrewDriverData_ACK> ack = new List<ScrewDriverData_ACK>();
+            foreach (byte [] item in byteArray)
+            {
+                ScrewDriverData_ACK a = new ScrewDriverData_ACK(item);
+                a.ScrewDriverData_Analysis();
+                ack.Add(a);
+
+            }
+        }
     }
 }

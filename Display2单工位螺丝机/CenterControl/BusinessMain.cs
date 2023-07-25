@@ -96,7 +96,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         public bool BusinessStart()
         {
             // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plcConnect = new PLC_Connect(CpuType.S71200, "192.168.31.254", ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plc_monitor = new PLC_Monitor(_plcConnect, 200);
             _plcConnect.MessageOutput -= MessageOutput;
             _plcConnect.MessageOutput += MessageOutput;

@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
+using System.Data;
 
 namespace ScrewMachineManagementSystem
 {
@@ -25,6 +26,10 @@ namespace ScrewMachineManagementSystem
         }
 
         #region 变量定义
+        /// <summary>
+        /// 用于判断电批状态是否发生了改变
+        /// </summary>
+        ScrewRunState _screwRunState;
         /// <summary>
         /// 螺丝加工工作是否完成，配合DB43.300.7
         /// </summary>
@@ -930,9 +935,7 @@ namespace ScrewMachineManagementSystem
         {
             /*示教器发送停止，660_Y12
             */
-
             stop();
-
         }
         /// <summary>
         /// 运行时间
@@ -1031,6 +1034,176 @@ namespace ScrewMachineManagementSystem
             TimeoutObject.Set();
         }
 
+        #region 电批数据处理2
+        void ReciveMessages2(Object sk)
+        {
+            byte[] b=new byte[100];
+            List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+            ShowScrewData(ack);
+            /*
+            byte[] b2 = new byte[2048];
+
+            int r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            //订阅运行状态
+            LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
+            int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
+            r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            //订阅拧紧结果
+            LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
+            r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
+            r1 = socketSender.Receive(b2);
+            LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            
+            while (true)
+            {
+                string sflag = "";
+                try
+                {
+                    // return;
+
+                    byte[] buffer = new byte[2048];
+                    int r = socketSender.Receive(buffer);
+                    //DebugInfo("TCP接收:" + r);
+                    if (r > 0)
+                    {
+                        byte[] b = new byte[r];
+                        Array.Copy(buffer, b, r);
+                        LogUtility.ErrorLog_custom(BitConverter.ToString(b));//记录报文
+                        List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+                        ShowScrewData(ack);
+
+
+
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            */
+        }
+        /// <summary>
+        /// 解析电批数据，防止粘包
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        private List<ScrewDriverData_ACK> AnalysisScrewACK_Data(byte[] array)
+        {
+            List<ScrewDriverData_ACK> ack = new List<ScrewDriverData_ACK>();
+            string s1 = "02-00-00-00-23-54-30-32-30-31-30-30-31-3D-31-2C-30-2C-31-2C-30-3B-30-30-32-3D-30-2C-30-3B-30-30-33-3D-30-2C-30-2C-30-3B-03-02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-33-2C-31-32-37-35-2E-39-37-37-2C-31-2E-36-34-38-2C-31-36-33-36-2E-33-36-37-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-31-33-36-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-35-36-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-37-33-2E-33-38-30-2C-30-2E-35-33-35-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-33-2C-38-37-2E-36-36-33-2C-30-2E-31-32-33-3B-30-31-30-35-31-3D-31-3B-03";
+            try
+            {
+               // string s1 = BitConverter.ToString(array);
+                string[] s2 = s1.Split(new string[] { "03" }, StringSplitOptions.None);
+                List<byte[]> byteArray = new List<byte[]>();
+                //分解数据包
+                for (int i = 0; i < s2.Length - 1; i++)
+                {
+                    string str = s2[i] += "03";
+                    if (str[0] == '-')
+                    {
+                        str = str.Substring(1, str.Length - 1);
+                    }
+                    string[] split = str.Split('-');
+                    byte[] by = new byte[split.Length];
+                    for (int j = 0; j < split.Length; j++)
+                    {
+                        by[j] = (byte)Convert.ToInt32(split[j], 16);
+                    }
+                    byteArray.Add(by);
+                }
+
+                foreach (byte[] item in byteArray)
+                {
+                    ScrewDriverData_ACK a = new ScrewDriverData_ACK(item);
+                    a.ScrewDriverData_Analysis();
+                    ack.Add(a);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtility.ErrorLog(ex, "AnalysisScrewACK_Data");
+            }
+
+            return ack;
+        }
+
+        private void ShowScrewData(List<ScrewDriverData_ACK> ack)
+        {
+            foreach (var item in ack)
+            {
+                switch (item.MIDType)
+                {
+                    case MIDType.Connect:
+                        break;
+                    case MIDType.DisConnect:
+                        break;
+                    case MIDType.DownloadPestToScrew:
+                        break;
+                    case MIDType.PestSelect:
+                        break;
+                    case MIDType.ScrewRunState:
+                        ScrewRunState state = (ScrewRunState)item.analysisData;
+                        if (state==null)
+                        {
+                            break;
+                        }
+                        if ((_screwRunState==null)||(_screwRunState.runState!=state.runState|| _screwRunState.workResult != state.workResult || _screwRunState.sysErr != state.sysErr))//状态发生变化时输出
+                        {
+                            FillInfoLog(string.Format("电批状态：{0}", state.GetStatus()));
+                            _screwRunState = state;
+                        }
+                        break;
+                    case MIDType.ScrewWorkResult:
+                        //准备展示数据
+                        DataTable dt = GenerateScrewDataTabel((ScrewWorkResult)item.analysisData);
+                        this.Invoke(new Action(() =>
+                        {
+                            this.dataGridView1.DataSource = dt.Copy();
+                        }));
+                        break;
+                    case MIDType.ScrewWorkCurve:
+                        break;
+                    case MIDType.ScrewPset:
+                        break;
+                    case MIDType.EngineEnable:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        /// <summary>
+        /// 生成展示的datatable
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private System.Data.DataTable GenerateScrewDataTabel(ScrewWorkResult result)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("序号");
+            dt.Columns.Add("角度");
+            dt.Columns.Add("扭力");
+            dt.Columns.Add("扭力结果");
+            dt.Columns.Add("其他");
+            dt.Columns.Add("耗时(S)");
+            foreach (ScrewWorkResult_StageResult item in result.StageResultList)
+            {
+                DataRow dr = dt.NewRow();
+                dr["序号"] = item.stage;
+                dr["角度"] = item.Angle;
+                dr["扭力"] = item.Torque;
+                dr["扭力结果"] = item.result;
+                dr["耗时(S)"] = item.Time;
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+        #endregion
 
         #region 电批数据接收处理
         /// <summary>
@@ -1512,31 +1685,31 @@ namespace ScrewMachineManagementSystem
                 {
                     //报警消息，DB4，512，4bit
                     Model.ResultJsonInfo jr = new Model.ResultJsonInfo();
-                    foreach (S7NetPlus.PLC_DB_Address s in S7NetPlus.plc_DB_Alarm)
-                    {
-                        jr = S7NetPlus.ReadMuliBools(s.db, s.address, 1);  //8读出所有的bit
-                        if (jr.Successed)
-                        {
-                            //jr.booValue.Count(b => b == true) > 1;
-                            for (int i = 0; i < jr.booValue.Length; i++)
-                            {
-                                int alarmindex = S7NetPlus.alarmPoints.FindIndex(a => a.DB == s.db && a.Address == s.address && a.Bits == i);
-                                if (alarmindex > 0)
-                                    S7NetPlus.alarmPoints[alarmindex].realStatue = jr.booValue[i];
-                            }
-                            //FillInfoLog("读取报警消息，DB"+s.db.ToString()+"."+s.address.ToString());
-                        }
-                        else
-                        {
-                            FillInfoLog("读取报警消息出错，" + jr.Message);
-                        }
-                    }
+                    //foreach (S7NetPlus.PLC_DB_Address s in S7NetPlus.plc_DB_Alarm)
+                    //{
+                    //    jr = S7NetPlus.ReadMuliBools(s.db, s.address, 1);  //8读出所有的bit
+                    //    if (jr.Successed)
+                    //    {
+                    //        //jr.booValue.Count(b => b == true) > 1;
+                    //        for (int i = 0; i < jr.booValue.Length; i++)
+                    //        {
+                    //            int alarmindex = S7NetPlus.alarmPoints.FindIndex(a => a.DB == s.db && a.Address == s.address && a.Bits == i);
+                    //            if (alarmindex > 0)
+                    //                S7NetPlus.alarmPoints[alarmindex].realStatue = jr.booValue[i];
+                    //        }
+                    //        //FillInfoLog("读取报警消息，DB"+s.db.ToString()+"."+s.address.ToString());
+                    //    }
+                    //    else
+                    //    {
+                    //        FillInfoLog("读取报警消息出错，" + jr.Message);
+                    //    }
+                    //}
 
                     //读取DB4.DBX517.5   (拧紧不合格）true
                     //读取DB4.DBX517.6（拍照不合格）true
                     //读取DB26.DBX272.0(当前工位sn码）
 
-
+                    /*
                     //双工位db12.dbw64原位
                     jr = S7NetPlus.ReadOneInt(S7NetPlus.HomeStaus_Bool);
                     labelHomeStaus.Text = jr.intValue == 1 ? "已回原位" : "请回原位";
@@ -1592,49 +1765,49 @@ namespace ScrewMachineManagementSystem
 
 
                     // checkPatchsScrews();//判断是否是补螺丝状态
-                    jr = S7NetPlus.ReadOneBool(43, 256, 2);
-                    if (!jr.Successed)
-                        FillInfoLog(String.Format("读取启动信号失败，DB{0},DBX{1}.{2}", 43, 256, 2));
-                    else
-                    {
-                        S7NetPlus.boolStartSingle = jr.booValue[0];
-                        labelStartSingle.BackColor = S7NetPlus.boolStartSingle ? Color.Lime : SystemColors.ButtonFace;
-                    }
+                    //jr = S7NetPlus.ReadOneBool(43, 256, 2);
+                    //if (!jr.Successed)
+                    //    FillInfoLog(String.Format("读取启动信号失败，DB{0},DBX{1}.{2}", 43, 256, 2));
+                    //else
+                    //{
+                    //    S7NetPlus.boolStartSingle = jr.booValue[0];
+                    //    labelStartSingle.BackColor = S7NetPlus.boolStartSingle ? Color.Lime : SystemColors.ButtonFace;
+                    //}
 
 
 
-                    //输入消息
-                    jr = new ResultJsonInfo();
-                    jr = S7NetPlus.ReadMuliBools(S7NetPlus.inputPointsInfo[0], S7NetPlus.inputPointsInfo[1], S7NetPlus.inputPointsInfo[2]);
-                    if (jr.Successed)
-                    {
-                        for (int i = 0; i < S7NetPlus.inputDiagitStatus.Length; i++)
-                        {
-                            S7NetPlus.inputDiagitStatus[i] = jr.booValue[i];
-                        }
-                    }
-                    else
-                    {
-                        FillInfoLog("读取报警消息出错，" + jr.Message);
-                    }
+                    ////输入消息
+                    //jr = new ResultJsonInfo();
+                    //jr = S7NetPlus.ReadMuliBools(S7NetPlus.inputPointsInfo[0], S7NetPlus.inputPointsInfo[1], S7NetPlus.inputPointsInfo[2]);
+                    //if (jr.Successed)
+                    //{
+                    //    for (int i = 0; i < S7NetPlus.inputDiagitStatus.Length; i++)
+                    //    {
+                    //        S7NetPlus.inputDiagitStatus[i] = jr.booValue[i];
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    FillInfoLog("读取报警消息出错，" + jr.Message);
+                    //}
 
-                    //输出消息
-                    jr = new ResultJsonInfo();
-                    if (S7NetPlus.readOutPoint)
-                    {
-                        jr = S7NetPlus.ReadMuliBools(S7NetPlus.outPointsInfo[0], S7NetPlus.outPointsInfo[1], S7NetPlus.outPointsInfo[2]);
-                        if (jr.Successed)
-                        {
-                            for (int i = 0; i < S7NetPlus.outDiagit.Length; i++)
-                            {
-                                S7NetPlus.outDiagit[i] = jr.booValue[i];
-                            }
-                        }
-                        else
-                        {
-                            FillInfoLog("读取报警消息出错，" + jr.Message);
-                        }
-                    }
+                    ////输出消息
+                    //jr = new ResultJsonInfo();
+                    //if (S7NetPlus.readOutPoint)
+                    //{
+                    //    jr = S7NetPlus.ReadMuliBools(S7NetPlus.outPointsInfo[0], S7NetPlus.outPointsInfo[1], S7NetPlus.outPointsInfo[2]);
+                    //    if (jr.Successed)
+                    //    {
+                    //        for (int i = 0; i < S7NetPlus.outDiagit.Length; i++)
+                    //        {
+                    //            S7NetPlus.outDiagit[i] = jr.booValue[i];
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        FillInfoLog("读取报警消息出错，" + jr.Message);
+                    //    }
+                    //}
 
 
                     jr = new ResultJsonInfo();
@@ -1674,7 +1847,7 @@ namespace ScrewMachineManagementSystem
                     //{
                     //    FillInfoLog("读取回原位中出错，" + jr.Message);
                     //}
-
+                    */
                     //读心跳M0.5,连续10s不变，认为断线
                     object obj_heart = S7NetPlus.S71200.Read("M0.5");
                     if (obj_heart == null)
@@ -1769,6 +1942,7 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         void checkPatchsScrews()
         {
+            /*
             Model.ResultJsonInfo jr = new ResultJsonInfo();
 
             jr = S7NetPlus.ReadOneBool(29, 44, 1);
@@ -1827,7 +2001,7 @@ namespace ScrewMachineManagementSystem
                     }
                 }
             }
-
+            */
 
         }
 
@@ -1875,6 +2049,11 @@ namespace ScrewMachineManagementSystem
             {
                 labelTaskOrderID.BackColor = Color.White;
             }
+        }
+
+        private void lab_centerControl_Click(object sender, EventArgs e)
+        {
+            ReciveMessages2(null);
         }
     }
 }

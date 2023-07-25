@@ -132,6 +132,7 @@
     <Compile Include="CenterControl\PLC_Connect.cs" />
     <Compile Include="CenterControl\PLC_Monitor.cs" />
     <Compile Include="CenterControl\PLC_Point.cs" />
+    <Compile Include="ScrewControl\ScrewDriverData.cs" />
     <Compile Include="CheckUtil.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Controller\CONT_PatchScrews.cs" />

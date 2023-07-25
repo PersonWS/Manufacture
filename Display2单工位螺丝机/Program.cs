@@ -19,7 +19,7 @@ namespace ScrewMachineManagementSystem
 
         static void Main()
         {
-            Application.Run(new CenterDemo());return;
+            //Application.Run(new CenterDemo());return;
 
             Process[] processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             if (processes.Length > 1)

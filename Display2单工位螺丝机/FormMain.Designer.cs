@@ -93,15 +93,6 @@ namespace ScrewMachineManagementSystem
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.datetimeid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
@@ -126,6 +117,7 @@ namespace ScrewMachineManagementSystem
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.sqLiteCommand1 = new System.Data.SQLite.SQLiteCommand();
+            this.lab_centerControl = new System.Windows.Forms.Label();
             this.panelTop.SuspendLayout();
             this.groupBoxProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -515,6 +507,7 @@ namespace ScrewMachineManagementSystem
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel1.SetColumnSpan(this.panel7, 3);
+            this.panel7.Controls.Add(this.lab_centerControl);
             this.panel7.Controls.Add(this.labelResetNumber);
             this.panel7.Controls.Add(this.labelRefresh);
             this.panel7.Controls.Add(this.labelAlermQuery);
@@ -686,16 +679,6 @@ namespace ScrewMachineManagementSystem
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column3,
-            this.Column4,
-            this.Column8,
-            this.Column5,
-            this.Column6,
-            this.Column2,
-            this.Column7,
-            this.datetimeid});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
@@ -707,69 +690,6 @@ namespace ScrewMachineManagementSystem
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 30;
-            // 
-            // Column1
-            // 
-            resources.ApplyResources(this.Column1, "Column1");
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column3
-            // 
-            resources.ApplyResources(this.Column3, "Column3");
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column4
-            // 
-            resources.ApplyResources(this.Column4, "Column4");
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column8
-            // 
-            resources.ApplyResources(this.Column8, "Column8");
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column5
-            // 
-            resources.ApplyResources(this.Column5, "Column5");
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column6
-            // 
-            resources.ApplyResources(this.Column6, "Column6");
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column2
-            // 
-            resources.ApplyResources(this.Column2, "Column2");
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column7
-            // 
-            resources.ApplyResources(this.Column7, "Column7");
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // datetimeid
-            // 
-            resources.ApplyResources(this.datetimeid, "datetimeid");
-            this.datetimeid.Name = "datetimeid";
-            this.datetimeid.ReadOnly = true;
-            this.datetimeid.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // groupBox3
             // 
@@ -957,6 +877,15 @@ namespace ScrewMachineManagementSystem
             // 
             this.sqLiteCommand1.CommandText = null;
             // 
+            // lab_centerControl
+            // 
+            this.lab_centerControl.BackColor = System.Drawing.Color.Transparent;
+            this.lab_centerControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lab_centerControl.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.lab_centerControl, "lab_centerControl");
+            this.lab_centerControl.Name = "lab_centerControl";
+            this.lab_centerControl.Click += new System.EventHandler(this.lab_centerControl_Click);
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
@@ -1065,15 +994,6 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label labelSNInspectionStatus;
         private System.Windows.Forms.Label labelHomeStaus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn datetimeid;
         private System.Windows.Forms.Label labelStartSingle;
         private System.Windows.Forms.Label labelExit;
         private System.Windows.Forms.Label labelMin;
@@ -1083,6 +1003,7 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer3;
         private System.Data.SQLite.SQLiteCommand sqLiteCommand1;
+        private System.Windows.Forms.Label lab_centerControl;
     }
 }
 

@@ -1267,11 +1267,13 @@ namespace ScrewMachineManagementSystem
         {
             this.Invoke(new Action(() =>
             {
-                lock (this.dataGridView1.DataSource)
+                if (this.dataGridView1.DataSource!=null)
                 {
-                    ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
+                    lock (this.dataGridView1.DataSource)
+                    {
+                        ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
+                    }
                 }
-
             }));
             return true;
         }

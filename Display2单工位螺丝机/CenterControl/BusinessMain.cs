@@ -200,6 +200,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case "表格清空"://表格清空 为1 时清螺丝机电批数据
                         if ((bool)point.value == true)
                         {
+                            EmptyTableDataReset();
                             MessageOutPutMethod("表格清空,电批表格数据已清空");
                         }
                         else
@@ -336,7 +337,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             MessageOutPutMethod("SN码写入前,清理上次的遗留状态，清理开始...");
             //首先清除上一次的所有指令
-            BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = true;
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = false;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
             MessageOutPutMethod("表格已清空 已清除");
 

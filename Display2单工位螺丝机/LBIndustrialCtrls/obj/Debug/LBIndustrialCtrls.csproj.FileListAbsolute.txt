@@ -81,3 +81,4 @@ E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtr
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.csproj.CoreCompileInputs.cache
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.dll
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.pdb
+E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.csprojAssemblyReference.cache

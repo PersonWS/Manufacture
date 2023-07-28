@@ -75,9 +75,15 @@
             this.btn_set_lastProcessName = new System.Windows.Forms.Button();
             this.btn_saveReult = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btn_SNForceWrite = new System.Windows.Forms.Button();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
-            this.btn_SNForceWrite = new System.Windows.Forms.Button();
+            this.btn_ClearScrew = new System.Windows.Forms.Button();
+            this.lab_screwClear_plc = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lab_ScrewClearOK_apply = new System.Windows.Forms.Label();
+            this.lab_ScrewClearOK = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -85,7 +91,7 @@
             // 
             // txt_showMessage
             // 
-            this.txt_showMessage.Location = new System.Drawing.Point(10, 429);
+            this.txt_showMessage.Location = new System.Drawing.Point(10, 467);
             this.txt_showMessage.Multiline = true;
             this.txt_showMessage.Name = "txt_showMessage";
             this.txt_showMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -95,7 +101,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 405);
+            this.label1.Location = new System.Drawing.Point(12, 450);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 1;
@@ -225,7 +231,7 @@
             // 
             // btn_clearLog
             // 
-            this.btn_clearLog.Location = new System.Drawing.Point(672, 393);
+            this.btn_clearLog.Location = new System.Drawing.Point(672, 438);
             this.btn_clearLog.Name = "btn_clearLog";
             this.btn_clearLog.Size = new System.Drawing.Size(100, 36);
             this.btn_clearLog.TabIndex = 14;
@@ -235,6 +241,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lab_screwClear_plc);
+            this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.lab_snRequest);
@@ -246,7 +254,7 @@
             this.groupBox1.Controls.Add(this.lab_ok);
             this.groupBox1.Location = new System.Drawing.Point(14, 60);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 233);
+            this.groupBox1.Size = new System.Drawing.Size(200, 278);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC-->PC[DB2001]";
@@ -262,6 +270,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lab_ScrewClearOK_apply);
+            this.groupBox2.Controls.Add(this.lab_ScrewClearOK);
+            this.groupBox2.Controls.Add(this.label22);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.lab_manufactureResultRecept_apply);
@@ -281,7 +292,7 @@
             this.groupBox2.Controls.Add(this.lab_manufactureDeny);
             this.groupBox2.Location = new System.Drawing.Point(248, 60);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(230, 233);
+            this.groupBox2.Size = new System.Drawing.Size(230, 278);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "PC-->PLC[DB2002]";
@@ -498,7 +509,7 @@
             // btn_sn_set
             // 
             this.btn_sn_set.Enabled = false;
-            this.btn_sn_set.Location = new System.Drawing.Point(638, 76);
+            this.btn_sn_set.Location = new System.Drawing.Point(636, 149);
             this.btn_sn_set.Name = "btn_sn_set";
             this.btn_sn_set.Size = new System.Drawing.Size(136, 68);
             this.btn_sn_set.TabIndex = 21;
@@ -547,7 +558,7 @@
             // btn_set_lastProcessName
             // 
             this.btn_set_lastProcessName.Enabled = false;
-            this.btn_set_lastProcessName.Location = new System.Drawing.Point(638, 152);
+            this.btn_set_lastProcessName.Location = new System.Drawing.Point(636, 225);
             this.btn_set_lastProcessName.Name = "btn_set_lastProcessName";
             this.btn_set_lastProcessName.Size = new System.Drawing.Size(136, 68);
             this.btn_set_lastProcessName.TabIndex = 24;
@@ -558,7 +569,7 @@
             // btn_saveReult
             // 
             this.btn_saveReult.Enabled = false;
-            this.btn_saveReult.Location = new System.Drawing.Point(638, 226);
+            this.btn_saveReult.Location = new System.Drawing.Point(636, 299);
             this.btn_saveReult.Name = "btn_saveReult";
             this.btn_saveReult.Size = new System.Drawing.Size(136, 68);
             this.btn_saveReult.TabIndex = 27;
@@ -571,12 +582,23 @@
             this.groupBox3.Controls.Add(this.btn_SNForceWrite);
             this.groupBox3.Controls.Add(this.btn_forceResultOK);
             this.groupBox3.Controls.Add(this.btn_ForceManufacturePermission);
-            this.groupBox3.Location = new System.Drawing.Point(14, 299);
+            this.groupBox3.Location = new System.Drawing.Point(14, 344);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(464, 103);
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
+            // 
+            // btn_SNForceWrite
+            // 
+            this.btn_SNForceWrite.Enabled = false;
+            this.btn_SNForceWrite.Location = new System.Drawing.Point(38, 20);
+            this.btn_SNForceWrite.Name = "btn_SNForceWrite";
+            this.btn_SNForceWrite.Size = new System.Drawing.Size(136, 68);
+            this.btn_SNForceWrite.TabIndex = 31;
+            this.btn_SNForceWrite.Text = "强制SN写入";
+            this.btn_SNForceWrite.UseVisualStyleBackColor = true;
+            this.btn_SNForceWrite.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // btn_forceResultOK
             // 
@@ -600,22 +622,74 @@
             this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
             this.btn_ForceManufacturePermission.Click += new System.EventHandler(this.btn_ForceManufacturePermission_Click);
             // 
-            // btn_SNForceWrite
+            // btn_ClearScrew
             // 
-            this.btn_SNForceWrite.Enabled = false;
-            this.btn_SNForceWrite.Location = new System.Drawing.Point(38, 20);
-            this.btn_SNForceWrite.Name = "btn_SNForceWrite";
-            this.btn_SNForceWrite.Size = new System.Drawing.Size(136, 68);
-            this.btn_SNForceWrite.TabIndex = 31;
-            this.btn_SNForceWrite.Text = "强制SN写入";
-            this.btn_SNForceWrite.UseVisualStyleBackColor = true;
-            this.btn_SNForceWrite.Click += new System.EventHandler(this.button1_Click_1);
+            this.btn_ClearScrew.Enabled = false;
+            this.btn_ClearScrew.Location = new System.Drawing.Point(638, 73);
+            this.btn_ClearScrew.Name = "btn_ClearScrew";
+            this.btn_ClearScrew.Size = new System.Drawing.Size(136, 68);
+            this.btn_ClearScrew.TabIndex = 29;
+            this.btn_ClearScrew.Text = "0.Screw Clear";
+            this.btn_ClearScrew.UseVisualStyleBackColor = true;
+            this.btn_ClearScrew.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // lab_screwClear_plc
+            // 
+            this.lab_screwClear_plc.AutoSize = true;
+            this.lab_screwClear_plc.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_screwClear_plc.Location = new System.Drawing.Point(154, 196);
+            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
+            this.lab_screwClear_plc.Size = new System.Drawing.Size(28, 19);
+            this.lab_screwClear_plc.TabIndex = 20;
+            this.lab_screwClear_plc.Text = "●";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(23, 198);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(131, 12);
+            this.label20.TabIndex = 19;
+            this.label20.Text = "表格清空 [1.DBX0.4]：";
+            // 
+            // lab_ScrewClearOK_apply
+            // 
+            this.lab_ScrewClearOK_apply.AutoSize = true;
+            this.lab_ScrewClearOK_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_ScrewClearOK_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK_apply.Location = new System.Drawing.Point(181, 237);
+            this.lab_ScrewClearOK_apply.Name = "lab_ScrewClearOK_apply";
+            this.lab_ScrewClearOK_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_ScrewClearOK_apply.TabIndex = 23;
+            this.lab_ScrewClearOK_apply.Text = "●";
+            // 
+            // lab_ScrewClearOK
+            // 
+            this.lab_ScrewClearOK.AutoSize = true;
+            this.lab_ScrewClearOK.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_ScrewClearOK.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK.Location = new System.Drawing.Point(147, 237);
+            this.lab_ScrewClearOK.Name = "lab_ScrewClearOK";
+            this.lab_ScrewClearOK.Size = new System.Drawing.Size(28, 19);
+            this.lab_ScrewClearOK.TabIndex = 22;
+            this.lab_ScrewClearOK.Text = "●";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(25, 240);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(125, 12);
+            this.label22.TabIndex = 21;
+            this.label22.Text = "表格已清[2.DBX0.5]：";
             // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 599);
+            this.ClientSize = new System.Drawing.Size(788, 637);
+            this.Controls.Add(this.btn_ClearScrew);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btn_saveReult);
             this.Controls.Add(this.label18);
@@ -702,5 +776,11 @@
         private System.Windows.Forms.Button btn_ForceManufacturePermission;
         private System.Windows.Forms.Button btn_forceResultOK;
         private System.Windows.Forms.Button btn_SNForceWrite;
+        private System.Windows.Forms.Label lab_screwClear_plc;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lab_ScrewClearOK_apply;
+        private System.Windows.Forms.Label lab_ScrewClearOK;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button btn_ClearScrew;
     }
 }

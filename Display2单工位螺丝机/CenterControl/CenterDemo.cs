@@ -36,10 +36,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 _businessMain.Need_SN_Request -= Need_SN_Request;
                 _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
                 _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
+                _businessMain.Need_ClearScrewData += Need_ClearScrewData;
                 _businessMain.MessageOutput -= MessageOutput;
 
             }
         }
+
+
+            
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -149,6 +153,18 @@ namespace ScrewMachineManagementSystem.CenterControl
                                     else
                                     { lab_manufactureResultRecept.ForeColor = _color_OFF; }
                                     break;
+                                case "表格清空":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_screwClear_plc.ForeColor = _color_ON; }
+                                    else
+                                    { lab_screwClear_plc.ForeColor = _color_OFF; }
+                                    break;
+                                case "表格已清空":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_ScrewClearOK.ForeColor = _color_ON; }
+                                    else
+                                    { lab_ScrewClearOK.ForeColor = _color_OFF; }
+                                    break;
 
                                 default:
                                     break;
@@ -166,6 +182,20 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         }
 
+        private bool _bool_Need_ClearScrewData = false;
+        private bool Need_ClearScrewData()
+        {
+            ShowMessage("收到清理电批数据请求");
+            _bool_Need_ClearScrewData = false;
+            this.Invoke(new Action(() => { lab_ScrewClearOK_apply.ForeColor = _color_ON; }));
+            while (!_bool_Need_ClearScrewData)
+            {
+                Thread.Sleep(500);
+            }
+            this.Invoke(new Action(() => { lab_ScrewClearOK_apply.ForeColor = _color_OFF; }));
+            ShowMessage("电批数据清理完成");
+            return true;
+        }
 
         private bool _bool_need_SN_Request = false;
         private string _SN_Number = "";
@@ -367,6 +397,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_StartCenterControl.Enabled = false;
                 btn_sn_set.Enabled = false;
                 btn_StopCenterControl.Enabled = false;
+                btn_ClearScrew.Enabled = false;
                 btn_StartCenterControl.Enabled = true;
             }));
 
@@ -383,9 +414,15 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_StartCenterControl.Enabled = true;
                 btn_sn_set.Enabled = true;
                 btn_StopCenterControl.Enabled = true;
+                btn_ClearScrew.Enabled = true;
                 btn_StartCenterControl.Enabled = false;
             }));
 
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            _bool_Need_ClearScrewData = true;
         }
     }
 }

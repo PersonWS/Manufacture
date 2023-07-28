@@ -192,8 +192,18 @@ namespace ScrewMachineManagementSystem.CenterControl
                             else
                             { MessageOutPutMethod(string.Format("SN:{0} 结果NG信号  复位  0", _SN_code)); }
                             break;
-
-                        default:
+                    case "表格清空"://表格清空 为1 时清螺丝机电批数据
+                        if ((bool)point.value == true)
+                        {
+                            MessageOutPutMethod("表格清空,电批表格数据已清空");
+                        }
+                        else
+                        {
+                            EmptyTableDataReset(false);
+                            MessageOutPutMethod("表格清空,电批表格数据已清空,信号复位");
+                        }
+                        break;
+                    default:
                             break;
                     }
                 }
@@ -203,6 +213,23 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
 
             //}
+        }
+
+        /// <summary>
+        /// 表格已清空 信号的写入与复位
+        /// </summary>
+        /// <param name="value"></param>
+        private void EmptyTableDataReset(bool value)
+        {
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = value;
+            if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]))//写入成功 
+            {
+                MessageOutPutMethod("PLC 表格已清空 写入成功" + value);
+            }
+            else
+            {
+                MessageOutPutMethod("PLC 表格已清空 写入失败" + value);
+            }
         }
         /// <summary>
         /// 加工结果输出

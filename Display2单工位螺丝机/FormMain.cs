@@ -11,11 +11,16 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
 using System.Data;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using ScrewMachineManagementSystem.CenterControl;
 
 namespace ScrewMachineManagementSystem
 {
     public partial class FormMain : Form
     {
+        BusinessMain _businessMain;
         public FormMain()
         {
             InitializeComponent();
@@ -27,8 +32,6 @@ namespace ScrewMachineManagementSystem
         }
         #region 定义2
         DataTable _dt_screwDataTable;
-
-        CenterControl.BusinessMain _businessMain;
         #endregion
 
 
@@ -276,18 +279,10 @@ namespace ScrewMachineManagementSystem
 
             labelHostName.Text = utility.stationId;
             labelSystemName.Text = utility.SystemName;
-            initDatagridview();
+            //initDatagridview();
             chart1.Series[0].Points.AddXY(0, 0);
             chart1.Series[1].Points.AddXY(0, 0);
             comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
-
-            ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
-
-            //转shown事件
-        }
-
-        private void InitializeWhileFormOpen(object obj)
-        {
             TcpConnect();
             if (socketSender.Connected)     //联通成功，与电批建立连接
             {
@@ -296,59 +291,8 @@ namespace ScrewMachineManagementSystem
             PlcConnect();
 
             SystemInit();
-
-            _businessMain = CenterControl.BusinessMain.GetInstance();
-            _businessMain.MessageOutput += BusinessMainMessageOutput;
-
-            _businessMain.Need_SN_Request += Need_SN_Request;
-            _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
-            _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
-            _businessMain.BusinessStart();
+            //转shown事件
         }
-
-        private void BusinessMainMessageOutput(string s)
-        {
-            FillInfoLog(s);
-        }
-
-        private string Need_SN_Request()
-        {
-            //申请触发时，清空电批的数据
-            if (_dt_screwDataTable!=null)
-            {
-                _dt_screwDataTable.Rows.Clear();
-            }
-            string SN_Number = "";
-            FillInfoLog("收到SN码写入请求，请输入SN码并确认");
-            //....这里写获得SN号的代码
-            FillInfoLog("SN码输入完成");
-            return SN_Number;
-
-        }
-        /// 获取上一工序名称 传出的string为SN码
-        private string Need_lastProcessName_Request(string SN)
-        {
-            string lastProcessName = "";
-            FillInfoLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
-            //....这里写获得上一工序的代码
-            FillInfoLog("上一工序获取入完成");
-            return lastProcessName;
-        }
-        /// <summary>
-        /// 保存加工结果是否成功,传出1的string为SN码,传出2的string为加工结果
-        /// </summary>
-        private bool SaveInformationToMES_Result_Request(string SN, string manufactureResult)
-        {
-            bool bool_SaveInformationToMES_Result_Request = false;
-            FillInfoLog("收到加工完成，保存加工结果请求，请保存并确认");
-
-            //....这里写保存数据的代码
-            bool_SaveInformationToMES_Result_Request = true;
-            FillInfoLog("保存加工信息完成");
-            return bool_SaveInformationToMES_Result_Request;
-        }
-
-
 
         void initDatagridview()
         {
@@ -744,13 +688,13 @@ namespace ScrewMachineManagementSystem
                 }
             }
             utility.structCurrentWorkTask = new structNewWorkTaskInfo();
-            FormNewTaskOrder f = new FormNewTaskOrder();
-            if (f.ShowDialog() != DialogResult.Yes)
-            {
-                utility.ShowMessage("用户取消了新任务的操作！", 0);
-                return;
-            }
-            stop();
+            //FormNewTaskOrder f = new FormNewTaskOrder();
+            //if (f.ShowDialog() != DialogResult.Yes)
+            //{
+            //    utility.ShowMessage("用户取消了新任务的操作！", 0);
+            //    return;
+            //}
+            //stop();
             string productCode = utility.structCurrentWorkTask.productCode;
             //保存新任务
             workTaskInfo = new Model.WorkTaskInfo();
@@ -1162,13 +1106,13 @@ namespace ScrewMachineManagementSystem
         private List<ScrewDriverData_ACK> AnalysisScrewACK_Data(byte[] array)
         {
             List<ScrewDriverData_ACK> ack = new List<ScrewDriverData_ACK>();
-            string s1 = "02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-36-2C-31-31-39-36-2E-33-33-36-2C-31-2E-36-33-38-2C-31-35-37-33-2E-33-34-32-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-34-30-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-30-39-2E-37-38-31-2C-30-2E-35-32-33-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-36-2C-38-37-2E-36-36-33-2C-30-2E-31-32-36-3B-30-31-30-35-31-3D-31-3B-03";
+            //string s1 = "02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-36-2C-31-31-39-36-2E-33-33-36-2C-31-2E-36-33-38-2C-31-35-37-33-2E-33-34-32-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-34-30-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-30-39-2E-37-38-31-2C-30-2E-35-32-33-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-36-2C-38-37-2E-36-36-33-2C-30-2E-31-32-36-3B-30-31-30-35-31-3D-31-3B-03";
 
 
 
             try
             {
-                //string s1 = BitConverter.ToString(array);
+                string s1 = BitConverter.ToString(array);
                 string[] s2 = s1.Split(new string[] { "03" }, StringSplitOptions.None);
                 List<byte[]> byteArray = new List<byte[]>();
                 //分解数据包
@@ -1236,26 +1180,6 @@ namespace ScrewMachineManagementSystem
                         this.Invoke(new Action(() =>
                         {
                             this.dataGridView1.DataSource = dt.Copy();
-                            for (int i = 0; i < ((DataTable)dataGridView1.DataSource).Rows.Count; i++)
-                            {
-                                string sta = dataGridView1.Rows[i].Cells["扭力结果"].Value.ToString();
-                                if (sta == "OK")
-                                {
-                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                                }
-                                else if (sta == "NG")
-                                {
-                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                                }
-                                else
-                                {
-                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.White;
-                                }
-                            }
-
                         }));
                         break;
                     case MIDType.ScrewWorkCurve:
@@ -1270,6 +1194,15 @@ namespace ScrewMachineManagementSystem
             }
         }
         /// <summary>
+        /// 清空列表数据
+        /// </summary>
+        private void EmptyTableData()
+        {
+            _dt_screwDataTable.Rows.Clear();
+
+            this.dataGridView1.DataSource = _dt_screwDataTable;
+        }
+        /// <summary>
         /// 生成展示的datatable
         /// </summary>
         /// <param name="result"></param>
@@ -1277,28 +1210,27 @@ namespace ScrewMachineManagementSystem
         private System.Data.DataTable GenerateScrewDataTabel(ScrewWorkResult result)
         {
             //_dt_screwDataTable.Rows.Clear();
-            /*
-            foreach (ScrewWorkResult_StageResult item in result.StageResultList)
-            {
-                DataRow dr = _dt_screwDataTable.NewRow();
-                dr["序号"] = item.stage;
-                dr["角度"] = item.Angle;
-                double t1 = 0;double.TryParse(item.Torque,out t1);
-                dr["扭力"] = (Math.Round(t1,3)).ToString();
-                dr["扭力结果"] = item.result;
-                dr["耗时(S)"] = item.Time;
-                _dt_screwDataTable.Rows.Add(dr);
-            }
-            */
+            //foreach (ScrewWorkResult_StageResult item in result.StageResultList)
+            //{
+            //    DataRow dr = _dt_screwDataTable.NewRow();
+            //    dr["序号"] = item.stage;
+            //    dr["角度"] = item.Angle;
+            //    dr["扭力"] = (Math.Round(Convert.ToDouble(item.Torque) / 0.098, 3)).ToString();
+            //    dr["扭力结果"] = item.result;
+            //    dr["耗时(S)"] = item.Time;
+            //    _dt_screwDataTable.Rows.Add(dr);
+            //}
+
             DataRow dr2 = _dt_screwDataTable.NewRow();
             dr2["序号"] = _dt_screwDataTable.Rows.Count + 1;
             dr2["角度"] = result.workResult.MonitorAngle;
-            double t2 = 0; double.TryParse(result.workResult.Torque, out t2);
-            dr2["扭力"] = (Math.Round(t2 / 0.098, 3)).ToString();
+            dr2["扭力"] = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString();
             dr2["扭力结果"] = result.workResult.result;
-            dr2["其他"] = result.ngCode;
+            dr2["其他"] = null;
             dr2["耗时(S)"] = result.workResult.Time;
             _dt_screwDataTable.Rows.Add(dr2);
+
+            //Writelog(JsonConvert.SerializeObject(_dt_screwDataTable.Rows));
 
             return _dt_screwDataTable;
         }
@@ -2170,5 +2102,6 @@ namespace ScrewMachineManagementSystem
             _dt_screwDataTable.Columns.Add("其他");
             _dt_screwDataTable.Columns.Add("耗时(S)");
         }
+        
     }
 }

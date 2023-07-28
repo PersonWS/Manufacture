@@ -168,6 +168,34 @@ namespace ScrewMachineManagementSystem.CenterControl
             p15.plcOperateType = PLC_Point_Operate_Type.readAndWrite;
             //_writePLC_Point.Add(p5);
             _dic_PLC_Point.Add("加工结果收到", p15);
+
+            PLC_Point p16 = new PLC_Point();
+            p16.VarName = "表格清空";
+            p16.dataType = S7.Net.DataType.DataBlock;
+            p16.DataBlock = 2001;
+            p16.DataAdress = 0;
+            p16.BitAdress = 4;
+            p16.plcReadType = PLC_Point_Type.T_Byte;
+            p16.plcRealType = PLC_Point_Type.T_Bool;
+            p16.remark = "收到表格清空，可把螺丝机电批数据清空";
+            p16.value = false;
+            p16.plcOperateType = PLC_Point_Operate_Type.ReadOnly;
+            //_gatherPLC_Point.Add(p1);
+            _dic_PLC_Point.Add("表格清空", p16);
+
+
+            PLC_Point p17 = new PLC_Point();
+            p17.VarName = "表格已清空";
+            p17.dataType = S7.Net.DataType.DataBlock;
+            p17.DataBlock = 2002;
+            p17.DataAdress = 0;
+            p17.BitAdress = 5;
+            p17.plcWriteType = PLC_Point_Type.T_Bool;
+            p17.plcRealType = PLC_Point_Type.T_Bool;
+            p17.plcReadType = PLC_Point_Type.T_Byte;
+            p17.plcOperateType = PLC_Point_Operate_Type.readAndWrite;
+            //_writePLC_Point.Add(p5);
+            _dic_PLC_Point.Add("表格已清空", p17);
         }
 
         /*

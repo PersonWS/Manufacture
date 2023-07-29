@@ -31,11 +31,11 @@ namespace ScrewMachineManagementSystem
             }
 
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
 
-            SplashScreen.SplashScreen.ShowSplashScreen(utility.SystemName);
-            Application.DoEvents();
+            //SplashScreen.SplashScreen.ShowSplashScreen(utility.SystemName);
+            //Application.DoEvents();
 
      
 
@@ -70,7 +70,7 @@ namespace ScrewMachineManagementSystem
                 return;
             }
 
-            FormLogin f = new FormLogin();
+            ManualCodeScanning f = new ManualCodeScanning();
             if (f.ShowDialog() == DialogResult.OK)
             {
                 f.Dispose();

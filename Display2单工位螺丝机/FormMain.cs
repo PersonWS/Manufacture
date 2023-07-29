@@ -283,6 +283,22 @@ namespace ScrewMachineManagementSystem
             chart1.Series[0].Points.AddXY(0, 0);
             chart1.Series[1].Points.AddXY(0, 0);
             comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
+
+            ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
+
+            //TcpConnect();
+            //if (socketSender.Connected)     //联通成功，与电批建立连接
+            //{
+            //    socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+            //}
+            //PlcConnect();
+
+            //SystemInit();
+            //转shown事件
+        }
+
+        private void InitializeWhileFormOpen(object obj)
+        {
             TcpConnect();
             if (socketSender.Connected)     //联通成功，与电批建立连接
             {
@@ -291,8 +307,59 @@ namespace ScrewMachineManagementSystem
             PlcConnect();
 
             SystemInit();
-            //转shown事件
+
+            _businessMain = CenterControl.BusinessMain.GetInstance();
+            _businessMain.MessageOutput += BusinessMainMessageOutput;
+
+            _businessMain.Need_SN_Request += Need_SN_Request;
+            _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
+            _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+            _businessMain.Need_ClearScrewData += Need_ClearScrewData;
+            _businessMain.BusinessStart();
         }
+
+        private void BusinessMainMessageOutput(string s)
+        {
+            FillInfoLog(s);
+        }
+
+        private string Need_SN_Request()
+        {
+            //申请触发时，清空电批的数据
+            if (_dt_screwDataTable != null)
+            {
+                _dt_screwDataTable.Rows.Clear();
+            }
+            string SN_Number = "";
+            FillInfoLog("收到SN码写入请求，请输入SN码并确认");
+            //....这里写获得SN号的代码
+            FillInfoLog("SN码输入完成");
+            return SN_Number;
+
+        }
+        /// 获取上一工序名称 传出的string为SN码
+        private string Need_lastProcessName_Request(string SN)
+        {
+            string lastProcessName = "";
+            FillInfoLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
+            //....这里写获得上一工序的代码
+            FillInfoLog("上一工序获取入完成");
+            return lastProcessName;
+        }
+        /// <summary>
+        /// 保存加工结果是否成功,传出1的string为SN码,传出2的string为加工结果
+        /// </summary>
+        private bool SaveInformationToMES_Result_Request(string SN, string manufactureResult)
+        {
+            bool bool_SaveInformationToMES_Result_Request = false;
+            FillInfoLog("收到加工完成，保存加工结果请求，请保存并确认");
+
+            //....这里写保存数据的代码
+            bool_SaveInformationToMES_Result_Request = true;
+            FillInfoLog("保存加工信息完成");
+            return bool_SaveInformationToMES_Result_Request;
+        }
+
 
         void initDatagridview()
         {
@@ -1196,11 +1263,19 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// 清空列表数据
         /// </summary>
-        private void EmptyTableData()
+        private bool Need_ClearScrewData()
         {
-            _dt_screwDataTable.Rows.Clear();
-
-            this.dataGridView1.DataSource = _dt_screwDataTable;
+            this.Invoke(new Action(() =>
+            {
+                if (this.dataGridView1.DataSource!=null)
+                {
+                    lock (this.dataGridView1.DataSource)
+                    {
+                        ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
+                    }
+                }
+            }));
+            return true;
         }
         /// <summary>
         /// 生成展示的datatable

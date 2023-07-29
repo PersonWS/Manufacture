@@ -32,6 +32,7 @@
             this.labelSelect1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelX = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -42,10 +43,9 @@
             this.labelMsg = new System.Windows.Forms.Label();
             this.labelScanedLenght = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // labelSelect1
@@ -95,14 +95,24 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1234, 533);
+            this.panel1.Size = new System.Drawing.Size(1230, 529);
             this.panel1.TabIndex = 9;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Enabled = false;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 226);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(154, 169);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 11;
+            this.pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Enabled = false;
             this.pictureBox1.Image = global::ScrewMachineManagementSystem.Properties.Resources.scancode;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 40);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 43);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(154, 169);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -191,9 +201,9 @@
             this.labelMsg.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.labelMsg.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelMsg.ForeColor = System.Drawing.Color.Red;
-            this.labelMsg.Location = new System.Drawing.Point(0, 507);
+            this.labelMsg.Location = new System.Drawing.Point(0, 503);
             this.labelMsg.Name = "labelMsg";
-            this.labelMsg.Size = new System.Drawing.Size(1234, 26);
+            this.labelMsg.Size = new System.Drawing.Size(1230, 26);
             this.labelMsg.TabIndex = 6;
             this.labelMsg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelMsg.TextChanged += new System.EventHandler(this.labelSN_TextChanged);
@@ -213,22 +223,12 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Enabled = false;
-            this.pictureBox2.Location = new System.Drawing.Point(3, 226);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(154, 169);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 11;
-            this.pictureBox2.TabStop = false;
-            // 
             // ManualCodeScanning
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Blue;
-            this.ClientSize = new System.Drawing.Size(1234, 533);
+            this.ClientSize = new System.Drawing.Size(1230, 529);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -246,8 +246,8 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormSeletY_KeyPress);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

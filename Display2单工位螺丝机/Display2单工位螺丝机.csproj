@@ -18,7 +18,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -552,6 +552,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="PrintTemplate.prn" />
+    <None Include="Print\PrintTemplate.prn" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -574,6 +576,7 @@
     <Content Include="abncu-hkalz-002.ico" />
     <Content Include="linode %281%29.png" />
     <Content Include="logo-1.png" />
+    <Content Include="Fnthex32.dll" />
     <Content Include="SV_Interlocking_Main_64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

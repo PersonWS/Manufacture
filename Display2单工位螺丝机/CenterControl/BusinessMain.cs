@@ -341,7 +341,8 @@ namespace ScrewMachineManagementSystem.CenterControl
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
             MessageOutPutMethod("表格已清空 已清除");
 
-            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28]);
+            //BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28]);
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = null;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
 
             MessageOutPutMethod("PLC SN码已清除");

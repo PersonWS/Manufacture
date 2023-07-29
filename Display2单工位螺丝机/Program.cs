@@ -31,13 +31,13 @@ namespace ScrewMachineManagementSystem
             }
 
 
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            //SplashScreen.SplashScreen.ShowSplashScreen(utility.SystemName);
-            //Application.DoEvents();
+            SplashScreen.SplashScreen.ShowSplashScreen(utility.SystemName);
+            Application.DoEvents();
 
-     
+
 
             try
             {
@@ -70,13 +70,13 @@ namespace ScrewMachineManagementSystem
                 return;
             }
 
-            ManualCodeScanning f = new ManualCodeScanning();
+            FormLogin f = new FormLogin();
             if (f.ShowDialog() == DialogResult.OK)
             {
                 f.Dispose();
                 f.Close();
-                Application.Run(new FormMain());
-
+                //Application.Run(new FormMain());
+                Application.Run(new ManualCodeScanning());
             }
             // Application.Run(new FormLogin());
             //界面转换

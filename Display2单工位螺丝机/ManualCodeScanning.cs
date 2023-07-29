@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using ZXing;
 using ZXing.QrCode;
 
-using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
@@ -16,14 +15,35 @@ using System.Windows;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices.ComTypes;
 using System.Globalization;
+using static Dapper.SqlMapper;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Threading.Tasks;
 
 namespace ScrewMachineManagementSystem
 {
     public partial class ManualCodeScanning : Form
     {
+
+        [DllImport("Fnthex32.dll")]
+
+        //public static extern int GETFONTHEX(
+        //                      string BarcodeText,
+        //                      string FontName,
+
+        //                      int Orient,
+        //                      int Height,
+        //                      int Width,
+        //                      int IsBold,
+        //                      int IsItalic,
+        //                      StringBuilder ReturnBarcodeCMD);
+
+        public static extern int GETFONTHEX(string BarcodeText, string FontName, string FileName, int Orient, int Height, int Width, int IsBold, int IsItalic, StringBuilder ReturnBarcodeCMD);
+
         public ManualCodeScanning()
         {
+
             InitializeComponent();
+            pictureBox2.Image = Generate1("5985959599", 30, 30);
         }
         private void FormSeletY_Load(object sender, EventArgs e)
         {
@@ -180,7 +200,8 @@ namespace ScrewMachineManagementSystem
                         Writelog("2_" + keyInputs);
                         pictureBox2.Image = Generate1(keyInputs, 30, 30);
                         Writelog("打印二维码开始！" + keyInputs);
-                        Print(keyInputs);
+                        //Print(keyInputs);
+                        //dd();
                     }
                     //keyInputs = labelSN.Text.ToUpper();  文本框测试用
                     int len = keyInputs.Length;
@@ -204,6 +225,49 @@ namespace ScrewMachineManagementSystem
 
         #region 二维码
 
+
+
+
+
+
+
+
+
+        public static void dd()
+        {
+            try
+            {
+
+
+                //string sBarCodeCMD = "";            //条码打印命令
+                //StringBuilder sb1 = new StringBuilder(50240);
+
+                //int i1;
+                //i1 = GETFONTHEX("定向天线，DXX-1885-2025/25555-2635-90/65-14.5i/15.8i-", "Arial", 0, 30, 20, 0, 0, sb1);
+                //sb1 = sb1.Replace("PrintTemplate", "ok01");
+                //sBarCodeCMD = sb1.ToString() + "^XA^MD30^LH20,20^FO20,20^XGok01,1,1^FS^XZ"; Console.WriteLine(sBarCodeCMD);
+                ////Open();
+                ////PrintZPL(sBarCodeCMD);
+                ////Close();
+
+
+
+                ////string sBarCodeCMD;
+                ////StringBuilder sb1 = new StringBuilder(10240);
+                ////int i1;
+                ////i1 = GETFONTHEX("需要用到的变量", "黑体", "PrintTemplate.prn", 0, 20, 20, 1, 0, sb1);
+                ////sBarCodeCMD = sb1.ToString().Remove(0, 19).Replace("\n", "");
+                //Writelog("123,打印开始");
+            }
+            catch (Exception ex)
+            {
+
+                Writelog(ex.Message);
+            }
+
+
+        }
+
         public void Print(string no)
         {
             try
@@ -213,28 +277,31 @@ namespace ScrewMachineManagementSystem
                 var bit = Generate1(no, 30, 30);
 
                 //设置打印机属性
-
                 PrintDocument pd = new PrintDocument();
-                pd.DocumentName = "My Document"; // 设置文档名称
-                                                 //pd.PrinterSettings.PrinterName = pd.PrinterSettings.PrinterName; // // 设置打印机名称
+                pd.DocumentName = "打印二维码"; // 设置文档名称
+                                           //pd.PrinterSettings.PrinterName = pd.PrinterSettings.PrinterName; // // 设置打印机名称
                 pd.PrinterSettings.PrinterName = "ZDesigner ZD888-203dpi";
+                pd.OriginAtMargins = true;
                 //处理打印事件
-
                 pd.PrintPage += (sender, e) =>
                 {
-                    // 在此处绘制打印内容（可以使用Graphics对象绘制打印内容）          
-                    e.Graphics.DrawString(DateTime.Now.ToString(), new Font("Verdana", 20), new SolidBrush(Color.Black), 10, 10);
-                    e.Graphics.DrawImage(bit, 20, 20);
+                    try
+                    {
+                        // 在此处绘制打印内容（可以使用Graphics对象绘制打印内容）          
+                        e.Graphics.DrawString(DateTime.Now.ToString(), new Font("Verdana", 20), new SolidBrush(Color.Black), 10, 10);
+                        Writelog("打印汉字");
+                        e.Graphics.DrawImage(bit, 20, 20);
+                        Writelog("打印二维码13");
+                    }
+                    catch (Exception ex)
+                    {
+                        Writelog(ex.Message);
+                    }
                 };
-
                 //页面设置
-
-                pd.DefaultPageSettings.Landscape = true; // 设置横向打印
-
+                //pd.DefaultPageSettings.Landscape = true; // 设置横向打印
                 //pd.DefaultPageSettings.Margins = new Margins(1, 1, 1, 1); // 设置页边距
-
                 // 执行打印操作
-
                 pd.Print(); // 开始打印
                 Writelog("打印完成");
             }
@@ -245,6 +312,10 @@ namespace ScrewMachineManagementSystem
 
 
         }
+
+
+
+
 
 
 

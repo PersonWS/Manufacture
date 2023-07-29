@@ -337,18 +337,18 @@ namespace ScrewMachineManagementSystem
                 _dt_screwDataTable.Rows.Clear();
             }
             _is_frm_GetSN_Closed = false;
-            string SN_Number = "";
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
             _frm_GetSN = new Frm_GetSN();
             _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
             _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+            _frm_GetSN.ShowDialog();
             while (!_is_frm_GetSN_Closed)
             {
                 Thread.Sleep(500);
             }
             FillInfoLog("SN码输入完成");
-            return SN_Number;
+            return _SN;
 
         }
 
@@ -359,6 +359,8 @@ namespace ScrewMachineManagementSystem
         private void Frm_FormClosingByUser()
         {
             this._is_frm_GetSN_Closed = true;
+            _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
+            _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
         }
 
         /// 获取上一工序名称 传出的string为SN码

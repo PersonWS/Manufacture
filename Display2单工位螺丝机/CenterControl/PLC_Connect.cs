@@ -134,7 +134,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case PLC_Point_Type.T_Word:
                         break;
                     case PLC_Point_Type.T_String://按照string来读取
-                        byte[] sre1 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, 1); //获取字符串长度
+                        byte[] sre1 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, 2); //获取字符串长度
                         item.isReadSucess = true;
                         if (sre1 != null && sre1.Length > 0)
                         {
@@ -187,10 +187,18 @@ namespace ScrewMachineManagementSystem.CenterControl
                             break;
                         case PLC_Point_Type.T_String:
                             //生成byte[]
-                            List<byte> stringList = new List<byte>();
-                            stringList.AddRange(new byte[] { p.maxLength, (byte)((string)p.value).Length });
-                            stringList.AddRange(Encoding.ASCII.GetBytes((string)p.value));
-                            _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, stringList.ToArray());
+                            if (p.value!=null&&p.Length != 0)
+                            {
+                                List<byte> stringList = new List<byte>();
+                                stringList.AddRange(new byte[] { p.maxLength, (byte)((string)p.value).Length });
+                                stringList.AddRange(Encoding.ASCII.GetBytes((string)p.value));
+                                _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, stringList.ToArray());
+                            }
+                            else
+                            {
+                                _plcEntity.WriteBytes(p.dataType, p.DataBlock, p.DataAdress, new byte[] { 254,0});
+                            }
+
                             return true;
                         default:
                             return false;

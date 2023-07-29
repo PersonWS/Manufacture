@@ -32,6 +32,12 @@ namespace ScrewMachineManagementSystem
         }
         #region 定义2
         DataTable _dt_screwDataTable;
+
+        Frm_GetSN _frm_GetSN;
+
+        bool _is_frm_GetSN_Closed;
+
+        string _SN;
         #endregion
 
 
@@ -330,13 +336,31 @@ namespace ScrewMachineManagementSystem
             {
                 _dt_screwDataTable.Rows.Clear();
             }
+            _is_frm_GetSN_Closed = false;
             string SN_Number = "";
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
+            _frm_GetSN = new Frm_GetSN();
+            _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
+            _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+            while (!_is_frm_GetSN_Closed)
+            {
+                Thread.Sleep(500);
+            }
             FillInfoLog("SN码输入完成");
             return SN_Number;
 
         }
+
+        private void Frm_GetSN_SN_CodeGet(string s)
+        {
+            this._SN = s;
+        }
+        private void Frm_FormClosingByUser()
+        {
+            this._is_frm_GetSN_Closed = true;
+        }
+
         /// 获取上一工序名称 传出的string为SN码
         private string Need_lastProcessName_Request(string SN)
         {
@@ -951,6 +975,7 @@ namespace ScrewMachineManagementSystem
 
                 if (Controller.CONT_WorkTaskDetail.Delete2(taskDetail) > 0)
                 {
+                    
                     dataGridView1.Rows.Clear();
                     utility.ShowMessage("数据清除完成");
                 }
@@ -1247,6 +1272,23 @@ namespace ScrewMachineManagementSystem
                         this.Invoke(new Action(() =>
                         {
                             this.dataGridView1.DataSource = dt.Copy();
+                            for (int i = 0; i < ((DataTable)this.dataGridView1.DataSource).Rows.Count; i++)
+                            {
+                                if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
+                                {
+                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Lime;
+                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                }
+                                else
+                                {
+                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                }
+                            }
+                            foreach (DataRow item2 in ((DataTable)(dataGridView1.DataSource)).Rows)
+                            {
+                                
+                            }
                         }));
                         break;
                     case MIDType.ScrewWorkCurve:
@@ -1273,7 +1315,16 @@ namespace ScrewMachineManagementSystem
                     {
                         ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
                     }
+
                 }
+                if (this._dt_screwDataTable!=null)
+                {
+                    lock (this._dt_screwDataTable)
+                    {
+                        _dt_screwDataTable.Rows.Clear();
+                    }
+                }
+
             }));
             return true;
         }

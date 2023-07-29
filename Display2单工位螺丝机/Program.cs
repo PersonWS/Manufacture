@@ -70,7 +70,7 @@ namespace ScrewMachineManagementSystem
                 return;
             }
 
-            ManualCodeScanning f = new ManualCodeScanning();
+            FormLogin f = new FormLogin();
             if (f.ShowDialog() == DialogResult.OK)
             {
                 f.Dispose();

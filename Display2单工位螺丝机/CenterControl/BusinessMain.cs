@@ -130,16 +130,16 @@ namespace ScrewMachineManagementSystem.CenterControl
             // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
             _plc_monitor = new PLC_Monitor(_plcConnect, 200);
-            _plcConnect.MessageOutput -= MessageOutput;
-            _plcConnect.MessageOutput += MessageOutput;
+            _plcConnect.MessageOutput -= MessageOutPutMethod;
+            _plcConnect.MessageOutput += MessageOutPutMethod;
 
             _plcConnect.PointWriteFail -= WriteFailCallBack;
             _plcConnect.PointWriteFail += WriteFailCallBack;
 
 
 
-            _plc_monitor.MessageOutput -= MessageOutput;
-            _plc_monitor.MessageOutput += MessageOutput;
+            _plc_monitor.MessageOutput -= MessageOutPutMethod;
+            _plc_monitor.MessageOutput += MessageOutPutMethod;
 
             _plc_monitor.pointValueChanged -= PointValueChanged;
             _plc_monitor.pointValueChanged += PointValueChanged;

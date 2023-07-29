@@ -347,11 +347,11 @@ namespace ScrewMachineManagementSystem
                 _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
             }
 
-            _frm_GetSN.ShowDialog();
-            while (!_is_frm_GetSN_Closed)
-            {
-                Thread.Sleep(500);
-            }
+           DialogResult dr=  _frm_GetSN.ShowDialog();
+            //while (!_is_frm_GetSN_Closed)
+            //{
+            //    Thread.Sleep(500);
+            //}
             FillInfoLog("SN码输入完成");
             return _SN;
 
@@ -1284,7 +1284,7 @@ namespace ScrewMachineManagementSystem
                             {
                                 if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
                                 {
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Lime;
+                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
                                     dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
                                 }
                                 else

@@ -760,7 +760,7 @@
     <value>微软雅黑, 12pt, style=Bold</value>
   </data>
   <data name="groupBoxProject.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 79</value>
+    <value>3, 59</value>
   </data>
   <data name="groupBoxProject.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 204</value>
@@ -886,7 +886,7 @@
     <value>Fill</value>
   </data>
   <data name="chart1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 289</value>
+    <value>272, 269</value>
   </data>
   <data name="chart1.Size" type="System.Drawing.Size, System.Drawing">
     <value>1005, 171</value>
@@ -1228,7 +1228,7 @@
     <value>微软雅黑, 10.5pt</value>
   </data>
   <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 466</value>
+    <value>272, 446</value>
   </data>
   <data name="groupBox7.Size" type="System.Drawing.Size, System.Drawing">
     <value>514, 181</value>
@@ -1333,7 +1333,7 @@
     <value>微软雅黑, 10.5pt</value>
   </data>
   <data name="groupBox8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>792, 466</value>
+    <value>792, 446</value>
   </data>
   <data name="groupBox8.Size" type="System.Drawing.Size, System.Drawing">
     <value>485, 181</value>
@@ -2026,7 +2026,7 @@
     <value>51</value>
   </data>
   <data name="dataGridView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>999, 145</value>
+    <value>999, 125</value>
   </data>
   <data name="dataGridView1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2050,7 +2050,7 @@
     <value>3, 25</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>999, 145</value>
+    <value>999, 125</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2077,7 +2077,7 @@
     <value>272, 110</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1005, 173</value>
+    <value>1005, 153</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2326,7 +2326,7 @@
     <value>微软雅黑, 12pt, style=Bold</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 289</value>
+    <value>3, 269</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 171</value>
@@ -2386,7 +2386,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 653</value>
+    <value>272, 633</value>
   </data>
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>514, 193</value>
@@ -2443,7 +2443,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>792, 653</value>
+    <value>792, 633</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>485, 193</value>
@@ -2524,7 +2524,7 @@
     <value>Fill</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 653</value>
+    <value>3, 633</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 193</value>
@@ -2617,7 +2617,7 @@
     <value>微软雅黑, 10.5pt</value>
   </data>
   <data name="groupBox6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 466</value>
+    <value>3, 446</value>
   </data>
   <data name="groupBox6.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 181</value>
@@ -2647,7 +2647,7 @@
     <value>0, 0</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>1280, 849</value>
@@ -2671,19 +2671,19 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="chart1" Row="4" RowSpan="2" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="groupBox7" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox8" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="panel7" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="groupBox2" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelTime" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="pictureBoxLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panelTop" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox1" Row="2" RowSpan="2" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="groupBoxProject" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox3" Row="4" RowSpan="2" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox4" Row="7" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="groupBox5" Row="7" RowSpan="2" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="7" RowSpan="2" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox6" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,269,Percent,100,Absolute,491" /&gt;&lt;Rows Styles="Absolute,46,Absolute,61,Percent,100,Absolute,210,Absolute,141,Absolute,36,Absolute,187,Absolute,168,Absolute,31,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>199, 17</value>
+    <value>172, 17</value>
   </metadata>
   <metadata name="timerScanSN.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>304, 17</value>
+    <value>262, 17</value>
   </metadata>
   <metadata name="timerRTU.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>456, 17</value>
+    <value>390, 17</value>
   </metadata>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>582, 17</value>
+    <value>497, 17</value>
   </metadata>
   <metadata name="timer3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>687, 17</value>
+    <value>587, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

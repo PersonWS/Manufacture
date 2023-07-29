@@ -93,30 +93,30 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         void refReshTPID()
         {
-            //产品识别码更改为读取DB51.DBX522.0
-            Model.ResultJsonInfo jr = S7NetPlus.ReadOneString(51, 522);
-            txt_SN_CheckCode.Text = jr.stringValue;
+            ////产品识别码更改为读取DB51.DBX522.0
+            //Model.ResultJsonInfo jr = S7NetPlus.ReadOneString(51, 522);
+            //txt_SN_CheckCode.Text = jr.stringValue;
 
-            //SN码长度更改为读取DB51.DBX262.0
-            jr = S7NetPlus.ReadOneInt(51, 262);
-             snCodeLenght_P = jr.intValue;
-            textBoxSNLenght.Text = snCodeLenght_P.ToString();
-            //M码长度，DB51.dbx952.0
-            jr = S7NetPlus.ReadOneInt(51, 952);
-            snCodeLenght_M = jr.intValue;
-            textBoxMLenght.Text = snCodeLenght_M.ToString(); ;
+            ////SN码长度更改为读取DB51.DBX262.0
+            //jr = S7NetPlus.ReadOneInt(51, 262);
+            // snCodeLenght_P = jr.intValue;
+            //textBoxSNLenght.Text = snCodeLenght_P.ToString();
+            ////M码长度，DB51.dbx952.0
+            //jr = S7NetPlus.ReadOneInt(51, 952);
+            //snCodeLenght_M = jr.intValue;
+            //textBoxMLenght.Text = snCodeLenght_M.ToString(); ;
             
-            //配方号为读取DB51.DBX256.0
-            jr = S7NetPlus.ReadOneInt(51, 256);
-            int tpid = jr.intValue;
-            textBoxTPID.Text = tpid.ToString();
-            //机型为读取DB51.DBX0.0
-            jr = S7NetPlus.ReadOneString(51, 0);
-            txt_SN_maxLength.Text = jr.stringValue;
+            ////配方号为读取DB51.DBX256.0
+            //jr = S7NetPlus.ReadOneInt(51, 256);
+            //int tpid = jr.intValue;
+            //textBoxTPID.Text = tpid.ToString();
+            ////机型为读取DB51.DBX0.0
+            //jr = S7NetPlus.ReadOneString(51, 0);
+            //txt_SN_maxLength.Text = jr.stringValue;
 
-            //螺丝数量更改为读取DB51.DBX258.0(吸钉）
-            jr = S7NetPlus.ReadOneInt(51, 258);
-            NumberOfScrews.Text = jr.intValue.ToString();
+            ////螺丝数量更改为读取DB51.DBX258.0(吸钉）
+            //jr = S7NetPlus.ReadOneInt(51, 258);
+            //NumberOfScrews.Text = jr.intValue.ToString();
             
             
 

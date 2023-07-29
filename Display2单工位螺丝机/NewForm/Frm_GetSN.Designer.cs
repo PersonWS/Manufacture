@@ -30,7 +30,6 @@
         {
             this.label2 = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txt_SN_CheckCode = new System.Windows.Forms.TextBox();
@@ -73,24 +72,13 @@
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonOK.Location = new System.Drawing.Point(386, 210);
+            this.buttonOK.Location = new System.Drawing.Point(510, 210);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(118, 38);
             this.buttonOK.TabIndex = 12;
             this.buttonOK.Text = "确定";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // buttonCancel
-            // 
-            this.buttonCancel.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonCancel.Location = new System.Drawing.Point(510, 210);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(118, 38);
-            this.buttonCancel.TabIndex = 13;
-            this.buttonCancel.Text = "取消";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // panel1
             // 
@@ -99,7 +87,6 @@
             this.panel1.Controls.Add(this.txt_SN_Scan);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Controls.Add(this.buttonOK);
             this.panel1.Location = new System.Drawing.Point(-5, 22);
             this.panel1.Name = "panel1";
@@ -367,7 +354,6 @@
 
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox3;

@@ -52,20 +52,13 @@ namespace ScrewMachineManagementSystem
                     txt_SN_Scan.Text = "";
                     return;
                 }
-                else
-                {
-                    if (SN_CodeGet != null)
-                    {
-                        SN_CodeGet(_SN_Code);
-                    }
-                    this.Close();
-                }
-            }
-            else
-            {
-                MessageBox.Show(string.Format("SN长度为0，请重新扫描", _SN_Code, _SN_Code.Length), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
 
+            }
+            if (SN_CodeGet != null)
+            {
+                SN_CodeGet(_SN_Code);
+            }
+            this.Close();
         }
 
         private void FormNewTaskOrder_Load(object sender, EventArgs e)

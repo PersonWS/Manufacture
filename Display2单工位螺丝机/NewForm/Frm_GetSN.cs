@@ -19,6 +19,7 @@ namespace ScrewMachineManagementSystem
         public Frm_GetSN()
         {
             InitializeComponent();
+            this.TopMost = true;
 
         }
 

@@ -1364,7 +1364,7 @@ namespace ScrewMachineManagementSystem
                                 {
                                     if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
                                     {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
+                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Green;
                                         dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
                                     }
                                     else

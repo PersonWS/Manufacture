@@ -368,7 +368,12 @@ namespace ScrewMachineManagementSystem
         #region 业务处理事件
         private string Need_SN_Request()
         {
-            SetLabelForecolor(lab_snWrite_apply, _color_ON);
+            SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
+            this.Invoke(new Action(() =>
+            {
+                txt_plcSN.Text = "";
+                txt_scannerSN.Text = "";
+            }));//清理历史数据
             FillInfoLog("收到SN码写入请求，清空电批数据");
             Need_ClearScrewData();
             _is_frm_GetSN_Closed = false;

@@ -258,7 +258,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     }
                     else
                     {
-                        MessageOutPutMethod("电批数据显示反馈结果设置失败，重新发起电批数据清理");
+                        MessageOutPutMethod("电批数据显示反馈结果设置失败，准备重新发起电批数据清理，表格清空  需为 1");
                         BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
                     }
 
@@ -266,7 +266,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 else
                 {
-                    MessageOutPutMethod("电批数据显示清理失败，重新发起电批数据清理");
+                    MessageOutPutMethod("电批数据显示清理失败，准备重新发起电批数据清理，表格清空  需为 1");
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
                 }
 
@@ -396,14 +396,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 if (string.IsNullOrEmpty(snCode))
                 {
-                    MessageOutPutMethod("外部传入SN为空，即将重新发起SN申请");
+                    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
                     point.value = false;
                 }
                 else
                 {
                     if (!WriteSN_ToPLC(snCode))
                     {
-                        MessageOutPutMethod("SN写入失败，即将重新发起SN申请");
+                        MessageOutPutMethod("SN写入失败，准备重新发起SN申请，SN码请求  需为 1");
                         point.value = false;
                     }
 
@@ -458,14 +458,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 if (string.IsNullOrEmpty(lastProcessIn))
                 {
-                    MessageOutPutMethod("外部传入的上一工序为空，即将重新发起工序校验申请");
+                    MessageOutPutMethod("外部传入的上一工序为空，准备重新发起工序校验申请，是否加工  需为 1");
                     System.Threading.Thread.Sleep(1000);
                     point.value = false;
                     return;
                 }
                 if (!LastProcessNameCheck(lastProcessIn))
                 {
-                    MessageOutPutMethod("写入工序校验结果失败，即将重新发起工序校验申请");
+                    MessageOutPutMethod("写入工序校验结果失败，准备重新发起工序校验申请，是否加工  需为 1");
                     System.Threading.Thread.Sleep(1000);
                     point.value = false;
                 }

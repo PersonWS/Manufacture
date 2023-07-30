@@ -1233,26 +1233,16 @@ namespace ScrewMachineManagementSystem
                 IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
-                //socketSender.Connect(point);
-                //2023-07-02 解决socket通讯不正常时连接时间过长的问题 ws
-                socketSender.BeginConnect(point, ConnectCallBackMethod, socketSender);
-                if (TimeoutObject.WaitOne(2000, false) && socketSender.Connected)
-                {
-                    FillInfoLog("电批连接成功");
-                    lab_screwState.LedColor = Color.Lime;
-                    socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
-                    LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
-                    //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
-                    //Start a new thread and keep receiving messages sent by the server
-                    Thread Client_Td = new Thread(ReciveMessages);
-                    Client_Td.IsBackground = true;
-                    Client_Td.Start();
-                }
-                else
-                {
-                    lab_screwState.LedColor = Color.Gray;
-                    FillInfoLog("电批连接失败，connect time out");
-                }
+                socketSender.Connect(point);
+                FillInfoLog("电批连接成功");
+                lab_screwState.LedColor = Color.Lime;
+                socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
+                LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
+                //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+                //Start a new thread and keep receiving messages sent by the server
+                Thread Client_Td = new Thread(ReciveMessages);
+                Client_Td.IsBackground = true;
+                Client_Td.Start();
 
 
             }
@@ -1423,7 +1413,7 @@ namespace ScrewMachineManagementSystem
                                     initDatagridview();
                                     dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
                                 }
-                                
+
                             }
 
                         }));
@@ -1518,18 +1508,26 @@ namespace ScrewMachineManagementSystem
         {
             byte[] b2 = new byte[2048];
 
-            int r1 = socketSender.Receive(b2);
-            LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
-            //订阅运行状态
-            LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
-            int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
-            r1 = socketSender.Receive(b2);
-            LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
-            //订阅拧紧结果
-            LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
-            r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
-            r1 = socketSender.Receive(b2);
-            LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            try
+            {
+                int r1 = socketSender.Receive(b2);
+                LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+                //订阅运行状态
+                LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
+                int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
+                r1 = socketSender.Receive(b2);
+                LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+                //订阅拧紧结果
+                LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
+                r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
+                r1 = socketSender.Receive(b2);
+                LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
+            }
+            catch (Exception e)
+            {
+                FillInfoLog("电批数据异常，如果自动连接失败，请使用【初始化】功能重新连接");
+                //TcpConnect();
+            }
             while (true)
             {
                 string sflag = "";

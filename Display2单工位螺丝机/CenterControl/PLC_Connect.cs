@@ -86,7 +86,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     {
                         PlcDisConnected(this);
                     }
-                    _plcEntity = null;
+                    //_plcEntity = null;
                 }
 
                 return true;
@@ -160,7 +160,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             catch (Exception e)
             {
 
-                throw e;
+                //throw e;
             }
 
         }

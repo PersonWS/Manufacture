@@ -116,14 +116,25 @@ namespace ScrewMachineManagementSystem.CenterControl
         }
         public void Dispose()
         {
+
             try
             {
+                _isDefender = false;
+                _isMonitor = false;
+                if (_thread_defend != null)
+                {
+                    try
+                    {
+                        _thread_defend.Abort();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
                 _plcConnectEntity.DisConnect();
             }
             catch (Exception)
             {
-
-                throw;
             }
             finally
             { _plcConnectEntity = null; }

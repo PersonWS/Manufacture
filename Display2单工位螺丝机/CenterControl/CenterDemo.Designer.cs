@@ -85,6 +85,7 @@
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.btn_ClearScrew = new System.Windows.Forms.Button();
             this.chk_subscribe = new System.Windows.Forms.CheckBox();
+            this.btn_clearScrewForce = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -631,12 +632,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btn_clearScrewForce);
             this.groupBox3.Controls.Add(this.btn_SNForceWrite);
             this.groupBox3.Controls.Add(this.btn_forceResultOK);
             this.groupBox3.Controls.Add(this.btn_ForceManufacturePermission);
             this.groupBox3.Location = new System.Drawing.Point(14, 344);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(464, 103);
+            this.groupBox3.Size = new System.Drawing.Size(616, 103);
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
@@ -644,9 +646,9 @@
             // btn_SNForceWrite
             // 
             this.btn_SNForceWrite.Enabled = false;
-            this.btn_SNForceWrite.Location = new System.Drawing.Point(38, 20);
+            this.btn_SNForceWrite.Location = new System.Drawing.Point(22, 20);
             this.btn_SNForceWrite.Name = "btn_SNForceWrite";
-            this.btn_SNForceWrite.Size = new System.Drawing.Size(136, 68);
+            this.btn_SNForceWrite.Size = new System.Drawing.Size(110, 68);
             this.btn_SNForceWrite.TabIndex = 31;
             this.btn_SNForceWrite.Text = "强制SN写入";
             this.btn_SNForceWrite.UseVisualStyleBackColor = true;
@@ -655,9 +657,9 @@
             // btn_forceResultOK
             // 
             this.btn_forceResultOK.Enabled = false;
-            this.btn_forceResultOK.Location = new System.Drawing.Point(322, 20);
+            this.btn_forceResultOK.Location = new System.Drawing.Point(254, 20);
             this.btn_forceResultOK.Name = "btn_forceResultOK";
-            this.btn_forceResultOK.Size = new System.Drawing.Size(136, 68);
+            this.btn_forceResultOK.Size = new System.Drawing.Size(110, 68);
             this.btn_forceResultOK.TabIndex = 30;
             this.btn_forceResultOK.Text = "强制结果收到";
             this.btn_forceResultOK.UseVisualStyleBackColor = true;
@@ -666,9 +668,9 @@
             // btn_ForceManufacturePermission
             // 
             this.btn_ForceManufacturePermission.Enabled = false;
-            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(180, 20);
+            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(138, 20);
             this.btn_ForceManufacturePermission.Name = "btn_ForceManufacturePermission";
-            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(136, 68);
+            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(110, 68);
             this.btn_ForceManufacturePermission.TabIndex = 29;
             this.btn_ForceManufacturePermission.Text = "强制允许加工";
             this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
@@ -694,6 +696,17 @@
             this.chk_subscribe.TabIndex = 30;
             this.chk_subscribe.Text = "订阅事件[仅调试用]";
             this.chk_subscribe.UseVisualStyleBackColor = true;
+            // 
+            // btn_clearScrewForce
+            // 
+            this.btn_clearScrewForce.Enabled = false;
+            this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
+            this.btn_clearScrewForce.Name = "btn_clearScrewForce";
+            this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
+            this.btn_clearScrewForce.TabIndex = 32;
+            this.btn_clearScrewForce.Text = "强制清表格";
+            this.btn_clearScrewForce.UseVisualStyleBackColor = true;
+            this.btn_clearScrewForce.Click += new System.EventHandler(this.btn_clearScrewForce_Click);
             // 
             // CenterDemo
             // 
@@ -795,5 +808,6 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button btn_ClearScrew;
         private System.Windows.Forms.CheckBox chk_subscribe;
+        private System.Windows.Forms.Button btn_clearScrewForce;
     }
 }

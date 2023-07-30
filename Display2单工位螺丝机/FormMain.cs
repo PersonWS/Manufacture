@@ -467,7 +467,7 @@ namespace ScrewMachineManagementSystem
             dataGridView1.Visible = true;
             dataGridView1.Dock = DockStyle.Fill;
             int cols = dataGridView1.Columns.Count;
-            int w = (dataGridView1.Parent.Width - 41) / (cols - 3) - 3;
+            int w = (dataGridView1.Parent.Width - 41) / (cols) - 3;
             for (int i = 0; i < cols; i++)
             {
                 dataGridView1.Columns[i].Width = w;
@@ -888,10 +888,10 @@ namespace ScrewMachineManagementSystem
                 return;
             }
             workTaskInfo.Id = jr.intValue;
-            labelProductID.Text = productCode;
+            //labelProductID.Text = productCode;
             labelTaskOrderID.Text = workTaskInfo.taskID;
-            labelMachineModel.Text = utility.structCurrentWorkTask.machinemodel;
-            labelProjectPhase.Text = utility.structCurrentWorkTask.projectphase;
+            //labelMachineModel.Text = utility.structCurrentWorkTask.machinemodel;
+            //labelProjectPhase.Text = utility.structCurrentWorkTask.projectphase;
             //labelTaskQty.Text = workTaskInfo.taskQty.ToString();
             //labelNumbers.Text = utility.structCurrentWorkTask.NumberOfScrews.ToString();
             //labelProcessedQty.Text = "";
@@ -1142,7 +1142,7 @@ namespace ScrewMachineManagementSystem
             {
                 currRunTimes[utility.struckScanProduct.stationId - 1]++;
                 string runtimes = string.Format("{0:N1}秒", currRunTimes[utility.struckScanProduct.stationId - 1] * 0.1);
-                labelRunTime.Text = runtimes;
+                //labelRunTime.Text = runtimes;
                 labelRunTimes[utility.struckScanProduct.stationId - 1].Text = runtimes;
 
             }

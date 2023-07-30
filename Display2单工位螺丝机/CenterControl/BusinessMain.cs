@@ -244,33 +244,36 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 表格已清空 信号的写入与复位
         /// </summary>
         /// <param name="value"></param>
-        private void ClearScrewTableData()
+        public bool ClearScrewTableData()
         {
             if (Need_ClearScrewData != null)
             {
-
                 if (Need_ClearScrewData())
                 {
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = true;
                     if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]))//写入成功 
                     {
                         MessageOutPutMethod("电批数据已清空");
+                        return true;
                     }
                     else
                     {
                         MessageOutPutMethod("电批数据显示反馈结果设置失败，准备重新发起电批数据清理，表格清空  需为 1");
                         BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+                        return false;
                     }
                 }
                 else
                 {
                     MessageOutPutMethod("电批数据显示清理失败，准备重新发起电批数据清理，表格清空  需为 1");
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+                    return false;
                 }
             }
             else
             {
                 MessageOutPutMethod("未执行清理电批数据任务，请检查【Need_ClearScrewData】事件是否已订阅");
+                return false;
             }
         }
 

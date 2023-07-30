@@ -31,8 +31,8 @@ namespace ScrewMachineManagementSystem
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timerScanSN = new System.Windows.Forms.Timer(this.components);
             this.timerRTU = new System.Windows.Forms.Timer(this.components);
@@ -77,20 +77,6 @@ namespace ScrewMachineManagementSystem
             this.labelRunMode = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.listBoxInfoLog = new System.Windows.Forms.ListBox();
-            this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
-            this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
-            this.groupBoxProject = new System.Windows.Forms.GroupBox();
-            this.labelProductID = new System.Windows.Forms.Label();
-            this.labelProjectPhase = new System.Windows.Forms.Label();
-            this.labelNumbers = new System.Windows.Forms.Label();
-            this.labelRunTime = new System.Windows.Forms.Label();
-            this.labelMachineModel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
@@ -126,12 +112,13 @@ namespace ScrewMachineManagementSystem
             this.lab_centerControl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
+            this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
             this.groupBox3.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBoxProject.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -427,131 +414,6 @@ namespace ScrewMachineManagementSystem
             this.listBoxInfoLog.FormattingEnabled = true;
             this.listBoxInfoLog.Name = "listBoxInfoLog";
             // 
-            // lab_screwState
-            // 
-            this.lab_screwState.BackColor = System.Drawing.Color.Transparent;
-            this.lab_screwState.BlinkInterval = 500;
-            resources.ApplyResources(this.lab_screwState, "lab_screwState");
-            this.lab_screwState.ForeColor = System.Drawing.Color.Black;
-            this.lab_screwState.Label = "电批";
-            this.lab_screwState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lab_screwState.LedColor = System.Drawing.Color.Gray;
-            this.lab_screwState.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lab_screwState.Name = "lab_screwState";
-            this.lab_screwState.Renderer = null;
-            this.lab_screwState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
-            this.lab_screwState.Tag = "";
-            // 
-            // lab_plcState
-            // 
-            this.lab_plcState.BackColor = System.Drawing.Color.Transparent;
-            this.lab_plcState.BlinkInterval = 500;
-            resources.ApplyResources(this.lab_plcState, "lab_plcState");
-            this.lab_plcState.ForeColor = System.Drawing.Color.Black;
-            this.lab_plcState.Label = "PLC";
-            this.lab_plcState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lab_plcState.LedColor = System.Drawing.Color.Gray;
-            this.lab_plcState.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lab_plcState.Name = "lab_plcState";
-            this.lab_plcState.Renderer = null;
-            this.lab_plcState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lab_plcState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
-            // 
-            // groupBoxProject
-            // 
-            this.groupBoxProject.Controls.Add(this.label14);
-            this.groupBoxProject.Controls.Add(this.label23);
-            this.groupBoxProject.Controls.Add(this.label11);
-            this.groupBoxProject.Controls.Add(this.label7);
-            this.groupBoxProject.Controls.Add(this.label22);
-            this.groupBoxProject.Controls.Add(this.label1);
-            this.groupBoxProject.Controls.Add(this.labelMachineModel);
-            this.groupBoxProject.Controls.Add(this.labelRunTime);
-            this.groupBoxProject.Controls.Add(this.labelNumbers);
-            this.groupBoxProject.Controls.Add(this.labelProjectPhase);
-            this.groupBoxProject.Controls.Add(this.labelProductID);
-            resources.ApplyResources(this.groupBoxProject, "groupBoxProject");
-            this.groupBoxProject.Name = "groupBoxProject";
-            this.groupBoxProject.TabStop = false;
-            // 
-            // labelProductID
-            // 
-            this.labelProductID.BackColor = System.Drawing.Color.White;
-            this.labelProductID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            resources.ApplyResources(this.labelProductID, "labelProductID");
-            this.labelProductID.Name = "labelProductID";
-            // 
-            // labelProjectPhase
-            // 
-            this.labelProjectPhase.BackColor = System.Drawing.Color.White;
-            this.labelProjectPhase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            resources.ApplyResources(this.labelProjectPhase, "labelProjectPhase");
-            this.labelProjectPhase.Name = "labelProjectPhase";
-            // 
-            // labelNumbers
-            // 
-            this.labelNumbers.BackColor = System.Drawing.Color.White;
-            this.labelNumbers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            resources.ApplyResources(this.labelNumbers, "labelNumbers");
-            this.labelNumbers.Name = "labelNumbers";
-            // 
-            // labelRunTime
-            // 
-            this.labelRunTime.BackColor = System.Drawing.Color.White;
-            this.labelRunTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            resources.ApplyResources(this.labelRunTime, "labelRunTime");
-            this.labelRunTime.Name = "labelRunTime";
-            // 
-            // labelMachineModel
-            // 
-            this.labelMachineModel.BackColor = System.Drawing.Color.White;
-            this.labelMachineModel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            resources.ApplyResources(this.labelMachineModel, "labelMachineModel");
-            this.labelMachineModel.Name = "labelMachineModel";
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Name = "label1";
-            // 
-            // label22
-            // 
-            this.label22.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label22, "label22");
-            this.label22.ForeColor = System.Drawing.Color.Black;
-            this.label22.Name = "label22";
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Name = "label7";
-            // 
-            // label11
-            // 
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Name = "label11";
-            // 
-            // label23
-            // 
-            this.label23.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label23, "label23");
-            this.label23.ForeColor = System.Drawing.Color.Black;
-            this.label23.Name = "label23";
-            // 
-            // label14
-            // 
-            this.label14.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.ForeColor = System.Drawing.Color.Black;
-            this.label14.Name = "label14";
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.txt_scannerSN);
@@ -587,7 +449,6 @@ namespace ScrewMachineManagementSystem
             this.groupBox1.Controls.Add(this.panel2);
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
-            this.tableLayoutPanel1.SetRowSpan(this.groupBox1, 2);
             this.groupBox1.TabStop = false;
             // 
             // panel2
@@ -600,23 +461,23 @@ namespace ScrewMachineManagementSystem
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 30;
@@ -869,10 +730,9 @@ namespace ScrewMachineManagementSystem
             this.tableLayoutPanel1.Controls.Add(this.pictureBoxLogo, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelTop, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.groupBoxProject, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox5, 2, 5);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox5, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // groupBox4
@@ -882,6 +742,37 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
+            // 
+            // lab_screwState
+            // 
+            this.lab_screwState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_screwState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_screwState, "lab_screwState");
+            this.lab_screwState.ForeColor = System.Drawing.Color.Black;
+            this.lab_screwState.Label = "电批";
+            this.lab_screwState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_screwState.LedColor = System.Drawing.Color.Gray;
+            this.lab_screwState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_screwState.Name = "lab_screwState";
+            this.lab_screwState.Renderer = null;
+            this.lab_screwState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
+            this.lab_screwState.Tag = "";
+            // 
+            // lab_plcState
+            // 
+            this.lab_plcState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_plcState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_plcState, "lab_plcState");
+            this.lab_plcState.ForeColor = System.Drawing.Color.Black;
+            this.lab_plcState.Label = "PLC";
+            this.lab_plcState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_plcState.LedColor = System.Drawing.Color.Gray;
+            this.lab_plcState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_plcState.Name = "lab_plcState";
+            this.lab_plcState.Renderer = null;
+            this.lab_plcState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_plcState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
             // 
             // FormMain
             // 
@@ -904,7 +795,6 @@ namespace ScrewMachineManagementSystem
             this.groupBox9.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
-            this.groupBoxProject.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -967,23 +857,11 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label labelRunMode;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ListBox listBoxInfoLog;
-        private System.Windows.Forms.GroupBox groupBoxProject;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TextBox txt_scannerSN;
         private System.Windows.Forms.TextBox txt_plcSN;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label labelMachineModel;
-        private System.Windows.Forms.Label labelRunTime;
-        private System.Windows.Forms.Label labelNumbers;
-        private System.Windows.Forms.Label labelProjectPhase;
-        private System.Windows.Forms.Label labelProductID;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel7;

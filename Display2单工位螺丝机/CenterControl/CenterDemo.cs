@@ -428,5 +428,16 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             _bool_Need_ClearScrewData = true;
         }
+
+        private void btn_clearScrewForce_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show("强制【表格清空】会清理掉电批显示的数据，确认执行码？", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                if (_businessMain.ClearScrewTableData())
+                { ShowMessage("强制【表格清空】成功"); }
+                else
+                { ShowMessage("强制【表格清空】失败"); }
+            }
+        }
     }
 }

@@ -200,8 +200,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case "表格清空"://表格清空 为1 时清螺丝机电批数据
                         if ((bool)point.value == true)
                         {
+                            MessageOutPutMethod("表格清空信号=1  ，准备清空电批数据");
                             EmptyTableDataReset();
-                            MessageOutPutMethod("表格清空,电批表格数据已清空");
+                            //MessageOutPutMethod("表格清空,电批表格数据已清空");
                         }
                         else
                         {
@@ -210,7 +211,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                         }
                         break;
                     case "SN码":
+                        _SN_code = (string)point.value;
                         break;
+
                     default:
                         break;
                 }
@@ -427,6 +430,8 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (string.IsNullOrEmpty(_SN_code))
             {
                 MessageOutPutMethod("收到加工请求，但SN码未写入，不处理");
+                point.value = false;
+                System.Threading.Thread.Sleep(1000);
                 return;
             }
             if (Need_lastProcessName_Request != null)
@@ -440,12 +445,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 if (string.IsNullOrEmpty(lastProcessIn))
                 {
                     MessageOutPutMethod("外部传入的上一工序为空，即将重新发起工序校验申请");
+                    System.Threading.Thread.Sleep(1000);
                     point.value = false;
                     return;
                 }
                 if (!LastProcessNameCheck(lastProcessIn))
                 {
                     MessageOutPutMethod("写入工序校验结果失败，即将重新发起工序校验申请");
+                    System.Threading.Thread.Sleep(1000);
                     point.value = false;
                 }
                 else

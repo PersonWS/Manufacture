@@ -16,16 +16,37 @@ namespace ScrewMachineManagementSystem
 
         public event Action FormClosingByUser;
 
+        List<byte> _byte = new List<byte>();
+        List<char> _char = new List<char>();
         public Frm_GetSN()
         {
             InitializeComponent();
             this.TopMost = true;
 
+            System.Threading.ThreadPool.QueueUserWorkItem(Initialize, null);
+            SetInputKeyboard();
+        }
+
+        private void Initialize(object obj)
+        {
+            try
+            {
+                System.Threading.Thread.Sleep(200);
+                this.Invoke(new Action(() =>
+                {
+                    txt_SN_CheckCode.Text = LogUtility.ReadConfiguration("SN_CHECK_STRING");//记录用户校验码
+                }));
+
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            var v = utility.ShowMessageResponse("确定要取消任务？"+Environment.NewLine+"没有任务单将不能显示曲线，不能保存数据！");
+            var v = utility.ShowMessageResponse("确定要取消任务？" + Environment.NewLine + "没有任务单将不能显示曲线，不能保存数据！");
             if (v != DialogResult.Yes)
             {
                 return;
@@ -38,10 +59,10 @@ namespace ScrewMachineManagementSystem
             Int32.TryParse(txt_SN_maxLength.Text, out _max_SN_Leng);
             _SN_Code = txt_SN_Scan.Text;
             //检查SN
-            if (_SN_Code.Length> _max_SN_Leng)
+            if (_SN_Code.Length > _max_SN_Leng)
             {
                 MessageBox.Show(string.Format("扫描到的SN:{0} ,长度为：{1} ，超过最大允许长度!", _SN_Code, _SN_Code.Length), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                txt_SN_Scan.Text="";
+                txt_SN_Scan.Text = "";
                 return;
             }
             if (!string.IsNullOrEmpty(txt_SN_CheckCode.Text))
@@ -69,8 +90,8 @@ namespace ScrewMachineManagementSystem
             //{
             //    comboBoxProductCode.Items.Add(item.ProductCode);
             //}
-            List<string> customers= CONT_WorkTaskInfo.LoadCustomerList();
-            foreach(string customer in customers)
+            List<string> customers = CONT_WorkTaskInfo.LoadCustomerList();
+            foreach (string customer in customers)
             {
                 comboBoxCustomer.Items.Add(customer);
             }
@@ -98,7 +119,7 @@ namespace ScrewMachineManagementSystem
             //jr = S7NetPlus.ReadOneInt(51, 952);
             //snCodeLenght_M = jr.intValue;
             //textBoxMLenght.Text = snCodeLenght_M.ToString(); ;
-            
+
             ////配方号为读取DB51.DBX256.0
             //jr = S7NetPlus.ReadOneInt(51, 256);
             //int tpid = jr.intValue;
@@ -110,8 +131,8 @@ namespace ScrewMachineManagementSystem
             ////螺丝数量更改为读取DB51.DBX258.0(吸钉）
             //jr = S7NetPlus.ReadOneInt(51, 258);
             //NumberOfScrews.Text = jr.intValue.ToString();
-            
-            
+
+
 
             //客户信息读取数据库
             //List<ProductInfo> l = CONT_ProductInfo.LoadList(" where tptaskid='" + tpid + "'");
@@ -138,6 +159,34 @@ namespace ScrewMachineManagementSystem
             {
                 FormClosingByUser();
             }
+        }
+
+        private void txt_SN_Scan_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            _byte.Add((byte)e.KeyChar);
+            _char.Add(e.KeyChar);
+            if (e.KeyChar == '\r')
+            {
+                buttonOK_Click(sender, e);
+            }
+        }
+
+        private void txt_SN_CheckCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text+e.KeyChar);
+        }
+
+        private void SetInputKeyboard()
+        {
+            InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
+            foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
+            {
+                if (item.Culture.ToString().ToLower().Contains("en"))
+                {
+                    InputLanguage.CurrentInputLanguage = item;
+                }
+               // InputLanguage.CurrentInputLanguage
+            }  
         }
     }
 }

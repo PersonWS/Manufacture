@@ -53,12 +53,16 @@ namespace ScrewMachineManagementSystem.CenterControl
 
             _businessMain.MessageOutput += MessageOutput;
             //订阅关键事件
-            _businessMain.Need_SN_Request -= Need_SN_Request;
-            _businessMain.Need_SN_Request += Need_SN_Request;
-            _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
-            _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
-            _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
-            _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+            if (chk_subscribe.Checked)
+            {
+                _businessMain.Need_SN_Request -= Need_SN_Request;
+                _businessMain.Need_SN_Request += Need_SN_Request;
+                _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
+                _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
+                _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
+                _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+            }
+
             _isMonitor = true;
             ShowMessage("准备启动主服务...");
 

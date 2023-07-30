@@ -125,6 +125,7 @@
             this.txt_SN_CheckCode.Name = "txt_SN_CheckCode";
             this.txt_SN_CheckCode.Size = new System.Drawing.Size(126, 35);
             this.txt_SN_CheckCode.TabIndex = 21;
+            this.txt_SN_CheckCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_CheckCode_KeyPress);
             // 
             // comboBoxCustomer
             // 
@@ -300,6 +301,7 @@
             this.txt_SN_Scan.Name = "txt_SN_Scan";
             this.txt_SN_Scan.Size = new System.Drawing.Size(342, 35);
             this.txt_SN_Scan.TabIndex = 1;
+            this.txt_SN_Scan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_Scan_KeyPress);
             // 
             // label6
             // 

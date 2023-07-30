@@ -31,12 +31,12 @@ namespace ScrewMachineManagementSystem
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.labelRunMode = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelTaskQty = new System.Windows.Forms.Label();
@@ -62,7 +62,6 @@ namespace ScrewMachineManagementSystem
             this.comboBoxLineMode = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.labelClearData1 = new System.Windows.Forms.Label();
             this.labelProductSN1 = new System.Windows.Forms.Label();
@@ -90,7 +89,6 @@ namespace ScrewMachineManagementSystem
             this.labelExit = new System.Windows.Forms.Label();
             this.labelLogin = new System.Windows.Forms.Label();
             this.labelTime = new System.Windows.Forms.Label();
-            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -118,15 +116,53 @@ namespace ScrewMachineManagementSystem
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.sqLiteCommand1 = new System.Data.SQLite.SQLiteCommand();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.lab_ScrewClearOK_apply = new System.Windows.Forms.Label();
+            this.lab_ScrewClearOK = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lab_manufactureResultRecept_apply = new System.Windows.Forms.Label();
+            this.lab_interlock_apply = new System.Windows.Forms.Label();
+            this.lab_manufactureDeny_apply = new System.Windows.Forms.Label();
+            this.lab_manufacturePermission_apply = new System.Windows.Forms.Label();
+            this.lab_snWrite_apply = new System.Windows.Forms.Label();
+            this.lab_manufactureResultRecept = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lab_snWrite = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lab_manufacturePermission = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lab_interlock = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.lab_manufactureDeny = new System.Windows.Forms.Label();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.lab_screwClear_plc = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.lab_snRequest = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.lab_isManufacture = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.lab_ng = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.lab_ok = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txt_plcSN = new System.Windows.Forms.TextBox();
+            this.txt_scannerSN = new System.Windows.Forms.TextBox();
             this.panelTop.SuspendLayout();
             this.groupBoxProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -135,6 +171,11 @@ namespace ScrewMachineManagementSystem
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // labelRunMode
@@ -210,13 +251,13 @@ namespace ScrewMachineManagementSystem
             // 
             // groupBoxProject
             // 
+            this.groupBoxProject.Controls.Add(this.panel3);
             this.groupBoxProject.Controls.Add(this.label14);
             this.groupBoxProject.Controls.Add(this.label23);
             this.groupBoxProject.Controls.Add(this.label11);
             this.groupBoxProject.Controls.Add(this.label7);
             this.groupBoxProject.Controls.Add(this.label22);
             this.groupBoxProject.Controls.Add(this.label1);
-            this.groupBoxProject.Controls.Add(this.labelTaskOrderID);
             this.groupBoxProject.Controls.Add(this.labelMachineModel);
             this.groupBoxProject.Controls.Add(this.labelRunTime);
             this.groupBoxProject.Controls.Add(this.labelNumbers);
@@ -328,7 +369,6 @@ namespace ScrewMachineManagementSystem
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.chart1, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.groupBox7, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.groupBox8, 2, 6);
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 1);
@@ -343,60 +383,8 @@ namespace ScrewMachineManagementSystem
             this.tableLayoutPanel1.Controls.Add(this.groupBox5, 2, 7);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.groupBox6, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.chart1, 1, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // chart1
-            // 
-            chartArea1.AxisX.Title = "毫秒(ms)";
-            chartArea1.AxisX.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea1.AxisX2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea1.AxisY.InterlacedColor = System.Drawing.Color.Red;
-            chartArea1.AxisY.IsLabelAutoFit = false;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.Red;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
-            chartArea1.AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
-            chartArea1.AxisY.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea1.AxisY2.LineColor = System.Drawing.Color.Blue;
-            chartArea1.AxisY2.Maximum = 10D;
-            chartArea1.AxisY2.Minimum = 0D;
-            chartArea1.AxisY2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            this.tableLayoutPanel1.SetColumnSpan(this.chart1, 2);
-            resources.ApplyResources(this.chart1, "chart1");
-            legend1.Alignment = System.Drawing.StringAlignment.Center;
-            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend1.IsTextAutoFit = false;
-            legend1.Name = "Legend1";
-            legend1.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Name = "chart1";
-            this.tableLayoutPanel1.SetRowSpan(this.chart1, 2);
-            series1.BorderColor = System.Drawing.Color.White;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series1.Legend = "Legend1";
-            series1.LegendText = "角度";
-            series1.MarkerBorderColor = System.Drawing.Color.Red;
-            series1.MarkerColor = System.Drawing.Color.Red;
-            series1.Name = "Series1";
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Color = System.Drawing.Color.Blue;
-            series2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series2.Legend = "Legend1";
-            series2.LegendText = "力矩(kgf.cm)";
-            series2.Name = "Series2";
-            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
             // 
             // groupBox7
             // 
@@ -481,8 +469,10 @@ namespace ScrewMachineManagementSystem
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.labelStartSingle);
+            this.groupBox8.Controls.Add(this.groupBox10);
+            this.groupBox8.Controls.Add(this.groupBox9);
             this.groupBox8.Controls.Add(this.labelSNInspectionStatus);
+            this.groupBox8.Controls.Add(this.labelStartSingle);
             resources.ApplyResources(this.groupBox8, "groupBox8");
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.TabStop = false;
@@ -514,6 +504,7 @@ namespace ScrewMachineManagementSystem
             this.panel7.Controls.Add(this.label18);
             this.panel7.Controls.Add(this.labelSystem);
             this.panel7.Controls.Add(this.label1ScanCode);
+            this.panel7.Controls.Add(this.labelTaskOrderID);
             this.panel7.Controls.Add(this.label1StartTask);
             this.panel7.Controls.Add(this.labelHomeStaus);
             this.panel7.Controls.Add(this.labelMin);
@@ -654,12 +645,6 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.labelTime, "labelTime");
             this.labelTime.Name = "labelTime";
             // 
-            // pictureBoxLogo
-            // 
-            resources.ApplyResources(this.pictureBoxLogo, "pictureBoxLogo");
-            this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.TabStop = false;
-            // 
             // groupBox1
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
@@ -679,23 +664,23 @@ namespace ScrewMachineManagementSystem
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle20;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 30;
@@ -886,6 +871,311 @@ namespace ScrewMachineManagementSystem
             // 
             this.sqLiteCommand1.CommandText = null;
             // 
+            // pictureBoxLogo
+            // 
+            resources.ApplyResources(this.pictureBoxLogo, "pictureBoxLogo");
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.TabStop = false;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.lab_ScrewClearOK_apply);
+            this.groupBox9.Controls.Add(this.lab_ScrewClearOK);
+            this.groupBox9.Controls.Add(this.label2);
+            this.groupBox9.Controls.Add(this.label12);
+            this.groupBox9.Controls.Add(this.label9);
+            this.groupBox9.Controls.Add(this.lab_manufactureResultRecept_apply);
+            this.groupBox9.Controls.Add(this.lab_interlock_apply);
+            this.groupBox9.Controls.Add(this.lab_manufactureDeny_apply);
+            this.groupBox9.Controls.Add(this.lab_manufacturePermission_apply);
+            this.groupBox9.Controls.Add(this.lab_snWrite_apply);
+            this.groupBox9.Controls.Add(this.lab_manufactureResultRecept);
+            this.groupBox9.Controls.Add(this.lab_snWrite);
+            this.groupBox9.Controls.Add(this.lab_manufacturePermission);
+            this.groupBox9.Controls.Add(this.lab_interlock);
+            this.groupBox9.Controls.Add(this.lab_manufactureDeny);
+            this.groupBox9.Controls.Add(this.label3);
+            this.groupBox9.Controls.Add(this.label4);
+            this.groupBox9.Controls.Add(this.label8);
+            this.groupBox9.Controls.Add(this.label16);
+            this.groupBox9.Controls.Add(this.label17);
+            resources.ApplyResources(this.groupBox9, "groupBox9");
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.TabStop = false;
+            // 
+            // lab_ScrewClearOK_apply
+            // 
+            resources.ApplyResources(this.lab_ScrewClearOK_apply, "lab_ScrewClearOK_apply");
+            this.lab_ScrewClearOK_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK_apply.Name = "lab_ScrewClearOK_apply";
+            // 
+            // lab_ScrewClearOK
+            // 
+            resources.ApplyResources(this.lab_ScrewClearOK, "lab_ScrewClearOK");
+            this.lab_ScrewClearOK.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK.Name = "lab_ScrewClearOK";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // lab_manufactureResultRecept_apply
+            // 
+            resources.ApplyResources(this.lab_manufactureResultRecept_apply, "lab_manufactureResultRecept_apply");
+            this.lab_manufactureResultRecept_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureResultRecept_apply.Name = "lab_manufactureResultRecept_apply";
+            // 
+            // lab_interlock_apply
+            // 
+            resources.ApplyResources(this.lab_interlock_apply, "lab_interlock_apply");
+            this.lab_interlock_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_interlock_apply.Name = "lab_interlock_apply";
+            // 
+            // lab_manufactureDeny_apply
+            // 
+            resources.ApplyResources(this.lab_manufactureDeny_apply, "lab_manufactureDeny_apply");
+            this.lab_manufactureDeny_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureDeny_apply.Name = "lab_manufactureDeny_apply";
+            // 
+            // lab_manufacturePermission_apply
+            // 
+            resources.ApplyResources(this.lab_manufacturePermission_apply, "lab_manufacturePermission_apply");
+            this.lab_manufacturePermission_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufacturePermission_apply.Name = "lab_manufacturePermission_apply";
+            // 
+            // lab_snWrite_apply
+            // 
+            resources.ApplyResources(this.lab_snWrite_apply, "lab_snWrite_apply");
+            this.lab_snWrite_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_snWrite_apply.Name = "lab_snWrite_apply";
+            // 
+            // lab_manufactureResultRecept
+            // 
+            resources.ApplyResources(this.lab_manufactureResultRecept, "lab_manufactureResultRecept");
+            this.lab_manufactureResultRecept.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureResultRecept.Name = "lab_manufactureResultRecept";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // lab_snWrite
+            // 
+            resources.ApplyResources(this.lab_snWrite, "lab_snWrite");
+            this.lab_snWrite.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_snWrite.Name = "lab_snWrite";
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // lab_manufacturePermission
+            // 
+            resources.ApplyResources(this.lab_manufacturePermission, "lab_manufacturePermission");
+            this.lab_manufacturePermission.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufacturePermission.Name = "lab_manufacturePermission";
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
+            // 
+            // lab_interlock
+            // 
+            resources.ApplyResources(this.lab_interlock, "lab_interlock");
+            this.lab_interlock.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_interlock.Name = "lab_interlock";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
+            // 
+            // lab_manufactureDeny
+            // 
+            resources.ApplyResources(this.lab_manufactureDeny, "lab_manufactureDeny");
+            this.lab_manufactureDeny.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_manufactureDeny.Name = "lab_manufactureDeny";
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.lab_screwClear_plc);
+            this.groupBox10.Controls.Add(this.lab_snRequest);
+            this.groupBox10.Controls.Add(this.lab_isManufacture);
+            this.groupBox10.Controls.Add(this.lab_ng);
+            this.groupBox10.Controls.Add(this.lab_ok);
+            this.groupBox10.Controls.Add(this.label20);
+            this.groupBox10.Controls.Add(this.label19);
+            this.groupBox10.Controls.Add(this.label21);
+            this.groupBox10.Controls.Add(this.label27);
+            this.groupBox10.Controls.Add(this.label28);
+            this.groupBox10.Controls.Add(this.label29);
+            resources.ApplyResources(this.groupBox10, "groupBox10");
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.TabStop = false;
+            // 
+            // lab_screwClear_plc
+            // 
+            resources.ApplyResources(this.lab_screwClear_plc, "lab_screwClear_plc");
+            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // lab_snRequest
+            // 
+            resources.ApplyResources(this.lab_snRequest, "lab_snRequest");
+            this.lab_snRequest.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_snRequest.Name = "lab_snRequest";
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
+            this.label27.Tag = "";
+            // 
+            // lab_isManufacture
+            // 
+            resources.ApplyResources(this.lab_isManufacture, "lab_isManufacture");
+            this.lab_isManufacture.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_isManufacture.Name = "lab_isManufacture";
+            this.lab_isManufacture.Tag = "";
+            // 
+            // label28
+            // 
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.Name = "label28";
+            // 
+            // lab_ng
+            // 
+            resources.ApplyResources(this.lab_ng, "lab_ng");
+            this.lab_ng.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ng.Name = "lab_ng";
+            // 
+            // label29
+            // 
+            resources.ApplyResources(this.label29, "label29");
+            this.label29.Name = "label29";
+            // 
+            // lab_ok
+            // 
+            resources.ApplyResources(this.lab_ok, "lab_ok");
+            this.lab_ok.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ok.Name = "lab_ok";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.txt_scannerSN);
+            this.panel3.Controls.Add(this.txt_plcSN);
+            this.panel3.Controls.Add(this.label31);
+            this.panel3.Controls.Add(this.label30);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // chart1
+            // 
+            chartArea10.AxisX.Title = "毫秒(ms)";
+            chartArea10.AxisX.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea10.AxisX2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea10.AxisY.InterlacedColor = System.Drawing.Color.Red;
+            chartArea10.AxisY.IsLabelAutoFit = false;
+            chartArea10.AxisY.LineColor = System.Drawing.Color.Red;
+            chartArea10.AxisY.Minimum = 0D;
+            chartArea10.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea10.AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
+            chartArea10.AxisY.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea10.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea10.AxisY2.LineColor = System.Drawing.Color.Blue;
+            chartArea10.AxisY2.Maximum = 10D;
+            chartArea10.AxisY2.Minimum = 0D;
+            chartArea10.AxisY2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea10.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea10);
+            this.tableLayoutPanel1.SetColumnSpan(this.chart1, 2);
+            resources.ApplyResources(this.chart1, "chart1");
+            legend10.Alignment = System.Drawing.StringAlignment.Center;
+            legend10.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend10.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend10.IsTextAutoFit = false;
+            legend10.Name = "Legend1";
+            legend10.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chart1.Legends.Add(legend10);
+            this.chart1.Name = "chart1";
+            this.tableLayoutPanel1.SetRowSpan(this.chart1, 2);
+            series19.BorderColor = System.Drawing.Color.White;
+            series19.ChartArea = "ChartArea1";
+            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series19.Color = System.Drawing.Color.Red;
+            series19.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series19.Legend = "Legend1";
+            series19.LegendText = "角度";
+            series19.MarkerBorderColor = System.Drawing.Color.Red;
+            series19.MarkerColor = System.Drawing.Color.Red;
+            series19.Name = "Series1";
+            series19.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series20.ChartArea = "ChartArea1";
+            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series20.Color = System.Drawing.Color.Blue;
+            series20.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series20.Legend = "Legend1";
+            series20.LegendText = "力矩(kgf.cm)";
+            series20.Name = "Series2";
+            series20.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series20.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chart1.Series.Add(series19);
+            this.chart1.Series.Add(series20);
+            // 
+            // label30
+            // 
+            resources.ApplyResources(this.label30, "label30");
+            this.label30.Name = "label30";
+            // 
+            // label31
+            // 
+            resources.ApplyResources(this.label31, "label31");
+            this.label31.Name = "label31";
+            // 
+            // txt_plcSN
+            // 
+            resources.ApplyResources(this.txt_plcSN, "txt_plcSN");
+            this.txt_plcSN.Name = "txt_plcSN";
+            // 
+            // txt_scannerSN
+            // 
+            resources.ApplyResources(this.txt_scannerSN, "txt_scannerSN");
+            this.txt_scannerSN.Name = "txt_scannerSN";
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
@@ -904,12 +1194,10 @@ namespace ScrewMachineManagementSystem
             this.groupBoxProject.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -918,6 +1206,14 @@ namespace ScrewMachineManagementSystem
             this.groupBox5.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -973,7 +1269,6 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label label32;
         private LBSoft.IndustrialCtrls.Leds.LBLed lbLed2;
         private LBSoft.IndustrialCtrls.Leds.LBLed lbLed1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label labelWorkMode;
         private System.Windows.Forms.Label label1StartTask;
@@ -1004,6 +1299,45 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Timer timer3;
         private System.Data.SQLite.SQLiteCommand sqLiteCommand1;
         private System.Windows.Forms.Label lab_centerControl;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox txt_scannerSN;
+        private System.Windows.Forms.TextBox txt_plcSN;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Label lab_screwClear_plc;
+        private System.Windows.Forms.Label lab_snRequest;
+        private System.Windows.Forms.Label lab_isManufacture;
+        private System.Windows.Forms.Label lab_ng;
+        private System.Windows.Forms.Label lab_ok;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label lab_ScrewClearOK_apply;
+        private System.Windows.Forms.Label lab_ScrewClearOK;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lab_manufactureResultRecept_apply;
+        private System.Windows.Forms.Label lab_interlock_apply;
+        private System.Windows.Forms.Label lab_manufactureDeny_apply;
+        private System.Windows.Forms.Label lab_manufacturePermission_apply;
+        private System.Windows.Forms.Label lab_snWrite_apply;
+        private System.Windows.Forms.Label lab_manufactureResultRecept;
+        private System.Windows.Forms.Label lab_snWrite;
+        private System.Windows.Forms.Label lab_manufacturePermission;
+        private System.Windows.Forms.Label lab_interlock;
+        private System.Windows.Forms.Label lab_manufactureDeny;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 

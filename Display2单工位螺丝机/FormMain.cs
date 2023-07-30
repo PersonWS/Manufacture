@@ -37,6 +37,12 @@ namespace ScrewMachineManagementSystem
 
         bool _is_frm_GetSN_Closed;
 
+        bool _isMonitor = true;
+
+        Color _color_ON = Color.Lime;
+        Color _color_OFF = Color.DimGray;
+
+
         string _SN;
         #endregion
 
@@ -322,6 +328,8 @@ namespace ScrewMachineManagementSystem
             _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
             _businessMain.Need_ClearScrewData += Need_ClearScrewData;
             _businessMain.BusinessStart();
+
+            ShowPLC_PointState();
         }
 
         private void BusinessMainMessageOutput(string s)
@@ -331,6 +339,9 @@ namespace ScrewMachineManagementSystem
 
         private string Need_SN_Request()
         {
+            SetLabelForecolor(lab_snWrite_apply, _color_ON);
+            FillInfoLog("收到SN码写入请求，清空电批数据");
+            Need_ClearScrewData();
             _is_frm_GetSN_Closed = false;
             //申请触发时，清空电批的数据
             if (_dt_screwDataTable != null)
@@ -340,26 +351,37 @@ namespace ScrewMachineManagementSystem
             _is_frm_GetSN_Closed = false;
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
-            if (_frm_GetSN==null)
+            if (_frm_GetSN == null)
             {
                 _frm_GetSN = new Frm_GetSN();
                 _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
                 _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+
+                DialogResult dr = _frm_GetSN.ShowDialog();
+            }
+            else //窗体已打开则中断程序
+            {
+                FillInfoLog("检测到SN扫码窗体已打开，本次申请无效...");
+                Thread.ResetAbort();
             }
 
-           DialogResult dr=  _frm_GetSN.ShowDialog();
             //while (!_is_frm_GetSN_Closed)
             //{
             //    Thread.Sleep(500);
             //}
             FillInfoLog("SN码输入完成");
+            SetLabelForecolor(lab_snWrite_apply, _color_OFF);
             return _SN;
 
         }
-
+        /// <summary>
+        /// 获得扫描到的SN
+        /// </summary>
+        /// <param name="s"></param>
         private void Frm_GetSN_SN_CodeGet(string s)
         {
             this._SN = s;
+            txt_scannerSN.Text = s;
         }
         private void Frm_FormClosingByUser()
         {
@@ -372,10 +394,16 @@ namespace ScrewMachineManagementSystem
         /// 获取上一工序名称 传出的string为SN码
         private string Need_lastProcessName_Request(string SN)
         {
-            string lastProcessName = "";
+            SetLabelForecolor(lab_interlock_apply, _color_ON);
+            SetLabelForecolor(lab_manufacturePermission_apply, _color_ON);
+            SetLabelForecolor(lab_manufactureDeny_apply, _color_ON);
+            string lastProcessName = "BYJ";
             FillInfoLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
             //....这里写获得上一工序的代码
             FillInfoLog("上一工序获取入完成");
+            SetLabelForecolor(lab_interlock_apply, _color_OFF);
+            SetLabelForecolor(lab_manufacturePermission_apply, _color_OFF);
+            SetLabelForecolor(lab_manufactureDeny_apply, _color_OFF);
             return lastProcessName;
         }
         /// <summary>
@@ -383,12 +411,14 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         private bool SaveInformationToMES_Result_Request(string SN, string manufactureResult)
         {
+            SetLabelForecolor(lab_manufactureResultRecept_apply, _color_ON);
             bool bool_SaveInformationToMES_Result_Request = false;
             FillInfoLog("收到加工完成，保存加工结果请求，请保存并确认");
 
             //....这里写保存数据的代码
             bool_SaveInformationToMES_Result_Request = true;
             FillInfoLog("保存加工信息完成");
+            SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
             return bool_SaveInformationToMES_Result_Request;
         }
 
@@ -1315,6 +1345,7 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         private bool Need_ClearScrewData()
         {
+            SetLabelForecolor(lab_ScrewClearOK_apply, _color_ON);
             this.Invoke(new Action(() =>
             {
                 if (this.dataGridView1.DataSource!=null)
@@ -1334,6 +1365,7 @@ namespace ScrewMachineManagementSystem
                 }
 
             }));
+            SetLabelForecolor(lab_ScrewClearOK_apply, _color_OFF);
             return true;
         }
         /// <summary>
@@ -2236,6 +2268,116 @@ namespace ScrewMachineManagementSystem
             _dt_screwDataTable.Columns.Add("其他");
             _dt_screwDataTable.Columns.Add("耗时(S)");
         }
-        
+
+        //刷新PLC点位值，并进行显示
+        private void ShowPLC_PointState()
+        {
+            try
+            {
+                while (_isMonitor)
+                {
+                    //if (_businessMain.PLC_Connect.IsConnected)
+                    //{
+                    //    lab_PLC_ConnectState.ForeColor = _color_ON;
+                    //}
+                    //else
+                    //{ lab_PLC_ConnectState.ForeColor = _color_OFF; }
+                    foreach (KeyValuePair<string, PLC_Point> item in BusinessNeedPlcPoint.Dic_gatherPLC_Point)
+                    {
+                        this.Invoke((new Action(() =>
+                        {
+                            switch (item.Key)
+                            {
+                                case "SN码请求":
+                                    if ((bool)item.Value.value)
+                                    { lab_snRequest.ForeColor = _color_ON; }
+                                    else
+                                    { lab_snRequest.ForeColor = _color_OFF; }
+                                    break;
+                                case "开始加工请求":
+                                    if ((bool)item.Value.value)
+                                    {  lab_isManufacture.ForeColor = _color_ON; }
+                                    else
+                                    { lab_isManufacture.ForeColor = _color_OFF; }
+                                    break;
+                                case "结果NG":
+                                    if ((bool)item.Value.value)
+                                    { lab_ng.ForeColor = _color_ON; }
+                                    else
+                                    { lab_ng.ForeColor = _color_OFF; }
+                                    break;
+                                case "结果OK":
+                                    if ((bool)item.Value.value)
+                                    { lab_ok.ForeColor = _color_ON; }
+                                    else
+                                    { lab_ok.ForeColor = _color_OFF; }
+                                    break;
+                                case "SN码":
+                                    if (item.Value.value != null && !string.IsNullOrEmpty((string)item.Value.value))
+                                    { lab_snWrite.ForeColor = _color_ON; txt_plcSN.Text = (string)item.Value.value; }
+                                    else
+                                    { lab_snWrite.ForeColor = _color_OFF; }
+                                    break;
+                                case "允许加工请求":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_manufacturePermission.ForeColor = _color_ON; }
+                                    else
+                                    { lab_manufacturePermission.ForeColor = _color_OFF; }
+                                    break;
+                                case "禁止加工请求":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_manufactureDeny.ForeColor = _color_ON; }
+                                    else
+                                    { lab_manufactureDeny.ForeColor = _color_OFF; }
+                                    break;
+                                case "互锁结果":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_interlock.ForeColor = _color_ON; }
+                                    else
+                                    { lab_interlock.ForeColor = _color_OFF; }
+                                    break;
+                                case "加工结果收到":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_manufactureResultRecept.ForeColor = _color_ON; }
+                                    else
+                                    { lab_manufactureResultRecept.ForeColor = _color_OFF; }
+                                    break;
+                                case "表格清空":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_screwClear_plc.ForeColor = _color_ON; }
+                                    else
+                                    { lab_screwClear_plc.ForeColor = _color_OFF; }
+                                    break;
+                                case "表格已清空":
+                                    if (item.Value.value != null && (bool)item.Value.value)
+                                    { lab_ScrewClearOK.ForeColor = _color_ON; }
+                                    else
+                                    { lab_ScrewClearOK.ForeColor = _color_OFF; }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        })));
+                    }
+                    Thread.Sleep(500);
+
+                }
+
+            }
+            catch
+            { }
+
+
+        }
+
+        private void SetLabelForecolor(Label l, Color c)
+        {
+            this.Invoke(new Action(() =>
+            {
+                l.ForeColor = c;
+            }));
+        }
+
     }
 }

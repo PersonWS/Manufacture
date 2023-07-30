@@ -158,7 +158,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (a)
             {
                 _isBusinessStart = true;
-                if (BusinessStartedEvent!=null)
+                if (BusinessStartedEvent != null)
                 {
                     BusinessStartedEvent();
                 }
@@ -215,10 +215,10 @@ namespace ScrewMachineManagementSystem.CenterControl
                         if ((bool)point.value == true)
                         {
                             MessageOutPutMethod("表格清空信号=1  ，准备清空电批数据");
-                            EmptyTableDataReset();
+                            ClearScrewTableData();//置为1时清理电批数据
                             //MessageOutPutMethod("表格清空,电批表格数据已清空");
                         }
-                        else
+                        else//置为 0时将 表格已清空信号 复位为0
                         {
                             //EmptyTableDataReset(false);
                             MessageOutPutMethod("表格清空,电批表格数据已清空,信号复位");
@@ -244,7 +244,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 表格已清空 信号的写入与复位
         /// </summary>
         /// <param name="value"></param>
-        private void EmptyTableDataReset()
+        private void ClearScrewTableData()
         {
             if (Need_ClearScrewData != null)
             {
@@ -261,23 +261,33 @@ namespace ScrewMachineManagementSystem.CenterControl
                         MessageOutPutMethod("电批数据显示反馈结果设置失败，准备重新发起电批数据清理，表格清空  需为 1");
                         BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
                     }
-
-
                 }
                 else
                 {
                     MessageOutPutMethod("电批数据显示清理失败，准备重新发起电批数据清理，表格清空  需为 1");
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
                 }
-
-
-
-
             }
             else
             {
                 MessageOutPutMethod("未执行清理电批数据任务，请检查【Need_ClearScrewData】事件是否已订阅");
             }
+        }
+
+        private void ResetScrewDataClearSignal()
+        {
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = false;
+            if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]))//写入成功 
+            {
+                MessageOutPutMethod("[表格已清空] 信号复位为  0  成功");
+            }
+            else
+            {
+                MessageOutPutMethod("[表格已清空] 信号复位为  0  失败 ，准备重新写入");
+                BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+            }
+
+
         }
         /// <summary>
         /// 加工结果输出
@@ -560,7 +570,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         public void BusinessStop()
         {
             _registerID--;
-            if (_registerID==0)
+            if (_registerID == 0)
             {
                 _plc_monitor.Stop();//停止监控
                 _plcConnect.DisConnect();

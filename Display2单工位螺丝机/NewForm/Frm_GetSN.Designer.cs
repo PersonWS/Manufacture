@@ -123,7 +123,7 @@
             this.txt_SN_CheckCode.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txt_SN_CheckCode.Location = new System.Drawing.Point(154, 26);
             this.txt_SN_CheckCode.Name = "txt_SN_CheckCode";
-            this.txt_SN_CheckCode.Size = new System.Drawing.Size(126, 35);
+            this.txt_SN_CheckCode.Size = new System.Drawing.Size(320, 35);
             this.txt_SN_CheckCode.TabIndex = 21;
             this.txt_SN_CheckCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_CheckCode_KeyPress);
             // 
@@ -200,7 +200,7 @@
             this.txt_SN_maxLength.Location = new System.Drawing.Point(154, 69);
             this.txt_SN_maxLength.Name = "txt_SN_maxLength";
             this.txt_SN_maxLength.ReadOnly = true;
-            this.txt_SN_maxLength.Size = new System.Drawing.Size(126, 34);
+            this.txt_SN_maxLength.Size = new System.Drawing.Size(320, 34);
             this.txt_SN_maxLength.TabIndex = 10;
             this.txt_SN_maxLength.Text = "28";
             // 

@@ -296,8 +296,8 @@ namespace ScrewMachineManagementSystem
             labelHostName.Text = utility.stationId;
             labelSystemName.Text = utility.SystemName;
             //initDatagridview();
-            chart1.Series[0].Points.AddXY(0, 0);
-            chart1.Series[1].Points.AddXY(0, 0);
+            //chart1.Series[0].Points.AddXY(0, 0);
+            //chart1.Series[1].Points.AddXY(0, 0);
             comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
 
             ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
@@ -704,18 +704,18 @@ namespace ScrewMachineManagementSystem
                 else
                     curveCount = CurvelistAngle.Count;
 
-                chart1.Series[0].Points.SuspendUpdates();
-                chart1.Series[0].Points.Clear();
-                chart1.Series[1].Points.SuspendUpdates();
-                chart1.Series[1].Points.Clear();
-                chart1.ChartAreas[0].AxisX2.Maximum = CurvelistTorque.Max();
-                chart1.ChartAreas[0].AxisX2.Minimum = CurvelistTorque.Min();
-                for (int i = 0; i < curveCount; i++)
-                {
-                    string strTime = Convert.ToString(0.3 * i);
-                    chart1.Series[1].Points.AddXY(strTime, CurvelistTorque[i]);
-                    chart1.Series[0].Points.AddXY(strTime, CurvelistAngle[i]);
-                }
+                //chart1.Series[0].Points.SuspendUpdates();
+                //chart1.Series[0].Points.Clear();
+                //chart1.Series[1].Points.SuspendUpdates();
+                //chart1.Series[1].Points.Clear();
+                //chart1.ChartAreas[0].AxisX2.Maximum = CurvelistTorque.Max();
+                //chart1.ChartAreas[0].AxisX2.Minimum = CurvelistTorque.Min();
+                //for (int i = 0; i < curveCount; i++)
+                //{
+                //    string strTime = Convert.ToString(0.3 * i);
+                //    chart1.Series[1].Points.AddXY(strTime, CurvelistTorque[i]);
+                //    chart1.Series[0].Points.AddXY(strTime, CurvelistAngle[i]);
+                //}
             }
 
 
@@ -826,15 +826,15 @@ namespace ScrewMachineManagementSystem
         /// <param name="info"></param>
         void FillMakeLog(string info)
         {
-            if (listBoxMakeLog.Items.Count > 500)
-                listBoxMakeLog.Items.Clear();
-            if (pre_makeInfo != info)
-            {
-                listBoxMakeLog.Items.Add(DateTime.Now.ToString("MM-dd HH:mm:ss,") + info);
-                listBoxMakeLog.SelectedIndex = listBoxMakeLog.Items.Count - 1;
-                listBoxMakeLog.TopIndex = listBoxMakeLog.Items.Count - 1;
-                pre_makeInfo = info;
-            }
+            //if (listBoxMakeLog.Items.Count > 500)
+            //    listBoxMakeLog.Items.Clear();
+            //if (pre_makeInfo != info)
+            //{
+            //    listBoxMakeLog.Items.Add(DateTime.Now.ToString("MM-dd HH:mm:ss,") + info);
+            //    listBoxMakeLog.SelectedIndex = listBoxMakeLog.Items.Count - 1;
+            //    listBoxMakeLog.TopIndex = listBoxMakeLog.Items.Count - 1;
+            //    pre_makeInfo = info;
+            //}
         }
 
         string pre_Info = "";
@@ -892,11 +892,11 @@ namespace ScrewMachineManagementSystem
             labelTaskOrderID.Text = workTaskInfo.taskID;
             labelMachineModel.Text = utility.structCurrentWorkTask.machinemodel;
             labelProjectPhase.Text = utility.structCurrentWorkTask.projectphase;
-            labelTaskQty.Text = workTaskInfo.taskQty.ToString();
-            labelNumbers.Text = utility.structCurrentWorkTask.NumberOfScrews.ToString();
-            labelProcessedQty.Text = "";
-            labelUnqualifiedQty.Text = "";
-            labelRTY.Text = "";
+            //labelTaskQty.Text = workTaskInfo.taskQty.ToString();
+            //labelNumbers.Text = utility.structCurrentWorkTask.NumberOfScrews.ToString();
+            //labelProcessedQty.Text = "";
+            //labelUnqualifiedQty.Text = "";
+            //labelRTY.Text = "";
             QtyMading = 0;
             QtyNG = 0;
             QtyOK = 0;
@@ -913,10 +913,10 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         void initWorkStation()
         {
-            labelSN[0] = labelProductSN1;
-            labelStatus[0] = labelStationStatus1;
-            labelRunTimes[0] = labelRunTimes1;
-            labelResult[0] = labelResult1;
+            //labelSN[0] = labelProductSN1;
+            //labelStatus[0] = labelStationStatus1;
+            //labelRunTimes[0] = labelRunTimes1;
+            //labelResult[0] = labelResult1;
         }
         /// <summary>
         /// 工位属性赋值
@@ -1015,7 +1015,7 @@ namespace ScrewMachineManagementSystem
                 return;
             }
 
-            labelProductSN1.Text = utility.struckScanProduct.productSN;
+            //labelProductSN1.Text = utility.struckScanProduct.productSN;
             //timerRTU,OK/NG时=true
             //是否检查工位是否有工件
             int inputCheckIndex = (int)S7NetPlus.inputDiagitList.工装产品信号1;
@@ -1040,9 +1040,9 @@ namespace ScrewMachineManagementSystem
 
             }
 
-            labelProcessedQty.Text = "";
-            labelRTY.Text = "";
-            labelUnqualifiedQty.Text = "";
+            //labelProcessedQty.Text = "";
+            //labelRTY.Text = "";
+            //labelUnqualifiedQty.Text = "";
             utility.ShowMessage("当前任务的加工信息已经重置！");
         }
 

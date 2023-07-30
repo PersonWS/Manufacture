@@ -114,6 +114,21 @@ namespace ScrewMachineManagementSystem.CenterControl
             _isMonitor = false;
             return true;
         }
+        public void Dispose()
+        {
+            try
+            {
+                _plcConnectEntity.DisConnect();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            { _plcConnectEntity = null; }
+
+        }
         private void StartMonitorThread()
         {
             if (_thread_engine != null && _thread_engine.ThreadState != ThreadState.Stopped)

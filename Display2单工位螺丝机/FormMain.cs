@@ -47,6 +47,12 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         string _SN;
         System.Threading.Timer _timer_refreshTime;
+        /// <summary>
+        /// 是否正在进行初始化
+        /// </summary>
+        bool _is_LabelRefreshIng = false;
+
+        private static readonly object _lock_obj = new object();
 
         #endregion
 
@@ -299,8 +305,9 @@ namespace ScrewMachineManagementSystem
             //chart1.Series[0].Points.AddXY(0, 0);
             //chart1.Series[1].Points.AddXY(0, 0);
             comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
-
+            _is_LabelRefreshIng = true;
             ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
+
 
             //TcpConnect();
             //if (socketSender.Connected)     //联通成功，与电批建立连接
@@ -315,32 +322,46 @@ namespace ScrewMachineManagementSystem
 
         private void InitializeWhileFormOpen(object obj)
         {
-            TcpConnect();
-            if (socketSender.Connected)     //联通成功，与电批建立连接
+            lock (_lock_obj)//防止多次执行
             {
-                socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+                TcpConnect();
+                if (socketSender.Connected)     //联通成功，与电批建立连接
+                {
+                    socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+                }
+                // PlcConnect();
+
+                // SystemInit();
+
+                _businessMain = CenterControl.BusinessMain.GetInstance();
+                _businessMain.MessageOutput += BusinessMainMessageOutput;
+
+                _businessMain.Need_SN_Request -= Need_SN_Request;
+                _businessMain.Need_SN_Request += Need_SN_Request;
+                _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
+                _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
+                _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
+                _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+                _businessMain.Need_ClearScrewData -= Need_ClearScrewData;
+                _businessMain.Need_ClearScrewData += Need_ClearScrewData;
+
+                _businessMain.BusinessStartedEvent -= BusinessStarted;
+                _businessMain.BusinessStartedEvent += BusinessStarted;
+                _businessMain.BusinessStopedEvent -= BusinessStoped;
+                _businessMain.BusinessStopedEvent += BusinessStoped;
+
+                _businessMain.PLC_Connect.PlcConnected -= PLC_Connected;
+                _businessMain.PLC_Connect.PlcConnected += PLC_Connected;
+                _businessMain.PLC_Connect.PlcDisConnected -= PLC_DisConnected;
+                _businessMain.PLC_Connect.PlcDisConnected += PLC_DisConnected;
+
+                _businessMain.BusinessStart();
+                _isMonitor = true;
+                _is_LabelRefreshIng = false;
+                ThreadPool.QueueUserWorkItem(ShowPLC_PointState, null);
             }
-            PlcConnect();
 
-            SystemInit();
 
-            _businessMain = CenterControl.BusinessMain.GetInstance();
-            _businessMain.MessageOutput += BusinessMainMessageOutput;
-
-            _businessMain.Need_SN_Request += Need_SN_Request;
-            _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
-            _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
-            _businessMain.Need_ClearScrewData += Need_ClearScrewData;
-
-            _businessMain.BusinessStartedEvent += BusinessStarted;
-            _businessMain.BusinessStopedEvent += BusinessStoped;
-
-            _businessMain.PLC_Connect.PlcConnected += PLC_Connected;
-            _businessMain.PLC_Connect.PlcConnected += PLC_DisConnected;
-
-            _businessMain.BusinessStart();
-
-            ShowPLC_PointState();
         }
         #region 连接及断开的事件
         private void BusinessStarted()
@@ -360,7 +381,7 @@ namespace ScrewMachineManagementSystem
 
         private void PLC_DisConnected(PLC_Connect plc)
         {
-            SetLabel_LED_Forecolor(this.lab_plcState, _color_ON);
+            SetLabel_LED_Forecolor(this.lab_plcState, _color_OFF);
         }
         #endregion
 
@@ -467,7 +488,7 @@ namespace ScrewMachineManagementSystem
             dataGridView1.Visible = true;
             dataGridView1.Dock = DockStyle.Fill;
             int cols = dataGridView1.Columns.Count;
-            int w = (dataGridView1.Parent.Width - 41) / (cols) ;
+            int w = (dataGridView1.Parent.Width - 43) / (cols);
             for (int i = 0; i < cols; i++)
             {
                 dataGridView1.Columns[i].Width = w;
@@ -494,15 +515,35 @@ namespace ScrewMachineManagementSystem
 
         private void labelRefresh_Click(object sender, EventArgs e)
         {
-            var v = utility.ShowMessageResponse("确定要初始化系统吗？");
-            if (v != DialogResult.Yes)
+            if (_is_LabelRefreshIng)
             {
+                MessageBox.Show("初始化未完成，请不要重复点击", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
             }
-            SystemInit();
+            if (DialogResult.OK == MessageBox.Show("初始化操作会断开电批，PLC的连接，并进行重连操作，该操作可能会导致正在执行的数据丢失！ \r\n 确定要对系统进行初始化吗？", "系统初始化", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly))
+            {
+                _is_LabelRefreshIng = true;
+
+                ThreadPool.QueueUserWorkItem(this.DisposeConnectAndReConnect, null);
+
+            }
+            //var v = utility.ShowMessageResponse("确定要初始化系统吗？");
+            //if (v != DialogResult.Yes)
+            //{
+            //    return;
+            //}
+            //SystemInit();
 
 
 
+        }
+
+        private void DisposeConnectAndReConnect(object obj)
+        {
+            FillInfoLog("系统即将开始初始化...");
+            this.DisposeSource(null);
+            FillInfoLog("重新建立连接...");
+            InitializeWhileFormOpen(null);
         }
 
         void SystemInit()
@@ -663,12 +704,12 @@ namespace ScrewMachineManagementSystem
         }
 
 
-            /// <summary>
-            /// 电批，slaveID=1
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            private void timerRTU_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// 电批，slaveID=1
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerRTU_Tick(object sender, EventArgs e)
         {
             if (!isRun) return;  //未运行
             Application.DoEvents();
@@ -1061,7 +1102,7 @@ namespace ScrewMachineManagementSystem
 
                 if (Controller.CONT_WorkTaskDetail.Delete2(taskDetail) > 0)
                 {
-                    
+
                     dataGridView1.Rows.Clear();
                     utility.ShowMessage("数据清除完成");
                 }
@@ -1195,7 +1236,7 @@ namespace ScrewMachineManagementSystem
                 //socketSender.Connect(point);
                 //2023-07-02 解决socket通讯不正常时连接时间过长的问题 ws
                 socketSender.BeginConnect(point, ConnectCallBackMethod, socketSender);
-                if (TimeoutObject.WaitOne(2000, false))
+                if (TimeoutObject.WaitOne(2000, false) && socketSender.Connected)
                 {
                     FillInfoLog("电批连接成功");
                     lab_screwState.LedColor = Color.Lime;
@@ -1285,6 +1326,9 @@ namespace ScrewMachineManagementSystem
         {
             List<ScrewDriverData_ACK> ack = new List<ScrewDriverData_ACK>();
             //string s1 = "02-00-00-00-E3-54-30-32-30-32-30-30-30-31-30-3D-30-2E-36-30-36-2C-31-31-39-36-2E-33-33-36-2C-31-2E-36-33-38-2C-31-35-37-33-2E-33-34-32-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-36-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-34-30-2C-35-34-30-2E-38-37-32-2C-30-2E-36-38-31-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-34-38-38-2C-31-33-30-39-2E-37-38-31-2C-30-2E-35-32-33-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-36-30-36-2C-38-37-2E-36-36-33-2C-30-2E-31-32-36-3B-30-31-30-35-31-3D-31-3B-03";
+            //string s1 = "02-00-00-00-E1-54-30-32-30-32-30-30-30-31-30-3D-30-2E-35-38-38-2C-31-33-35-31-2E-30-33-34-2C-31-2E-38-36-36-2C-31-33-35-33-2E-33-32-36-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-35-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-32-31-33-2C-39-30-30-2E-36-39-30-2C-30-2E-36-39-35-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-31-30-39-2C-31-2E-37-31-39-2C-30-2E-30-32-35-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-35-38-38-2C-38-31-35-2E-38-39-32-2C-30-2E-38-33-37-3B-30-31-30-35-31-3D-31-3B-03";
+            // string s1 = "02-00-00-00-E2-54-30-32-30-32-30-30-30-31-30-3D-30-2E-31-34-39-2C-34-31-32-39-2E-33-30-37-2C-34-2E-30-30-32-2C-34-31-32-39-2E-33-30-37-3B-30-30-30-31-31-3D-32-3B-30-30-30-31-32-3D-35-32-3B-30-31-30-31-30-3D-30-2E-31-31-33-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-35-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-32-31-35-2C-39-30-31-2E-32-36-33-2C-30-2E-36-39-35-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-31-30-39-2C-32-2E-38-36-35-2C-30-2E-30-32-39-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-31-34-39-2C-33-35-38-37-2E-38-36-32-2C-33-2E-30-30-30-3B-30-31-30-35-31-3D-36-3B-03";
+            //string s1 = "02-00-00-00-E2-54-30-32-30-32-30-30-30-31-30-3D-30-2E-35-38-38-2C-31-34-33-38-2E-36-39-37-2C-31-2E-39-33-30-2C-31-34-34-30-2E-34-31-36-3B-30-30-30-31-31-3D-31-3B-30-30-30-31-32-3D-30-30-3B-30-31-30-31-30-3D-30-2E-30-39-30-2C-2D-33-36-32-2E-36-38-32-2C-30-2E-32-37-35-3B-30-31-30-31-31-3D-31-3B-30-31-30-32-30-3D-30-2E-30-30-30-2C-30-2E-30-30-30-2C-30-2E-30-30-30-3B-30-31-30-32-31-3D-31-3B-30-31-30-33-30-3D-30-2E-31-38-34-2C-39-30-30-2E-36-39-30-2C-30-2E-36-39-35-3B-30-31-30-33-31-3D-31-3B-30-31-30-34-30-3D-30-2E-31-30-39-2C-35-38-2E-34-34-32-2C-30-2E-31-31-31-3B-30-31-30-34-31-3D-31-3B-30-31-30-35-30-3D-30-2E-35-38-38-2C-38-34-36-2E-32-35-39-2C-30-2E-38-31-35-3B-30-31-30-35-31-3D-31-3B-03";
 
 
 
@@ -1359,21 +1403,27 @@ namespace ScrewMachineManagementSystem
                         {
                             lock (this)
                             {
-                                this.dataGridView1.DataSource = dt.Copy();
-                                for (int i = 0; i < ((DataTable)this.dataGridView1.DataSource).Rows.Count; i++)
+                                if (dt != null && dt.Rows.Count > 0)
                                 {
-                                    if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
+                                    this.dataGridView1.DataSource = dt.Copy();
+
+                                    for (int i = 0; i < ((DataTable)this.dataGridView1.DataSource).Rows.Count; i++)
                                     {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                                        dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                        if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
+                                        {
+                                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                                            dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                        }
+                                        else
+                                        {
+                                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                            dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                        }
                                     }
-                                    else
-                                    {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                                        dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
-                                    }
+                                    initDatagridview();
+                                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
                                 }
-                                initDatagridview();
+                                
                             }
 
                         }));
@@ -1397,7 +1447,7 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_ScrewClearOK_apply, _color_ON);
             this.Invoke(new Action(() =>
             {
-                if (this.dataGridView1.DataSource!=null)
+                if (this.dataGridView1.DataSource != null)
                 {
                     lock (this.dataGridView1.DataSource)
                     {
@@ -1405,7 +1455,7 @@ namespace ScrewMachineManagementSystem
                     }
 
                 }
-                if (this._dt_screwDataTable!=null)
+                if (this._dt_screwDataTable != null)
                 {
                     lock (this._dt_screwDataTable)
                     {
@@ -1441,11 +1491,7 @@ namespace ScrewMachineManagementSystem
                 DataRow dr2 = _dt_screwDataTable.NewRow();
                 dr2["序号"] = _dt_screwDataTable.Rows.Count + 1;
                 dr2["角度"] = result.workResult.MonitorAngle;
-                string turbo = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString();
-                for (int i = 0; i < 3 - turbo.Split('.')[1].Length; i++)
-                {
-                    turbo += "0";
-                }
+                string turbo = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString("0.000");
                 dr2["扭力"] = turbo;
                 dr2["扭力结果"] = result.workResultState;
                 dr2["其他"] = result.ngCode;
@@ -2315,6 +2361,9 @@ namespace ScrewMachineManagementSystem
 
         private void lab_centerControl_Click(object sender, EventArgs e)
         {
+            //Byte[] b = new byte[100];
+            //List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+            //ShowScrewData(ack);
             CenterControl.CenterDemo demo = new CenterControl.CenterDemo();
             demo.Show();
         }
@@ -2331,7 +2380,7 @@ namespace ScrewMachineManagementSystem
         }
 
         //刷新PLC点位值，并进行显示
-        private void ShowPLC_PointState()
+        private void ShowPLC_PointState(object obj)
         {
             try
             {
@@ -2357,7 +2406,7 @@ namespace ScrewMachineManagementSystem
                                     break;
                                 case "开始加工请求":
                                     if ((bool)item.Value.value)
-                                    {  lab_isManufacture.ForeColor = _color_ON; }
+                                    { lab_isManufacture.ForeColor = _color_ON; }
                                     else
                                     { lab_isManufacture.ForeColor = _color_OFF; }
                                     break;
@@ -2446,6 +2495,46 @@ namespace ScrewMachineManagementSystem
             {
                 l.LedColor = c;
             }));
+        }
+
+        /// <summary>
+        /// 断开连接的资源
+        /// </summary>
+        private void DisposeSource(object obj)
+        {
+            _isMonitor = false;
+            try
+            {
+                FillInfoLog("强制中断电批连接...");
+                if (socketSender != null)
+                {
+                    socketSender.Disconnect(false);
+                    socketSender.Dispose();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            { socketSender = null; FillInfoLog("电批连接已断开"); }
+
+            try
+            {
+                FillInfoLog("强制中断PLC连接...");
+                if (_businessMain != null)
+                {
+                    _businessMain.BusinessStop();
+                    _businessMain.Dispose();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            { _businessMain = null; FillInfoLog("PLC连接已断开"); }
+            Thread.Sleep(1000);
         }
 
     }

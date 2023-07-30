@@ -118,9 +118,37 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (businessMain == null)
             {
                 businessMain = new BusinessMain();
+                _registerID = 0;
             }
             _registerID++;
             return businessMain;
+        }
+
+        public void Dispose()
+        {
+            _registerID--;
+            if (_registerID <= 0)
+            {
+                if (_plc_monitor != null)
+                {
+                    _plc_monitor.Stop();//停止监控\
+                    _plc_monitor = null;
+                }
+                if (_plcConnect != null)
+                {
+                    _plcConnect.DisConnect();
+                    _plcConnect = null;
+                }
+                if (BusinessStopedEvent != null)
+                {
+                    BusinessStopedEvent();
+                }
+                _isBusinessStart = false;
+                businessMain = null;
+            }
+
+
+
         }
 
 
@@ -139,6 +167,15 @@ namespace ScrewMachineManagementSystem.CenterControl
                 MessageOutPutMethod("Business already  Start ");
                 return true;
             }
+            ////检查实例
+            //if (_plcConnect==null)
+            //{
+            //    _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            //}
+            //if (_plc_monitor==null)
+            //{
+            //    _plc_monitor = new PLC_Monitor(_plcConnect, 200);
+            //}
 
             _plcConnect.MessageOutput -= MessageOutPutMethod;
             _plcConnect.MessageOutput += MessageOutPutMethod;
@@ -572,17 +609,16 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public void BusinessStop()
         {
-            _registerID--;
-            if (_registerID == 0)
+            if (_plc_monitor != null)
             {
-                _plc_monitor.Stop();//停止监控
-                _plcConnect.DisConnect();
-                _isBusinessStart = false;
-                if (BusinessStartedEvent != null)
-                {
-                    BusinessStartedEvent();
-                }
+                _plc_monitor.Stop();//停止监控\
             }
+            if (_plcConnect != null)
+            {
+                _plcConnect.DisConnect();
+            }
+
+
 
 
         }

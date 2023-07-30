@@ -220,7 +220,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         }
                         else//置为 0时将 表格已清空信号 复位为0
                         {
-                            //EmptyTableDataReset(false);
+                            ResetScrewDataClearSignal();
                             MessageOutPutMethod("表格清空,电批表格数据已清空,信号复位");
                         }
                         break;

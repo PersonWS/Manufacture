@@ -609,14 +609,14 @@ namespace ScrewMachineManagementSystem
 
 
                 runtimes++;
-                if (utility.bool_Heart)
-                {
-                    lab_plcState.LedColor = Color.Lime;
-                }
-                else
-                {
-                    lab_plcState.LedColor = Color.Gray;
-                }
+                //if (utility.bool_Heart)
+                //{
+                //    lab_plcState.LedColor = Color.Lime;
+                //}
+                //else
+                //{
+                //    lab_plcState.LedColor = Color.Gray;
+                //}
                 //扫码后，读取左右启动按键按下，延迟1秒，恢复Y26(560)[9/10]的
                 //读取左启动按键，4111/4104 =1，delay 1秒
                 //工具错误    bool    16

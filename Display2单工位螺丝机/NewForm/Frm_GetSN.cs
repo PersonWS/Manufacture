@@ -18,13 +18,20 @@ namespace ScrewMachineManagementSystem
 
         List<byte> _byte = new List<byte>();
         List<char> _char = new List<char>();
+
+        InputLanguage _currentLanguage;
         public Frm_GetSN()
         {
             InitializeComponent();
+            _currentLanguage = InputLanguage.CurrentInputLanguage;
             this.TopMost = true;
 
             System.Threading.ThreadPool.QueueUserWorkItem(Initialize, null);
             SetInputKeyboard();
+        }
+        ~Frm_GetSN()
+        {
+
         }
 
         private void Initialize(object obj)
@@ -67,11 +74,21 @@ namespace ScrewMachineManagementSystem
             }
             if (!string.IsNullOrEmpty(txt_SN_CheckCode.Text))
             {
-                if (_SN_Code.Substring(0, txt_SN_CheckCode.Text.Length) != txt_SN_CheckCode.Text)
+                if (string.IsNullOrEmpty(txt_SN_Scan.Text))
                 {
-                    MessageBox.Show(string.Format("扫描到的SN:{0} ,SN首部校验失败", _SN_Code), "SN码校验失败", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                    txt_SN_Scan.Text = "";
-                    return;
+                    if (DialogResult.Cancel == MessageBox.Show(string.Format("SN为空，确认输入吗？", _SN_Code), "SN码校验失败", MessageBoxButtons.OKCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
+                    {
+                        return;
+                    } 
+                }
+                else
+                {
+                    if (_SN_Code.Substring(0, txt_SN_CheckCode.Text.Length) != txt_SN_CheckCode.Text)
+                    {
+                        MessageBox.Show(string.Format("扫描到的SN:{0} ,SN首部校验失败", _SN_Code), "SN码校验失败", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                        txt_SN_Scan.Text = "";
+                        return;
+                    }
                 }
 
             }
@@ -155,6 +172,7 @@ namespace ScrewMachineManagementSystem
 
         private void Frm_GetSN_FormClosing(object sender, FormClosingEventArgs e)
         {
+            InputLanguage.CurrentInputLanguage = _currentLanguage;
             if (FormClosingByUser != null)
             {
                 FormClosingByUser();
@@ -173,7 +191,7 @@ namespace ScrewMachineManagementSystem
 
         private void txt_SN_CheckCode_KeyPress(object sender, KeyPressEventArgs e)
         {
-            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text+e.KeyChar);
+            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text + e.KeyChar);
         }
 
         private void SetInputKeyboard()
@@ -185,8 +203,8 @@ namespace ScrewMachineManagementSystem
                 {
                     InputLanguage.CurrentInputLanguage = item;
                 }
-               // InputLanguage.CurrentInputLanguage
-            }  
+                // InputLanguage.CurrentInputLanguage
+            }
         }
     }
 }

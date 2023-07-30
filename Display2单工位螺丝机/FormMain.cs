@@ -327,16 +327,45 @@ namespace ScrewMachineManagementSystem
             _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
             _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
             _businessMain.Need_ClearScrewData += Need_ClearScrewData;
+
+            _businessMain.BusinessStartedEvent += BusinessStarted;
+            _businessMain.BusinessStopedEvent += BusinessStoped;
+
+            _businessMain.PLC_Connect.PlcConnected += PLC_Connected;
+            _businessMain.PLC_Connect.PlcConnected += PLC_DisConnected;
+
             _businessMain.BusinessStart();
 
             ShowPLC_PointState();
         }
+        #region 连接及断开的事件
+        private void BusinessStarted()
+        {
+
+        }
+
+        private void BusinessStoped()
+        {
+
+        }
+
+        private void PLC_Connected(PLC_Connect plc)
+        {
+            SetLabel_LED_Forecolor(this.lab_plcState, _color_ON);
+        }
+
+        private void PLC_DisConnected(PLC_Connect plc)
+        {
+            SetLabel_LED_Forecolor(this.lab_plcState, _color_ON);
+        }
+        #endregion
 
         private void BusinessMainMessageOutput(string s)
         {
             FillInfoLog(s);
         }
 
+        #region 业务处理事件
         private string Need_SN_Request()
         {
             SetLabelForecolor(lab_snWrite_apply, _color_ON);
@@ -421,7 +450,7 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
             return bool_SaveInformationToMES_Result_Request;
         }
-
+        #endregion
 
         void initDatagridview()
         {
@@ -571,22 +600,22 @@ namespace ScrewMachineManagementSystem
                 //准备好
                 if (S7NetPlus.inputDiagitStatus[index19])
                 {
-                    lbLed1.LedColor = Color.Lime;
+                    lab_screwState.LedColor = Color.Lime;
                 }
                 else
                 {
-                    lbLed1.LedColor = Color.Gray;
+                    lab_screwState.LedColor = Color.Gray;
                 }
 
 
                 runtimes++;
                 if (utility.bool_Heart)
                 {
-                    lbLed2.LedColor = Color.Lime;
+                    lab_plcState.LedColor = Color.Lime;
                 }
                 else
                 {
-                    lbLed2.LedColor = Color.Gray;
+                    lab_plcState.LedColor = Color.Gray;
                 }
                 //扫码后，读取左右启动按键按下，延迟1秒，恢复Y26(560)[9/10]的
                 //读取左启动按键，4111/4104 =1，delay 1秒
@@ -599,7 +628,7 @@ namespace ScrewMachineManagementSystem
                 //工具错误，报红
                 if (S7NetPlus.inputDiagitStatus[index16])
                 {
-                    lbLed1.LedColor = Color.Red;
+                    lab_screwState.LedColor = Color.Red;
                 }
             }
             catch (Exception ex)
@@ -1150,7 +1179,7 @@ namespace ScrewMachineManagementSystem
                 if (TimeoutObject.WaitOne(2000, false))
                 {
                     FillInfoLog("电批连接成功");
-                    lbLed1.LedColor = Color.Lime;
+                    lab_screwState.LedColor = Color.Lime;
                     socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
                     LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                     //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
@@ -1161,7 +1190,7 @@ namespace ScrewMachineManagementSystem
                 }
                 else
                 {
-                    lbLed1.LedColor = Color.Gray;
+                    lab_screwState.LedColor = Color.Gray;
                     FillInfoLog("电批连接失败，connect time out");
                 }
 
@@ -1169,7 +1198,7 @@ namespace ScrewMachineManagementSystem
             }
             catch (Exception ex)
             {
-                lbLed1.LedColor = Color.Gray;
+                lab_screwState.LedColor = Color.Gray;
                 FillInfoLog("电批连接失败，" + ex.Message);
             }
         }
@@ -2376,6 +2405,14 @@ namespace ScrewMachineManagementSystem
             this.Invoke(new Action(() =>
             {
                 l.ForeColor = c;
+            }));
+        }
+
+        private void SetLabel_LED_Forecolor(LBSoft.IndustrialCtrls.Leds.LBLed l, Color c)
+        {
+            this.Invoke(new Action(() =>
+            {
+                l.LedColor = c;
             }));
         }
 

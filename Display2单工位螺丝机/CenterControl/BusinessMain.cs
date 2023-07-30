@@ -77,6 +77,15 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 清理电批数据请求
         /// </summary>
         public event Func<bool> Need_ClearScrewData;
+        /// <summary>
+        /// 业务启动成功
+        /// </summary>
+        public event Action BusinessStartedEvent;
+        /// <summary>
+        /// 业务停止
+        /// </summary>
+        public event Action BusinessStopedEvent;
+
 
         public static object obj = new object();
         /// <summary>
@@ -118,6 +127,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         private void Initialize()
         {
             _listWriteFailedPoint = new List<PLC_Point>();
+            // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plc_monitor = new PLC_Monitor(_plcConnect, 200);
         }
 
         public bool BusinessStart()
@@ -127,9 +139,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 MessageOutPutMethod("Business already  Start ");
                 return true;
             }
-            // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plc_monitor = new PLC_Monitor(_plcConnect, 200);
+
             _plcConnect.MessageOutput -= MessageOutPutMethod;
             _plcConnect.MessageOutput += MessageOutPutMethod;
 
@@ -148,6 +158,10 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (a)
             {
                 _isBusinessStart = true;
+                if (BusinessStartedEvent!=null)
+                {
+                    BusinessStartedEvent();
+                }
             }
             return a;
 
@@ -545,9 +559,18 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public void BusinessStop()
         {
-            _plc_monitor.Stop();//停止监控
-            _plcConnect.DisConnect();
-            _isBusinessStart = false;
+            _registerID--;
+            if (_registerID==0)
+            {
+                _plc_monitor.Stop();//停止监控
+                _plcConnect.DisConnect();
+                _isBusinessStart = false;
+                if (BusinessStartedEvent != null)
+                {
+                    BusinessStartedEvent();
+                }
+            }
+
 
         }
 

@@ -31,12 +31,12 @@ namespace ScrewMachineManagementSystem
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.labelRunMode = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelTaskQty = new System.Windows.Forms.Label();
@@ -105,8 +105,8 @@ namespace ScrewMachineManagementSystem
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.listBoxInfoLog = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lbLed2 = new LBSoft.IndustrialCtrls.Leds.LBLed();
-            this.lbLed1 = new LBSoft.IndustrialCtrls.Leds.LBLed();
+            this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
+            this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.labelStop = new System.Windows.Forms.Label();
             this.labelWorkMode = new System.Windows.Forms.Label();
@@ -664,23 +664,23 @@ namespace ScrewMachineManagementSystem
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("微软雅黑", 12F);
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 30;
@@ -782,43 +782,43 @@ namespace ScrewMachineManagementSystem
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.lbLed2);
-            this.panel1.Controls.Add(this.lbLed1);
+            this.panel1.Controls.Add(this.lab_plcState);
+            this.panel1.Controls.Add(this.lab_screwState);
             this.panel1.Controls.Add(this.labelRunMode);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.tableLayoutPanel1.SetRowSpan(this.panel1, 2);
             // 
-            // lbLed2
+            // lab_plcState
             // 
-            this.lbLed2.BackColor = System.Drawing.Color.Transparent;
-            this.lbLed2.BlinkInterval = 500;
-            resources.ApplyResources(this.lbLed2, "lbLed2");
-            this.lbLed2.ForeColor = System.Drawing.Color.Black;
-            this.lbLed2.Label = "PLC";
-            this.lbLed2.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lbLed2.LedColor = System.Drawing.Color.Gray;
-            this.lbLed2.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lbLed2.Name = "lbLed2";
-            this.lbLed2.Renderer = null;
-            this.lbLed2.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lbLed2.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
+            this.lab_plcState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_plcState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_plcState, "lab_plcState");
+            this.lab_plcState.ForeColor = System.Drawing.Color.Black;
+            this.lab_plcState.Label = "PLC";
+            this.lab_plcState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_plcState.LedColor = System.Drawing.Color.Gray;
+            this.lab_plcState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_plcState.Name = "lab_plcState";
+            this.lab_plcState.Renderer = null;
+            this.lab_plcState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_plcState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
             // 
-            // lbLed1
+            // lab_screwState
             // 
-            this.lbLed1.BackColor = System.Drawing.Color.Transparent;
-            this.lbLed1.BlinkInterval = 500;
-            resources.ApplyResources(this.lbLed1, "lbLed1");
-            this.lbLed1.ForeColor = System.Drawing.Color.Black;
-            this.lbLed1.Label = "电批";
-            this.lbLed1.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lbLed1.LedColor = System.Drawing.Color.Gray;
-            this.lbLed1.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lbLed1.Name = "lbLed1";
-            this.lbLed1.Renderer = null;
-            this.lbLed1.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lbLed1.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
-            this.lbLed1.Tag = "";
+            this.lab_screwState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_screwState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_screwState, "lab_screwState");
+            this.lab_screwState.ForeColor = System.Drawing.Color.Black;
+            this.lab_screwState.Label = "电批";
+            this.lab_screwState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_screwState.LedColor = System.Drawing.Color.Gray;
+            this.lab_screwState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_screwState.Name = "lab_screwState";
+            this.lab_screwState.Renderer = null;
+            this.lab_screwState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
+            this.lab_screwState.Tag = "";
             // 
             // groupBox6
             // 
@@ -1105,56 +1105,56 @@ namespace ScrewMachineManagementSystem
             // 
             // chart1
             // 
-            chartArea10.AxisX.Title = "毫秒(ms)";
-            chartArea10.AxisX.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea10.AxisX2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea10.AxisY.InterlacedColor = System.Drawing.Color.Red;
-            chartArea10.AxisY.IsLabelAutoFit = false;
-            chartArea10.AxisY.LineColor = System.Drawing.Color.Red;
-            chartArea10.AxisY.Minimum = 0D;
-            chartArea10.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
-            chartArea10.AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
-            chartArea10.AxisY.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea10.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea10.AxisY2.LineColor = System.Drawing.Color.Blue;
-            chartArea10.AxisY2.Maximum = 10D;
-            chartArea10.AxisY2.Minimum = 0D;
-            chartArea10.AxisY2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea10.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea10);
+            chartArea1.AxisX.Title = "毫秒(ms)";
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisX2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY.InterlacedColor = System.Drawing.Color.Red;
+            chartArea1.AxisY.IsLabelAutoFit = false;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.Red;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea1.AxisY.TitleAlignment = System.Drawing.StringAlignment.Far;
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.AxisY2.LineColor = System.Drawing.Color.Blue;
+            chartArea1.AxisY2.Maximum = 10D;
+            chartArea1.AxisY2.Minimum = 0D;
+            chartArea1.AxisY2.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.tableLayoutPanel1.SetColumnSpan(this.chart1, 2);
             resources.ApplyResources(this.chart1, "chart1");
-            legend10.Alignment = System.Drawing.StringAlignment.Center;
-            legend10.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend10.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend10.IsTextAutoFit = false;
-            legend10.Name = "Legend1";
-            legend10.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chart1.Legends.Add(legend10);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "Legend1";
+            legend1.TitleFont = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chart1.Legends.Add(legend1);
             this.chart1.Name = "chart1";
             this.tableLayoutPanel1.SetRowSpan(this.chart1, 2);
-            series19.BorderColor = System.Drawing.Color.White;
-            series19.ChartArea = "ChartArea1";
-            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series19.Color = System.Drawing.Color.Red;
-            series19.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series19.Legend = "Legend1";
-            series19.LegendText = "角度";
-            series19.MarkerBorderColor = System.Drawing.Color.Red;
-            series19.MarkerColor = System.Drawing.Color.Red;
-            series19.Name = "Series1";
-            series19.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series20.ChartArea = "ChartArea1";
-            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series20.Color = System.Drawing.Color.Blue;
-            series20.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series20.Legend = "Legend1";
-            series20.LegendText = "力矩(kgf.cm)";
-            series20.Name = "Series2";
-            series20.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
-            series20.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chart1.Series.Add(series19);
-            this.chart1.Series.Add(series20);
+            series1.BorderColor = System.Drawing.Color.White;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.Color = System.Drawing.Color.Red;
+            series1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.Legend = "Legend1";
+            series1.LegendText = "角度";
+            series1.MarkerBorderColor = System.Drawing.Color.Red;
+            series1.MarkerColor = System.Drawing.Color.Red;
+            series1.Name = "Series1";
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series2.Color = System.Drawing.Color.Blue;
+            series2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series2.Legend = "Legend1";
+            series2.LegendText = "力矩(kgf.cm)";
+            series2.Name = "Series2";
+            series2.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chart1.Series.Add(series1);
+            this.chart1.Series.Add(series2);
             // 
             // label30
             // 
@@ -1267,8 +1267,8 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label32;
-        private LBSoft.IndustrialCtrls.Leds.LBLed lbLed2;
-        private LBSoft.IndustrialCtrls.Leds.LBLed lbLed1;
+        private LBSoft.IndustrialCtrls.Leds.LBLed lab_plcState;
+        private LBSoft.IndustrialCtrls.Leds.LBLed lab_screwState;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label labelWorkMode;
         private System.Windows.Forms.Label label1StartTask;

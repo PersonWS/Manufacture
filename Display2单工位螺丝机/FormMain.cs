@@ -467,7 +467,7 @@ namespace ScrewMachineManagementSystem
             dataGridView1.Visible = true;
             dataGridView1.Dock = DockStyle.Fill;
             int cols = dataGridView1.Columns.Count;
-            int w = (dataGridView1.Parent.Width - 41) / (cols) - 3;
+            int w = (dataGridView1.Parent.Width - 39) / (cols) ;
             for (int i = 0; i < cols; i++)
             {
                 dataGridView1.Columns[i].Width = w;
@@ -1440,7 +1440,7 @@ namespace ScrewMachineManagementSystem
             dr2["序号"] = _dt_screwDataTable.Rows.Count + 1;
             dr2["角度"] = result.workResult.MonitorAngle;
             dr2["扭力"] = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString();
-            dr2["扭力结果"] = result.workResult.result == "OK" ? "OK" : "NG";            dr2["其他"] = result.workResult.result == "OK" ? "" : result.workResult.result;
+            dr2["扭力结果"] = result.workResultState ;            dr2["其他"] = result.ngCode;
             dr2["耗时(S)"] = result.workResult.Time;
             _dt_screwDataTable.Rows.Add(dr2);
 

@@ -468,7 +468,6 @@ namespace ScrewMachineManagementSystem
             {
                 dataGridView1.Columns[i].Width = w;
             }
-            dataGridView1.Rows.Clear();
 
         }
 
@@ -1343,24 +1342,25 @@ namespace ScrewMachineManagementSystem
                         DataTable dt = GenerateScrewDataTabel((ScrewWorkResult)item.analysisData);
                         this.Invoke(new Action(() =>
                         {
-                            this.dataGridView1.DataSource = dt.Copy();
-                            for (int i = 0; i < ((DataTable)this.dataGridView1.DataSource).Rows.Count; i++)
+                            lock (this)
                             {
-                                if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
+                                this.dataGridView1.DataSource = dt.Copy();
+                                for (int i = 0; i < ((DataTable)this.dataGridView1.DataSource).Rows.Count; i++)
                                 {
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
-                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                    if (((DataTable)this.dataGridView1.DataSource).Rows[i]["扭力结果"].ToString() == "OK")
+                                    {
+                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
+                                        dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                    }
+                                    else
+                                    {
+                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                        dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
+                                    }
                                 }
-                                else
-                                {
-                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                                    dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.White;
-                                }
+                                initDatagridview();
                             }
-                            foreach (DataRow item2 in ((DataTable)(dataGridView1.DataSource)).Rows)
-                            {
-                                
-                            }
+
                         }));
                         break;
                     case MIDType.ScrewWorkCurve:

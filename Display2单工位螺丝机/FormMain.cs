@@ -467,7 +467,7 @@ namespace ScrewMachineManagementSystem
             dataGridView1.Visible = true;
             dataGridView1.Dock = DockStyle.Fill;
             int cols = dataGridView1.Columns.Count;
-            int w = (dataGridView1.Parent.Width - 39) / (cols) ;
+            int w = (dataGridView1.Parent.Width - 41) / (cols) ;
             for (int i = 0; i < cols; i++)
             {
                 dataGridView1.Columns[i].Width = w;
@@ -1436,13 +1436,26 @@ namespace ScrewMachineManagementSystem
             //    _dt_screwDataTable.Rows.Add(dr);
             //}
 
-            DataRow dr2 = _dt_screwDataTable.NewRow();
-            dr2["序号"] = _dt_screwDataTable.Rows.Count + 1;
-            dr2["角度"] = result.workResult.MonitorAngle;
-            dr2["扭力"] = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString();
-            dr2["扭力结果"] = result.workResultState ;            dr2["其他"] = result.ngCode;
-            dr2["耗时(S)"] = result.workResult.Time;
-            _dt_screwDataTable.Rows.Add(dr2);
+            try
+            {
+                DataRow dr2 = _dt_screwDataTable.NewRow();
+                dr2["序号"] = _dt_screwDataTable.Rows.Count + 1;
+                dr2["角度"] = result.workResult.MonitorAngle;
+                string turbo = (Math.Round(Convert.ToDouble(result.workResult.Torque) / 0.098, 3)).ToString();
+                for (int i = 0; i < 3 - turbo.Split('.')[1].Length; i++)
+                {
+                    turbo += "0";
+                }
+                dr2["扭力"] = turbo;
+                dr2["扭力结果"] = result.workResultState;
+                dr2["其他"] = result.ngCode;
+                dr2["耗时(S)"] = result.workResult.Time;
+                _dt_screwDataTable.Rows.Add(dr2);
+            }
+            catch (Exception ex)
+            {
+                LogUtility.ErrorLog(ex, "GenerateScrewDataTabel");
+            }
 
             //Writelog(JsonConvert.SerializeObject(_dt_screwDataTable.Rows));
 

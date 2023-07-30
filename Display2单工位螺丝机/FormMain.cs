@@ -42,8 +42,12 @@ namespace ScrewMachineManagementSystem
         Color _color_ON = Color.Lime;
         Color _color_OFF = Color.DimGray;
 
-
+        /// <summary>
+        /// sn
+        /// </summary>
         string _SN;
+        System.Threading.Timer _timer_refreshTime;
+
         #endregion
 
 
@@ -285,7 +289,7 @@ namespace ScrewMachineManagementSystem
         private void FormMain_Load(object sender, EventArgs e)
         {
             LogHelper.WriteLog("系统启动");
-            labelTime.Text = DateTime.Now.ToString("yyyy-MM-dd  HH:mm:ss");
+            //labelTime.Text = DateTime.Now.ToString("yyyy-MM-dd  HH:mm:ss");
             initWorkStation();
             string AddressIp = string.Empty;
 
@@ -510,6 +514,8 @@ namespace ScrewMachineManagementSystem
             utility.struckScanProduct = new struckScanProductSN();
             luosiIsOver = true;
             timer1.Enabled = true;
+            this._timer_refreshTime = new System.Threading.Timer(Timer_refreshTime);
+            this._timer_refreshTime.Change(0, 1000);
         }
         private void FormMain_Activated(object sender, EventArgs e)
         {
@@ -548,23 +554,26 @@ namespace ScrewMachineManagementSystem
         /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Application.DoEvents();
-            labelTime.Text = DateTime.Now.ToString("yyyy-MM-dd  HH:mm:ss");
+            this.Invoke(new Action(() =>
+            {
+                labelTime.Text = DateTime.Now.ToString("yyyy-MM-dd  HH:mm:ss");
+            }));
+
             try
             {
-                comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
-                if (utility.boolClearDataGridView)
-                {
-                    dataGridView1.Rows.Clear();
-                    for (int irow = 0; irow < utility.structCurrentWorkTask.NumberOfScrews; irow++)
-                    {
-                        int rowindex = this.dataGridView1.Rows.Add();
-                        dataGridView1.Rows[irow].Cells[0].Value = rowindex + 1;
-                    }
-                    utility.boolClearDataGridView = false;
-                }
-                if (runtimes > 3000000)
-                    runtimes = 0;
+                //comboBoxLineMode.SelectedIndex = utility.dSV.workMode ? 1 : 0;
+                //if (utility.boolClearDataGridView)
+                //{
+                //    dataGridView1.Rows.Clear();
+                //    for (int irow = 0; irow < utility.structCurrentWorkTask.NumberOfScrews; irow++)
+                //    {
+                //        int rowindex = this.dataGridView1.Rows.Add();
+                //        dataGridView1.Rows[irow].Cells[0].Value = rowindex + 1;
+                //    }
+                //    utility.boolClearDataGridView = false;
+                //}
+                //if (runtimes > 3000000)
+                //    runtimes = 0;
 
                 //if (!utility.bool_Home)//提示请回原点
                 //{
@@ -645,15 +654,21 @@ namespace ScrewMachineManagementSystem
         }
 
 
+        private void Timer_refreshTime(object state)
+        {
+            this.Invoke(new Action(() =>
+            {
+                labelTime.Text = DateTime.Now.ToString("yyyy-MM-dd  HH:mm:ss");
+            }));
+        }
 
 
-
-        /// <summary>
-        /// 电批，slaveID=1
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timerRTU_Tick(object sender, EventArgs e)
+            /// <summary>
+            /// 电批，slaveID=1
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void timerRTU_Tick(object sender, EventArgs e)
         {
             if (!isRun) return;  //未运行
             Application.DoEvents();

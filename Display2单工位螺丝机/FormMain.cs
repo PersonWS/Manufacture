@@ -308,7 +308,7 @@ namespace ScrewMachineManagementSystem
             _is_LabelRefreshIng = true;
             ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
 
-
+             SystemInit();
             //TcpConnect();
             //if (socketSender.Connected)     //联通成功，与电批建立连接
             //{
@@ -331,7 +331,7 @@ namespace ScrewMachineManagementSystem
                 }
                 // PlcConnect();
 
-                // SystemInit();
+
 
                 _businessMain = CenterControl.BusinessMain.GetInstance();
                 _businessMain.MessageOutput += BusinessMainMessageOutput;
@@ -550,11 +550,11 @@ namespace ScrewMachineManagementSystem
         {
             //初始化软件各个状态恢复软件初始值同
             //需要在手动模式下显示系统初时置位DB28.DBX7.0 为 1 按钮松手为0 始化按钮
-            S7NetPlus.WriteDataBool(S7NetPlus.PLC_DSVLock_Bool, !utility.dSV.workMode);
-            isRun = false;
-            utility.struckScanProduct = new struckScanProductSN();
-            luosiIsOver = true;
-            timer1.Enabled = true;
+            //S7NetPlus.WriteDataBool(S7NetPlus.PLC_DSVLock_Bool, !utility.dSV.workMode);
+            //isRun = false;
+            //utility.struckScanProduct = new struckScanProductSN();
+            //luosiIsOver = true;
+            //timer1.Enabled = true;
             this._timer_refreshTime = new System.Threading.Timer(Timer_refreshTime);
             this._timer_refreshTime.Change(0, 1000);
         }

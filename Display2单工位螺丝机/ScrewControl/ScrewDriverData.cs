@@ -394,9 +394,8 @@ namespace ScrewMachineManagementSystem
                         case "90":
                             ngCode = "总时间超限";
                             break;
-                            break;
                         default:
-                            ngCode = "";
+                            ngCode = strA[2].Split('=')[1];
                             break;
                     }
                 }

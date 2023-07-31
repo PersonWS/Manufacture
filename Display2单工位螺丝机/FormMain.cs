@@ -1233,6 +1233,7 @@ namespace ScrewMachineManagementSystem
                 IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
+                FillInfoLog("开始连接电批...");
                 socketSender.Connect(point);
                 FillInfoLog("电批连接成功");
                 lab_screwState.LedColor = Color.Lime;
@@ -2535,5 +2536,19 @@ namespace ScrewMachineManagementSystem
             Thread.Sleep(1000);
         }
 
+        private void listBoxInfoLog_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            this.listBoxInfoLog.ItemHeight = 16;
+            e.DrawBackground();
+            e.DrawFocusRectangle();
+            StringFormat strFmt = new System.Drawing.StringFormat();
+            strFmt.Alignment = StringAlignment.Near; //文本垂直居中
+            strFmt.LineAlignment = StringAlignment.Center; //文本水平居中
+            if (e.Index==-1)
+            {
+                return;
+            }
+            e.Graphics.DrawString(listBoxInfoLog.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds, strFmt);
+        }
     }
 }

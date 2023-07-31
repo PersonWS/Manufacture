@@ -64,7 +64,7 @@ namespace ScrewMachineManagementSystem
         private void buttonOK_Click(object sender, EventArgs e)
         {
             Int32.TryParse(txt_SN_maxLength.Text, out _max_SN_Leng);
-            _SN_Code = txt_SN_Scan.Text;
+            _SN_Code = txt_SN_Scan.Text.Replace("\r","");
             //检查SN
             if (_SN_Code.Length > _max_SN_Leng)
             {

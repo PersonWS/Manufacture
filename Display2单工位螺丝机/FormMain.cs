@@ -1478,7 +1478,8 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_ScrewClearOK_apply, _color_ON);
             this.Invoke(new Action(() =>
             {
-                if (this.dataGridView1.DataSource != null)
+
+                if (this.dataGridView1.DataSource != null)//清理电批显示
                 {
                     lock (this.dataGridView1.DataSource)
                     {
@@ -1486,13 +1487,16 @@ namespace ScrewMachineManagementSystem
                     }
 
                 }
-                if (this._dt_screwDataTable != null)
+                if (this._dt_screwDataTable != null)//清理电批数据源
                 {
                     lock (this._dt_screwDataTable)
                     {
                         _dt_screwDataTable.Rows.Clear();
                     }
                 }
+                txt_plcSN.Text = "";
+                txt_scannerSN.Text = "";
+
 
             }));
             SetLabelForecolor(lab_ScrewClearOK_apply, _color_OFF);
@@ -2643,7 +2647,7 @@ namespace ScrewMachineManagementSystem
                     {
                         continue;
                     }
-                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) || _socketSender_screw == null|| !_socketSender_screw.Connected)
+                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) || _socketSender_screw == null || !_socketSender_screw.Connected)
                     {
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)

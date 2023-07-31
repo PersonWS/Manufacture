@@ -77,7 +77,7 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// ping 失败允许的最大次数
         /// </summary>
-        int _screw_maxPingCount = 5;
+        int _screw_maxPingCount = 2;
 
         int _screw_PingCount = 0;
 
@@ -2641,7 +2641,7 @@ namespace ScrewMachineManagementSystem
                 {
                     if (_isScrewConnecting)
                     {
-                        return;
+                        continue;
                     }
                     if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) || _socketSender_screw == null|| !_socketSender_screw.Connected)
                     {

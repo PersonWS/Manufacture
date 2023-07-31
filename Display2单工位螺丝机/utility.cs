@@ -721,6 +721,30 @@ namespace ScrewMachineManagementSystem
 
         }
 
+        /// <summary>
+        /// 是否能ping通指定的主机
+        /// </summary>
+        /// <param name="ip">ip地址</param>
+        /// <returns>true 通过 false 不通</returns>
+        public static bool Ping(string ip)
+        {
+            try
+            {
+                System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
+                System.Net.NetworkInformation.PingOptions options = new System.Net.NetworkInformation.PingOptions();
+                options.DontFragment = true;
+                string data = "test data!";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+                int timeout = 4000;
+                System.Net.NetworkInformation.PingReply reply = p.Send(ip, timeout, buffer, options);
+                return (reply.Status == System.Net.NetworkInformation.IPStatus.Success) ? true : false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
 
     }
 

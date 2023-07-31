@@ -46,6 +46,9 @@ namespace ScrewMachineManagementSystem
         /// sn
         /// </summary>
         string _SN;
+        /// <summary>
+        /// 刷新事件显示的定时器
+        /// </summary>
         System.Threading.Timer _timer_refreshTime;
         /// <summary>
         /// 是否正在进行初始化
@@ -53,7 +56,29 @@ namespace ScrewMachineManagementSystem
         bool _is_LabelRefreshIng = false;
 
         private static readonly object _lock_obj = new object();
+        /// <summary>
+        /// 电批数据接收的线程
+        /// </summary>
+        Thread _thread_ScrewDataReceive;
+        /// <summary>
+        /// 电批连接守护线程
+        /// </summary>
+        Thread _thread_ScrewDefender;
+        /// <summary>
+        /// 是否启用守护线程
+        /// </summary>
+        bool _isScrewDefender = false;
 
+        /// <summary>
+        /// 电批的socket连接
+        /// </summary>
+        Socket _socketSender_screw;
+        /// <summary>
+        /// ping 失败允许的最大次数
+        /// </summary>
+        int _screw_maxPingCount = 5;
+
+        int _screw_PingCount = 0;
         #endregion
 
 
@@ -308,7 +333,7 @@ namespace ScrewMachineManagementSystem
             _is_LabelRefreshIng = true;
             ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
 
-             SystemInit();
+            SystemInit();
             //TcpConnect();
             //if (socketSender.Connected)     //联通成功，与电批建立连接
             //{
@@ -324,10 +349,10 @@ namespace ScrewMachineManagementSystem
         {
             lock (_lock_obj)//防止多次执行
             {
-                TcpConnect();
-                if (socketSender.Connected)     //联通成功，与电批建立连接
+                TcpConnect(null);
+                if (_socketSender_screw.Connected)     //联通成功，与电批建立连接
                 {
-                    socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+                    _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
                 }
                 // PlcConnect();
 
@@ -1220,30 +1245,31 @@ namespace ScrewMachineManagementSystem
             }
         }
 
-        Socket socketSender;
         /// <summary>
         /// 电批连接
         /// </summary>
-        void TcpConnect()
+        void TcpConnect(object obj)
         {
             try
             {
                 //Create socket
-                socketSender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socketSender_screw = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
                 FillInfoLog("开始连接电批...");
-                socketSender.Connect(point);
+                _socketSender_screw.Connect(point);
+                ScrewDefenderThreadStart();
                 FillInfoLog("电批连接成功");
                 lab_screwState.LedColor = Color.Lime;
-                socketSender.Send(DNKE_DKTCP.Cmd_DisConnect);
+                _socketSender_screw.Send(DNKE_DKTCP.Cmd_DisConnect);
                 LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                 //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
                 //Start a new thread and keep receiving messages sent by the server
-                Thread Client_Td = new Thread(ReciveMessages);
-                Client_Td.IsBackground = true;
-                Client_Td.Start();
+                _thread_ScrewDataReceive = new Thread(ReciveMessages);
+                _thread_ScrewDataReceive.Name = "_thread_ScrewDataReceive";
+                _thread_ScrewDataReceive.IsBackground = true;
+                _thread_ScrewDataReceive.Start();
 
 
             }
@@ -1269,17 +1295,17 @@ namespace ScrewMachineManagementSystem
 
             byte[] b2 = new byte[2048];
 
-            int r1 = socketSender.Receive(b2);
+            int r1 = _socketSender_screw.Receive(b2);
             LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
             //订阅运行状态
             LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
-            int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
-            r1 = socketSender.Receive(b2);
+            int s = _socketSender_screw.Send(DNKE_DKTCP.Cmd_RunningState);
+            r1 = _socketSender_screw.Receive(b2);
             LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
             //订阅拧紧结果
             LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
-            r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
-            r1 = socketSender.Receive(b2);
+            r1 = _socketSender_screw.Send(DNKE_DKTCP.Cmd_TighteningResults);
+            r1 = _socketSender_screw.Receive(b2);
             LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
 
             while (true)
@@ -1290,7 +1316,7 @@ namespace ScrewMachineManagementSystem
                     // return;
 
                     byte[] buffer = new byte[2048];
-                    int r = socketSender.Receive(buffer);
+                    int r = _socketSender_screw.Receive(buffer);
                     //DebugInfo("TCP接收:" + r);
                     if (r > 0)
                     {
@@ -1511,17 +1537,17 @@ namespace ScrewMachineManagementSystem
 
             try
             {
-                int r1 = socketSender.Receive(b2);
+                int r1 = _socketSender_screw.Receive(b2);
                 LogUtility.ErrorLog_custom("握手信号已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
                 //订阅运行状态
                 LogUtility.ErrorLog_custom("订阅运行状态发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_RunningState));
-                int s = socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
-                r1 = socketSender.Receive(b2);
+                int s = _socketSender_screw.Send(DNKE_DKTCP.Cmd_RunningState);
+                r1 = _socketSender_screw.Receive(b2);
                 LogUtility.ErrorLog_custom("订阅运行状态已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
                 //订阅拧紧结果
                 LogUtility.ErrorLog_custom("订阅拧紧结果发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_TighteningResults));
-                r1 = socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
-                r1 = socketSender.Receive(b2);
+                r1 = _socketSender_screw.Send(DNKE_DKTCP.Cmd_TighteningResults);
+                r1 = _socketSender_screw.Receive(b2);
                 LogUtility.ErrorLog_custom("订阅拧紧结果已接收：" + BitConverter.ToString(b2.Skip(0).Take(r1).ToArray()));
             }
             catch (Exception e)
@@ -1537,7 +1563,7 @@ namespace ScrewMachineManagementSystem
                     // return;
 
                     byte[] buffer = new byte[2048];
-                    int r = socketSender.Receive(buffer);
+                    int r = _socketSender_screw.Receive(buffer);
                     //DebugInfo("TCP接收:" + r);
                     if (r > 0)
                     {
@@ -2235,11 +2261,11 @@ namespace ScrewMachineManagementSystem
                 timer3.Enabled = true;
                 timerRTU.Enabled = true;
                 FillMakeLog("订阅电批消息");
-                socketSender.Send(DNKE_DKTCP.Cmd_TighteningResults);
+                _socketSender_screw.Send(DNKE_DKTCP.Cmd_TighteningResults);
                 Thread.Sleep(100);
-                socketSender.Send(DNKE_DKTCP.Cmd_RunningState);
+                _socketSender_screw.Send(DNKE_DKTCP.Cmd_RunningState);
                 Thread.Sleep(100);
-                socketSender.Send(DNKE_DKTCP.Cmd_RealCurveData);
+                _socketSender_screw.Send(DNKE_DKTCP.Cmd_RealCurveData);
             }
         }
         /// <summary>
@@ -2505,18 +2531,15 @@ namespace ScrewMachineManagementSystem
             try
             {
                 FillInfoLog("强制中断电批连接...");
-                if (socketSender != null)
-                {
-                    socketSender.Disconnect(false);
-                    socketSender.Dispose();
-                }
+                ScrewDefenderThreadStop();
+                ScrewDisConnect();
+
+
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }
-            finally
-            { socketSender = null; FillInfoLog("电批连接已断开"); }
 
             try
             {
@@ -2538,17 +2561,114 @@ namespace ScrewMachineManagementSystem
 
         private void listBoxInfoLog_DrawItem(object sender, DrawItemEventArgs e)
         {
-            this.listBoxInfoLog.ItemHeight = 16;
-            e.DrawBackground();
-            e.DrawFocusRectangle();
-            StringFormat strFmt = new System.Drawing.StringFormat();
-            strFmt.Alignment = StringAlignment.Near; //文本垂直居中
-            strFmt.LineAlignment = StringAlignment.Center; //文本水平居中
-            if (e.Index==-1)
+            try
+            {
+                this.listBoxInfoLog.ItemHeight = 16;
+                e.DrawBackground();
+                e.DrawFocusRectangle();
+                StringFormat strFmt = new System.Drawing.StringFormat();
+                strFmt.Alignment = StringAlignment.Near; //文本垂直居中
+                strFmt.LineAlignment = StringAlignment.Center; //文本水平居中
+                if (e.Index == -1)
+                {
+                    return;
+                }
+                e.Graphics.DrawString(listBoxInfoLog.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds, strFmt);
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
+        private void ScrewDefenderThreadStart()
+        {
+            if (_thread_ScrewDefender != null)
             {
                 return;
             }
-            e.Graphics.DrawString(listBoxInfoLog.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds, strFmt);
+            _thread_ScrewDefender = new Thread(ScrewDefenderProcess);
+            _thread_ScrewDefender.Name = "_thread_ScrewDefender";
+            _thread_ScrewDefender.IsBackground = true;
+            _isScrewDefender = true;
+            _screw_PingCount = 0;
+            _thread_ScrewDefender.Start();
+            FillInfoLog("电批守护线程已启动");
         }
+        /// <summary>
+        /// 停止守护线程
+        /// </summary>
+        private void ScrewDefenderThreadStop()
+        {
+            //停止守护线程
+            _isScrewDefender = false;
+            try
+            {
+                Thread.Sleep(200);
+                if (_thread_ScrewDefender != null)
+                {
+                    _thread_ScrewDefender.Abort();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            { _thread_ScrewDefender = null; FillInfoLog("电批守护线程已停止"); }
+        }
+        private void ScrewDefenderProcess()
+        {
+            try
+            {
+
+                while (_isScrewDefender)
+                {
+                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                    {
+                        _screw_PingCount++;
+                        if (_screw_PingCount >= _screw_maxPingCount)
+                        {
+                            FillInfoLog("电批Ping失败已达最大次数，准备重新进行电批连接..");
+                            this.ScrewDisConnect();
+                            ThreadPool.QueueUserWorkItem(TcpConnect, null);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogUtility.ErrorLog(e, "ScrewDefenderProcess");
+            }
+        }
+
+        private void ScrewDisConnect()
+        {
+
+
+            //中断连接
+            try
+            {
+                if (_socketSender_screw != null)
+                {
+                    _socketSender_screw.Disconnect(false);
+                    _socketSender_screw.Dispose();
+
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            { _socketSender_screw = null; FillInfoLog("电批连接已断开"); }
+
+
+        }
+
+
+
     }
 }

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DsPrintInfo" targetNamespace="http://tempuri.org/DsPrintInfo.xsd" xmlns:mstns="http://tempuri.org/DsPrintInfo.xsd" xmlns="http://tempuri.org/DsPrintInfo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DsPrintInfo" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DsPrintInfo" msprop:Generator_UserDSName="DsPrintInfo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="th_print" msprop:Generator_TableClassName="th_printDataTable" msprop:Generator_TableVarName="tableth_print" msprop:Generator_RowChangedName="th_printRowChanged" msprop:Generator_TablePropName="th_print" msprop:Generator_RowDeletingName="th_printRowDeleting" msprop:Generator_RowChangingName="th_printRowChanging" msprop:Generator_RowEvHandlerName="th_printRowChangeEventHandler" msprop:Generator_RowDeletedName="th_printRowDeleted" msprop:Generator_RowClassName="th_printRow" msprop:Generator_UserTableName="th_print" msprop:Generator_RowEvArgName="th_printRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DateTime" msdata:Caption="日期" msprop:Generator_ColumnVarNameInTable="columnDateTime" msprop:Generator_ColumnPropNameInRow="DateTime" msprop:Generator_ColumnPropNameInTable="DateTimeColumn" msprop:Generator_UserColumnName="DateTime" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IDCode" msdata:Caption="ID码" msprop:Generator_ColumnVarNameInTable="columnIDCode" msprop:Generator_ColumnPropNameInRow="IDCode" msprop:Generator_ColumnPropNameInTable="IDCodeColumn" msprop:Generator_UserColumnName="IDCode" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SNCode" msdata:Caption="SN码" msprop:Generator_ColumnVarNameInTable="columnSNCode" msprop:Generator_ColumnPropNameInRow="SNCode" msprop:Generator_ColumnPropNameInTable="SNCodeColumn" msprop:Generator_UserColumnName="SNCode" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BarCode" msdata:Caption="二维码" msprop:Generator_ColumnVarNameInTable="columnBarCode" msprop:Generator_ColumnPropNameInRow="BarCode" msprop:Generator_ColumnPropNameInTable="BarCodeColumn" msprop:Generator_UserColumnName="BarCode" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

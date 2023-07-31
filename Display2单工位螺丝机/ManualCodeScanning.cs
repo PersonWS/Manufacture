@@ -18,32 +18,96 @@ using System.Globalization;
 using static Dapper.SqlMapper;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading.Tasks;
+using ScrewMachineManagementSystem.Contract;
+using System.Data;
+using ScrewMachineManagementSystem.Print;
+using DevExpress.XtraReports.UI;
+using System.Collections.Generic;
 
 namespace ScrewMachineManagementSystem
 {
     public partial class ManualCodeScanning : Form
     {
+        string printerName = "ZDesigner ZD888-203dpi";
+        private string textBox1Text = "QWERT";
+        string[] barCodes;
+        //string[] barCodes = new string[29] {
 
-        [DllImport("Fnthex32.dll")]
 
-        //public static extern int GETFONTHEX(
-        //                      string BarcodeText,
-        //                      string FontName,
+        //           //"^LT0",
+        //           //"^MNW",
+        //           //"^MTT",
+        //           //"^PON",
+        //           //"^PMN",
+        //           //"^LH0,0",
+        //           //"^JMA",
+        //           //"^PR6,6",
+        //           //"~SD15",
+        //           //"^JUS",
+        //           //"^LRN",
+        //           //"^CI27",
+        //           //"^PA0,1,1,0",
+        //           //"^XZ",
+        //           //"^XA",
+        //           //"^MMT",
+        //           //"^PW240",
+        //           //"^LL128",
+        //           //"^LS0",
+        //           //@"^FT93,68^A0N,23,23^FH\^CI28^FDID:ppp123456^FS^CI27",
+        //           //"^FT6,119^BQN,2,3",
+        //           //@"^FH\^FDLA,P123456789001234567891234567^FS",
+        //           //@"^FT93,104^A0N,23,23^FH\^CI28^FDSN:PP123456^FS^CI27",
+        //           //@"^FT10,30^A0N,23,23^FH\^CI28^FDP123465^FS^CI27",
+        //           //"^PQ1,0,1,Y",
+        //           //"^XZ"
 
-        //                      int Orient,
-        //                      int Height,
-        //                      int Width,
-        //                      int IsBold,
-        //                      int IsItalic,
-        //                      StringBuilder ReturnBarcodeCMD);
+        //            "^XA",
+        //            "~TA000",
+        //            "~JSN",
+        //            "^LT0",
+        //            "^MNW",
+        //            "^MTT",
+        //            "^PON",
+        //            "^PMN",
+        //            "^LH0,0",
+        //            "^JMA",
+        //            "^PR6,6",
+        //            "~SD15",
+        //            "^JUS",
+        //            "^LRN",
+        //            "^CI27",
+        //            "^PA0,1,1,0",
+        //            "^XZ",
+        //            "^XA",
+        //            "^MMT",
+        //            "^PW240",
+        //            "^LL128",
+        //            "^LS0",
+        //            @"^FT103,73^A0N,23,23^FH\^CI28^FDID:QFGJIF^FS^CI27",
+        //            @"^FT19,122^BQN,2,3",
+        //            @"^FH\^FDLA,P123456789001234567891234567^FS",
+        //            @"^FT103,109^A0N,23,23^FH\^CI28^FDSN:PP123456^FS^CI27",
+        //            @"^FT17,35^A0N,23,23^FH\^CI28^FDP123465^FS^CI27",
+        //            "^PQ1,0,1,Y",
+        //            "^XZ"
 
-        public static extern int GETFONTHEX(string BarcodeText, string FontName, string FileName, int Orient, int Height, int Width, int IsBold, int IsItalic, StringBuilder ReturnBarcodeCMD);
+
+
+        //       };
+
+
 
         public ManualCodeScanning()
         {
-
+            
             InitializeComponent();
-            pictureBox2.Image = Generate1("5985959599", 30, 30);
+            CreatePrintTemplateFolder();
+            //GetPrintTemplateData();
+            textBox1.Text = textBox1Text;
+            textBox1.Enabled = false;
+            button2.Visible = false;
+            button3.Visible = false;
+            //execFile(printerName, "5595959595959");
         }
         private void FormSeletY_Load(object sender, EventArgs e)
         {
@@ -200,7 +264,8 @@ namespace ScrewMachineManagementSystem
                         Writelog("2_" + keyInputs);
                         pictureBox2.Image = Generate1(keyInputs, 30, 30);
                         Writelog("打印二维码开始！" + keyInputs);
-                        //Print(keyInputs);
+                        execFile(printerName, keyInputs);
+                        //Output(keyInputs);
                         //dd();
                     }
                     //keyInputs = labelSN.Text.ToUpper();  文本框测试用
@@ -226,46 +291,105 @@ namespace ScrewMachineManagementSystem
         #region 二维码
 
 
-
-
-
-
-
-
-
-        public static void dd()
+        private void GetPrintTemplateData()
         {
             try
             {
+                string path = AppDomain.CurrentDomain.BaseDirectory + "\\CreatePrintTemplateFolder\\PrintTemplate.prn";
+                
+                if (!File.Exists(path))
+                {
+                    MessageBox.Show("打印失败，配置文件PrintTemplate.prn已丢失！请联系管理员！");
+                    return;
+                }
 
+                FileStream aFile = new FileStream(@"CreatePrintTemplateFolder\\PrintTemplate.prn", FileMode.Open);
+                StreamReader stream = new StreamReader(aFile);
+                string strLine = stream.ReadLine();
+               
+                var list = new List<string>();
 
-                //string sBarCodeCMD = "";            //条码打印命令
-                //StringBuilder sb1 = new StringBuilder(50240);
-
-                //int i1;
-                //i1 = GETFONTHEX("定向天线，DXX-1885-2025/25555-2635-90/65-14.5i/15.8i-", "Arial", 0, 30, 20, 0, 0, sb1);
-                //sb1 = sb1.Replace("PrintTemplate", "ok01");
-                //sBarCodeCMD = sb1.ToString() + "^XA^MD30^LH20,20^FO20,20^XGok01,1,1^FS^XZ"; Console.WriteLine(sBarCodeCMD);
-                ////Open();
-                ////PrintZPL(sBarCodeCMD);
-                ////Close();
-
-
-
-                ////string sBarCodeCMD;
-                ////StringBuilder sb1 = new StringBuilder(10240);
-                ////int i1;
-                ////i1 = GETFONTHEX("需要用到的变量", "黑体", "PrintTemplate.prn", 0, 20, 20, 1, 0, sb1);
-                ////sBarCodeCMD = sb1.ToString().Remove(0, 19).Replace("\n", "");
-                //Writelog("123,打印开始");
+                while (strLine != null)
+                {
+                    list.Add(strLine);
+                    strLine = stream.ReadLine();
+                }
+                stream.Close();
+                barCodes = list.ToArray();
             }
             catch (Exception ex)
             {
 
-                Writelog(ex.Message);
+                throw;
             }
 
 
+        }
+
+
+        private bool execFile(string printername, string codes)
+        {
+            try
+            {
+                GetPrintTemplateData();
+
+                Writelog("二维码方法进入,参数：" + printername + "_" + codes);
+                int index = 0;
+                string[] array = new string[this.barCodes.Length];
+                this.barCodes.CopyTo(array, 0);
+
+
+                for (int i = 0; i < this.barCodes.Length; i++)
+                {
+                    if (array[i].Contains("P123456789001234567891234567"))
+                    {
+                        array[i] = array[i].Replace("P123456789001234567891234567", codes);
+                    }
+                    else if (array[i].Contains("PPBB"))
+                    {
+                        array[i] = array[i].Replace("PPBB", codes.Substring(codes.Length - 7, 7));
+                    }
+                    else if (array[i].Contains("DT1013/22"))
+                    {
+                        array[i] = array[i].Replace("DT1013/22", "DT" + codes.Substring(6, 4) + "/" + codes.Substring(10, 2));
+                    }
+                    else if (array[i].Contains("PPPA"))
+                    {
+                        array[i] = array[i].Replace("PPPA", textBox1.Text);
+                    }
+                }
+
+
+                StreamWriter writer = new StreamWriter("execFile.prn", false, Encoding.UTF8);
+                while (index < array.Length)
+                {
+                    Writelog("标识日志");
+                    writer.WriteLine(array[index]);
+                    index++;
+                }
+                writer.Close();
+                Writelog("打印完毕");
+
+                var res = ZebraPrintHelper.SendFileToPrinter(printername, "execFile.prn");
+
+                if (res)
+                {
+                    MessageBox.Show("打印成功呢");
+                }
+                else
+                {
+                    MessageBox.Show("打印失败呢");
+
+                }
+
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Writelog("打印异常：" + ex.Message);
+                return false;
+            }
         }
 
         public void Print(string no)
@@ -313,7 +437,45 @@ namespace ScrewMachineManagementSystem
 
         }
 
+        private XtraPrint xtraPrint { get; set; }
 
+        /// <summary>
+        /// 打印
+        /// </summary>
+        /// <param name="no"></param>
+        /// <returns></returns>
+        public bool Output(string no)
+        {
+            Writelog("打印方法进入");
+            bool result = false;
+            DsPrintInfo ds = new DsPrintInfo();
+            DataRow drNew = ds.th_print.NewRow();
+            drNew["DateTime"] = DateTime.Now.ToString();
+            drNew["IDCode"] = "456789";
+            drNew["SNCode"] = "123456";
+            drNew["BarCode"] = "666666";
+            ds.th_print.Rows.Add(drNew);
+
+            xtraPrint = new XtraPrint();
+            xtraPrint.DataSource = ds;
+            xtraPrint.DataMember = "th_print";
+            xtraPrint.CreateDocument();
+            xtraPrint.PrintingSystem.ShowMarginsWarning = false;
+            try
+            {
+                //测试注释
+                xtraPrint.Print();
+                Writelog("打了");
+                xtraPrint.Dispose();    //释放资源
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Writelog("异常了," + ex.Message);
+            }
+            return result;
+        }
 
 
 
@@ -409,6 +571,26 @@ namespace ScrewMachineManagementSystem
 
             labelSN_M.ForeColor = labelSN_M.Text == "请扫描产品SN" ? Color.LightGray : Color.Black;
         }
+        /// <summary>
+        /// 程序启动时，检测是否有打印模板文件夹，没有则创建一个
+        /// </summary>
+
+        private static void CreatePrintTemplateFolder()
+        {
+            StreamWriter stream;
+            //写⼊⽇志内容
+
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\CreatePrintTemplateFolder";
+
+            //检查上传的物理路径是否存在，不存在则创建
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+
+            }
+        }
+
         private static void Writelog(string msg)
         {
 
@@ -492,6 +674,45 @@ namespace ScrewMachineManagementSystem
             keyInputs = "";
             //labelSN.Text = "";
             labelSN_M.Text = "";
+        }
+
+        /// <summary>
+        /// 标识码修改
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBox1.Enabled = true;
+            button2.Visible = true;
+            button3.Visible = true;
+            button1.Visible = false;
+        }
+        /// <summary>
+        /// 标识码确认
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBox1Text = textBox1.Text;
+            textBox1.Enabled = false;
+            button2.Visible = false;
+            button3.Visible = false;
+            button1.Visible = true;
+        }
+        /// <summary>
+        /// 标识码修改取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = textBox1Text;
+            textBox1.Enabled = false;
+            button2.Visible = false;
+            button3.Visible = false;
+            button1.Visible = true;
         }
     }
 }

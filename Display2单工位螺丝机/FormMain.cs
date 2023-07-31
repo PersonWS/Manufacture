@@ -439,19 +439,27 @@ namespace ScrewMachineManagementSystem
             _is_frm_GetSN_Closed = false;
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
-            if (_frm_GetSN == null)
+            if (_frm_GetSN != null)
             {
-                _frm_GetSN = new Frm_GetSN();
-                _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
-                _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+                FillInfoLog("检测到SN扫码窗体已打开，关闭窗体");
+                _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
+                _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
+                try
+                {
+                    _frm_GetSN.Close(); _frm_GetSN.Dispose();
+                }
+                catch (Exception)
+                {
+                }
 
-                DialogResult dr = _frm_GetSN.ShowDialog();
             }
-            else //窗体已打开则中断程序
-            {
-                FillInfoLog("检测到SN扫码窗体已打开，本次申请无效...");
-                Thread.ResetAbort();
-            }
+            _frm_GetSN = new Frm_GetSN();
+            _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
+            _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+
+            DialogResult dr = _frm_GetSN.ShowDialog();
+            //                Thread.ResetAbort();
+
 
             //while (!_is_frm_GetSN_Closed)
             //{

@@ -18,7 +18,7 @@
 	</param>
 	<param PID="4" ParamName="PLC_IP">
 		<!--<DefaultValue>10.217.17.5</DefaultValue>-->
-    <DefaultValue>10.217.17.5</DefaultValue>
+    <DefaultValue>192.168.31.254</DefaultValue>
 		<Description>PLC网络IP</Description>
 		<Remark>PLC网络IP</Remark>;
   </param>

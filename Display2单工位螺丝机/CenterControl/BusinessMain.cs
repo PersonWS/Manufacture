@@ -283,6 +283,8 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <param name="value"></param>
         public bool ClearScrewTableData()
         {
+            MessageOutPutMethod("收到表格清空请求,清理上次的遗留状态，清理开始...");
+            ClearPointData_Reset0();
             if (Need_ClearScrewData != null)
             {
                 if (Need_ClearScrewData())
@@ -405,6 +407,42 @@ namespace ScrewMachineManagementSystem.CenterControl
         public void SN_CodeRequest(PLC_Point point)
         {
             MessageOutPutMethod("SN码写入前,清理上次的遗留状态，清理开始...");
+            ClearPointData_Reset0();
+
+
+            if (Need_SN_Request != null)//向外部请求SN码
+            {
+                string snCode = Need_SN_Request();
+                if (!string.IsNullOrEmpty(_SN_code))//如果
+                {
+                    MessageOutPutMethod(string.Format("已获得SN:{0} ,本次传入的SN:{1}不生效", _SN_code, snCode));
+                    return;
+                }
+                if (string.IsNullOrEmpty(snCode))
+                {
+                    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
+                    point.value = false;
+                }
+                else
+                {
+                    if (!WriteSN_ToPLC(snCode))
+                    {
+                        MessageOutPutMethod("SN写入失败，准备重新发起SN申请，SN码请求  需为 1");
+                        point.value = false;
+                    }
+
+                }
+            }
+            else
+            { MessageOutPutMethod("外部未传入SN，请检查【Need_SN_Request】事件是否已订阅"); }
+
+        }
+
+        /// <summary>
+        /// 清理点位的数据，使其置位为0
+        /// </summary>
+        private void ClearPointData_Reset0()
+        {
             //首先清除上一次的所有指令
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = false;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
@@ -436,32 +474,6 @@ namespace ScrewMachineManagementSystem.CenterControl
             _isResultUpload = false;
             _isManufactureResult = false;
             MessageOutPutMethod("PLC 加工结果收到 已清除");
-            if (Need_SN_Request != null)//向外部请求SN码
-            {
-                string snCode = Need_SN_Request();
-                if (!string.IsNullOrEmpty(_SN_code))//如果
-                {
-                    MessageOutPutMethod(string.Format("已获得SN:{0} ,本次传入的SN:{1}不生效", _SN_code, snCode));
-                    return;
-                }
-                if (string.IsNullOrEmpty(snCode))
-                {
-                    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
-                    point.value = false;
-                }
-                else
-                {
-                    if (!WriteSN_ToPLC(snCode))
-                    {
-                        MessageOutPutMethod("SN写入失败，准备重新发起SN申请，SN码请求  需为 1");
-                        point.value = false;
-                    }
-
-                }
-            }
-            else
-            { MessageOutPutMethod("外部未传入SN，请检查【Need_SN_Request】事件是否已订阅"); }
-
         }
 
         /// <summary>

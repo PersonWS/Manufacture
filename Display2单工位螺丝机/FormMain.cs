@@ -2663,7 +2663,9 @@ namespace ScrewMachineManagementSystem
 
             }
             finally
-            { _socketSender_screw = null; FillInfoLog("电批连接已断开"); }
+            {
+                SetLabel_LED_Forecolor(this.lab_screwState, _color_OFF);
+                _socketSender_screw = null; FillInfoLog("电批连接已断开"); }
 
 
         }

@@ -341,6 +341,12 @@
     <Compile Include="ManualCodeScanning.Designer.cs">
       <DependentUpon>ManualCodeScanning.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewForm\Frm_GetSN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewForm\Frm_GetSN.Designer.cs">
+      <DependentUpon>Frm_GetSN.cs</DependentUpon>
+    </Compile>
     <Compile Include="Print\XtraPrint.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -699,6 +705,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageResponseDialog.resx">
       <DependentUpon>MessageResponseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewForm\Frm_GetSN.resx">
+      <DependentUpon>Frm_GetSN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Print\XtraPrint.resx">
       <DependentUpon>XtraPrint.cs</DependentUpon>

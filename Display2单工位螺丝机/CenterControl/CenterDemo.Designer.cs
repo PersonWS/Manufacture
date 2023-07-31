@@ -44,8 +44,13 @@
             this.btn_StopCenterControl = new System.Windows.Forms.Button();
             this.btn_clearLog = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lab_screwClear_plc = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lab_ScrewClearOK_apply = new System.Windows.Forms.Label();
+            this.lab_ScrewClearOK = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.lab_manufactureResultRecept_apply = new System.Windows.Forms.Label();
@@ -79,11 +84,8 @@
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.btn_ClearScrew = new System.Windows.Forms.Button();
-            this.lab_screwClear_plc = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.lab_ScrewClearOK_apply = new System.Windows.Forms.Label();
-            this.lab_ScrewClearOK = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
+            this.chk_subscribe = new System.Windows.Forms.CheckBox();
+            this.btn_clearScrewForce = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -200,7 +202,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 22);
+            this.label10.Location = new System.Drawing.Point(12, 13);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(119, 12);
             this.label10.TabIndex = 11;
@@ -211,7 +213,7 @@
             this.lab_PLC_ConnectState.AutoSize = true;
             this.lab_PLC_ConnectState.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lab_PLC_ConnectState.ForeColor = System.Drawing.Color.Red;
-            this.lab_PLC_ConnectState.Location = new System.Drawing.Point(134, 20);
+            this.lab_PLC_ConnectState.Location = new System.Drawing.Point(134, 11);
             this.lab_PLC_ConnectState.Name = "lab_PLC_ConnectState";
             this.lab_PLC_ConnectState.Size = new System.Drawing.Size(28, 19);
             this.lab_PLC_ConnectState.TabIndex = 12;
@@ -259,6 +261,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC-->PC[DB2001]";
             // 
+            // lab_screwClear_plc
+            // 
+            this.lab_screwClear_plc.AutoSize = true;
+            this.lab_screwClear_plc.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_screwClear_plc.Location = new System.Drawing.Point(154, 196);
+            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
+            this.lab_screwClear_plc.Size = new System.Drawing.Size(28, 19);
+            this.lab_screwClear_plc.TabIndex = 20;
+            this.lab_screwClear_plc.Text = "●";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(23, 198);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(131, 12);
+            this.label20.TabIndex = 19;
+            this.label20.Text = "表格清空 [1.DBX0.4]：";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -296,6 +318,37 @@
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "PC-->PLC[DB2002]";
+            // 
+            // lab_ScrewClearOK_apply
+            // 
+            this.lab_ScrewClearOK_apply.AutoSize = true;
+            this.lab_ScrewClearOK_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_ScrewClearOK_apply.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK_apply.Location = new System.Drawing.Point(181, 237);
+            this.lab_ScrewClearOK_apply.Name = "lab_ScrewClearOK_apply";
+            this.lab_ScrewClearOK_apply.Size = new System.Drawing.Size(28, 19);
+            this.lab_ScrewClearOK_apply.TabIndex = 23;
+            this.lab_ScrewClearOK_apply.Text = "●";
+            // 
+            // lab_ScrewClearOK
+            // 
+            this.lab_ScrewClearOK.AutoSize = true;
+            this.lab_ScrewClearOK.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lab_ScrewClearOK.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ScrewClearOK.Location = new System.Drawing.Point(147, 237);
+            this.lab_ScrewClearOK.Name = "lab_ScrewClearOK";
+            this.lab_ScrewClearOK.Size = new System.Drawing.Size(28, 19);
+            this.lab_ScrewClearOK.TabIndex = 22;
+            this.lab_ScrewClearOK.Text = "●";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(25, 240);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(125, 12);
+            this.label22.TabIndex = 21;
+            this.label22.Text = "表格已清[2.DBX0.5]：";
             // 
             // label12
             // 
@@ -579,12 +632,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btn_clearScrewForce);
             this.groupBox3.Controls.Add(this.btn_SNForceWrite);
             this.groupBox3.Controls.Add(this.btn_forceResultOK);
             this.groupBox3.Controls.Add(this.btn_ForceManufacturePermission);
             this.groupBox3.Location = new System.Drawing.Point(14, 344);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(464, 103);
+            this.groupBox3.Size = new System.Drawing.Size(616, 103);
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
@@ -592,9 +646,9 @@
             // btn_SNForceWrite
             // 
             this.btn_SNForceWrite.Enabled = false;
-            this.btn_SNForceWrite.Location = new System.Drawing.Point(38, 20);
+            this.btn_SNForceWrite.Location = new System.Drawing.Point(22, 20);
             this.btn_SNForceWrite.Name = "btn_SNForceWrite";
-            this.btn_SNForceWrite.Size = new System.Drawing.Size(136, 68);
+            this.btn_SNForceWrite.Size = new System.Drawing.Size(110, 68);
             this.btn_SNForceWrite.TabIndex = 31;
             this.btn_SNForceWrite.Text = "强制SN写入";
             this.btn_SNForceWrite.UseVisualStyleBackColor = true;
@@ -603,9 +657,9 @@
             // btn_forceResultOK
             // 
             this.btn_forceResultOK.Enabled = false;
-            this.btn_forceResultOK.Location = new System.Drawing.Point(322, 20);
+            this.btn_forceResultOK.Location = new System.Drawing.Point(254, 20);
             this.btn_forceResultOK.Name = "btn_forceResultOK";
-            this.btn_forceResultOK.Size = new System.Drawing.Size(136, 68);
+            this.btn_forceResultOK.Size = new System.Drawing.Size(110, 68);
             this.btn_forceResultOK.TabIndex = 30;
             this.btn_forceResultOK.Text = "强制结果收到";
             this.btn_forceResultOK.UseVisualStyleBackColor = true;
@@ -614,9 +668,9 @@
             // btn_ForceManufacturePermission
             // 
             this.btn_ForceManufacturePermission.Enabled = false;
-            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(180, 20);
+            this.btn_ForceManufacturePermission.Location = new System.Drawing.Point(138, 20);
             this.btn_ForceManufacturePermission.Name = "btn_ForceManufacturePermission";
-            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(136, 68);
+            this.btn_ForceManufacturePermission.Size = new System.Drawing.Size(110, 68);
             this.btn_ForceManufacturePermission.TabIndex = 29;
             this.btn_ForceManufacturePermission.Text = "强制允许加工";
             this.btn_ForceManufacturePermission.UseVisualStyleBackColor = true;
@@ -633,62 +687,33 @@
             this.btn_ClearScrew.UseVisualStyleBackColor = true;
             this.btn_ClearScrew.Click += new System.EventHandler(this.button1_Click_2);
             // 
-            // lab_screwClear_plc
+            // chk_subscribe
             // 
-            this.lab_screwClear_plc.AutoSize = true;
-            this.lab_screwClear_plc.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_screwClear_plc.Location = new System.Drawing.Point(154, 196);
-            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
-            this.lab_screwClear_plc.Size = new System.Drawing.Size(28, 19);
-            this.lab_screwClear_plc.TabIndex = 20;
-            this.lab_screwClear_plc.Text = "●";
+            this.chk_subscribe.AutoSize = true;
+            this.chk_subscribe.Location = new System.Drawing.Point(14, 33);
+            this.chk_subscribe.Name = "chk_subscribe";
+            this.chk_subscribe.Size = new System.Drawing.Size(132, 16);
+            this.chk_subscribe.TabIndex = 30;
+            this.chk_subscribe.Text = "订阅事件[仅调试用]";
+            this.chk_subscribe.UseVisualStyleBackColor = true;
             // 
-            // label20
+            // btn_clearScrewForce
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(23, 198);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(131, 12);
-            this.label20.TabIndex = 19;
-            this.label20.Text = "表格清空 [1.DBX0.4]：";
-            // 
-            // lab_ScrewClearOK_apply
-            // 
-            this.lab_ScrewClearOK_apply.AutoSize = true;
-            this.lab_ScrewClearOK_apply.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_ScrewClearOK_apply.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_ScrewClearOK_apply.Location = new System.Drawing.Point(181, 237);
-            this.lab_ScrewClearOK_apply.Name = "lab_ScrewClearOK_apply";
-            this.lab_ScrewClearOK_apply.Size = new System.Drawing.Size(28, 19);
-            this.lab_ScrewClearOK_apply.TabIndex = 23;
-            this.lab_ScrewClearOK_apply.Text = "●";
-            // 
-            // lab_ScrewClearOK
-            // 
-            this.lab_ScrewClearOK.AutoSize = true;
-            this.lab_ScrewClearOK.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lab_ScrewClearOK.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_ScrewClearOK.Location = new System.Drawing.Point(147, 237);
-            this.lab_ScrewClearOK.Name = "lab_ScrewClearOK";
-            this.lab_ScrewClearOK.Size = new System.Drawing.Size(28, 19);
-            this.lab_ScrewClearOK.TabIndex = 22;
-            this.lab_ScrewClearOK.Text = "●";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(25, 240);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(125, 12);
-            this.label22.TabIndex = 21;
-            this.label22.Text = "表格已清[2.DBX0.5]：";
+            this.btn_clearScrewForce.Enabled = false;
+            this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
+            this.btn_clearScrewForce.Name = "btn_clearScrewForce";
+            this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
+            this.btn_clearScrewForce.TabIndex = 32;
+            this.btn_clearScrewForce.Text = "强制清表格";
+            this.btn_clearScrewForce.UseVisualStyleBackColor = true;
+            this.btn_clearScrewForce.Click += new System.EventHandler(this.btn_clearScrewForce_Click);
             // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 637);
+            this.Controls.Add(this.chk_subscribe);
             this.Controls.Add(this.btn_ClearScrew);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btn_saveReult);
@@ -782,5 +807,7 @@
         private System.Windows.Forms.Label lab_ScrewClearOK;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button btn_ClearScrew;
+        private System.Windows.Forms.CheckBox chk_subscribe;
+        private System.Windows.Forms.Button btn_clearScrewForce;
     }
 }

@@ -323,6 +323,21 @@ namespace ScrewMachineManagementSystem
             {
                 workResult = new ScrewWorkResult_StageResult(null, strA[0],strA[1]);
             }
+            if (strA[1].Contains("00011"))
+            {
+                if (strA[1].Split('=').Length==2)
+                {
+                    string ab = strA[1].Split('=')[1];
+                    if (ab == "1")
+                    {
+                        workResultState = "OK";
+                    }
+                    else if (ab == "2")
+                    { workResultState = "NG"; }
+                    else
+                    { workResultState = ab; }
+                } 
+            }
             //解析NG结果
             if (strA[2].Contains("00012"))
             {
@@ -346,8 +361,41 @@ namespace ScrewMachineManagementSystem
                         case "04":
                             ngCode = "最终角度过小";
                             break;
+                        case "11":
+                            ngCode = "第1步扭矩过大";
+                            break;
+                        case "21":
+                            ngCode = "第2步扭矩过大";
+                            break;
+                        case "31":
+                            ngCode = "第3步扭矩过大";
+                            break;
+                        case "41":
+                            ngCode = "第4步扭矩过大";
+                            break;
+                        case "51":
+                            ngCode = "第5步扭矩过大";
+                            break;
+                        case "12":
+                            ngCode = "第1步时间超限";
+                            break;
+                        case "22":
+                            ngCode = "第2步时间超限";
+                            break;
+                        case "32":
+                            ngCode = "第3步时间超限";
+                            break;
+                        case "42":
+                            ngCode = "第4步时间超限";
+                            break;
+                        case "52":
+                            ngCode = "第5步时间超限";
+                            break;
+                        case "90":
+                            ngCode = "总时间超限";
+                            break;
                         default:
-                            ngCode = "";
+                            ngCode = strA[2].Split('=')[1];
                             break;
                     }
                 }

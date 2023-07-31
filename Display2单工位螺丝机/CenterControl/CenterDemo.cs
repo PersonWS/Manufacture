@@ -53,12 +53,16 @@ namespace ScrewMachineManagementSystem.CenterControl
 
             _businessMain.MessageOutput += MessageOutput;
             //订阅关键事件
-            _businessMain.Need_SN_Request -= Need_SN_Request;
-            _businessMain.Need_SN_Request += Need_SN_Request;
-            _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
-            _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
-            _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
-            _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+            if (chk_subscribe.Checked)
+            {
+                _businessMain.Need_SN_Request -= Need_SN_Request;
+                _businessMain.Need_SN_Request += Need_SN_Request;
+                _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
+                _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
+                _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
+                _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
+            }
+
             _isMonitor = true;
             ShowMessage("准备启动主服务...");
 
@@ -423,6 +427,17 @@ namespace ScrewMachineManagementSystem.CenterControl
         private void button1_Click_2(object sender, EventArgs e)
         {
             _bool_Need_ClearScrewData = true;
+        }
+
+        private void btn_clearScrewForce_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show("强制【表格清空】会清理掉电批显示的数据，确认执行码？", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                if (_businessMain.ClearScrewTableData())
+                { ShowMessage("强制【表格清空】成功"); }
+                else
+                { ShowMessage("强制【表格清空】失败"); }
+            }
         }
     }
 }

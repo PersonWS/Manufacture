@@ -354,7 +354,7 @@ namespace ScrewMachineManagementSystem
             {
                 TcpConnect(null);
                 ScrewDefenderThreadStart();
-                if (_socketSender_screw!=null&&_socketSender_screw.Connected)     //联通成功，与电批建立连接
+                if (_socketSender_screw != null && _socketSender_screw.Connected)     //联通成功，与电批建立连接
                 {
                     _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
                 }
@@ -1263,7 +1263,7 @@ namespace ScrewMachineManagementSystem
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
                 FillInfoLog("开始连接电批...");
-                if (LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
                 {
                     FillInfoLog("电批连接失败，请检查网络连接是否正常");
                     _isScrewConnecting = false;
@@ -2639,7 +2639,11 @@ namespace ScrewMachineManagementSystem
 
                 while (_isScrewDefender)
                 {
-                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) && !_isScrewConnecting && _socketSender_screw != null && !_socketSender_screw.Connected)
+                    if (_isScrewConnecting)
+                    {
+                        return;
+                    }
+                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) || _socketSender_screw == null|| !_socketSender_screw.Connected)
                     {
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)
@@ -2693,7 +2697,8 @@ namespace ScrewMachineManagementSystem
             finally
             {
                 SetLabel_LED_Forecolor(this.lab_screwState, _color_OFF);
-                _socketSender_screw = null; FillInfoLog("电批连接已断开"); }
+                _socketSender_screw = null; FillInfoLog("电批连接已断开");
+            }
 
 
         }

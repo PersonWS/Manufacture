@@ -77,6 +77,15 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 清理电批数据请求
         /// </summary>
         public event Func<bool> Need_ClearScrewData;
+        /// <summary>
+        /// 业务启动成功
+        /// </summary>
+        public event Action BusinessStartedEvent;
+        /// <summary>
+        /// 业务停止
+        /// </summary>
+        public event Action BusinessStopedEvent;
+
 
         public static object obj = new object();
         /// <summary>
@@ -109,15 +118,46 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (businessMain == null)
             {
                 businessMain = new BusinessMain();
+                _registerID = 0;
             }
             _registerID++;
             return businessMain;
+        }
+
+        public void Dispose()
+        {
+            _registerID--;
+            if (_registerID <= 0)
+            {
+                if (_plc_monitor != null)
+                {
+                    _plc_monitor.Stop();//停止监控\
+                    _plc_monitor = null;
+                }
+                if (_plcConnect != null)
+                {
+                    _plcConnect.DisConnect();
+                    _plcConnect = null;
+                }
+                if (BusinessStopedEvent != null)
+                {
+                    BusinessStopedEvent();
+                }
+                _isBusinessStart = false;
+                businessMain = null;
+            }
+
+
+
         }
 
 
         private void Initialize()
         {
             _listWriteFailedPoint = new List<PLC_Point>();
+            // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            _plc_monitor = new PLC_Monitor(_plcConnect, 200);
         }
 
         public bool BusinessStart()
@@ -127,19 +167,26 @@ namespace ScrewMachineManagementSystem.CenterControl
                 MessageOutPutMethod("Business already  Start ");
                 return true;
             }
-            // _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plc_monitor = new PLC_Monitor(_plcConnect, 200);
-            _plcConnect.MessageOutput -= MessageOutput;
-            _plcConnect.MessageOutput += MessageOutput;
+            ////检查实例
+            //if (_plcConnect==null)
+            //{
+            //    _plcConnect = new PLC_Connect(CpuType.S71200, ConfigurationKeys.PLC_IP, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
+            //}
+            //if (_plc_monitor==null)
+            //{
+            //    _plc_monitor = new PLC_Monitor(_plcConnect, 200);
+            //}
+
+            _plcConnect.MessageOutput -= MessageOutPutMethod;
+            _plcConnect.MessageOutput += MessageOutPutMethod;
 
             _plcConnect.PointWriteFail -= WriteFailCallBack;
             _plcConnect.PointWriteFail += WriteFailCallBack;
 
 
 
-            _plc_monitor.MessageOutput -= MessageOutput;
-            _plc_monitor.MessageOutput += MessageOutput;
+            _plc_monitor.MessageOutput -= MessageOutPutMethod;
+            _plc_monitor.MessageOutput += MessageOutPutMethod;
 
             _plc_monitor.pointValueChanged -= PointValueChanged;
             _plc_monitor.pointValueChanged += PointValueChanged;
@@ -148,6 +195,10 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (a)
             {
                 _isBusinessStart = true;
+                if (BusinessStartedEvent != null)
+                {
+                    BusinessStartedEvent();
+                }
             }
             return a;
 
@@ -200,15 +251,20 @@ namespace ScrewMachineManagementSystem.CenterControl
                     case "表格清空"://表格清空 为1 时清螺丝机电批数据
                         if ((bool)point.value == true)
                         {
-                            EmptyTableDataReset();
-                            MessageOutPutMethod("表格清空,电批表格数据已清空");
+                            MessageOutPutMethod("表格清空信号=1  ，准备清空电批数据");
+                            ClearScrewTableData();//置为1时清理电批数据
+                            //MessageOutPutMethod("表格清空,电批表格数据已清空");
                         }
-                        else
+                        else//置为 0时将 表格已清空信号 复位为0
                         {
-                            //EmptyTableDataReset(false);
+                            ResetScrewDataClearSignal();
                             MessageOutPutMethod("表格清空,电批表格数据已清空,信号复位");
                         }
                         break;
+                    case "SN码":
+                        _SN_code = (string)point.value;
+                        break;
+
                     default:
                         break;
                 }
@@ -225,40 +281,53 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// 表格已清空 信号的写入与复位
         /// </summary>
         /// <param name="value"></param>
-        private void EmptyTableDataReset()
+        public bool ClearScrewTableData()
         {
             if (Need_ClearScrewData != null)
             {
-
                 if (Need_ClearScrewData())
                 {
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = true;
                     if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]))//写入成功 
                     {
                         MessageOutPutMethod("电批数据已清空");
+                        return true;
                     }
                     else
                     {
-                        MessageOutPutMethod("电批数据显示反馈结果设置失败，重新发起电批数据清理");
+                        MessageOutPutMethod("电批数据显示反馈结果设置失败，准备重新发起电批数据清理，表格清空  需为 1");
                         BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+                        return false;
                     }
-
-
                 }
                 else
                 {
-                    MessageOutPutMethod("电批数据显示清理失败，重新发起电批数据清理");
+                    MessageOutPutMethod("电批数据显示清理失败，准备重新发起电批数据清理，表格清空  需为 1");
                     BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+                    return false;
                 }
-
-
-
-
             }
             else
             {
                 MessageOutPutMethod("未执行清理电批数据任务，请检查【Need_ClearScrewData】事件是否已订阅");
+                return false;
             }
+        }
+
+        private void ResetScrewDataClearSignal()
+        {
+            BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = false;
+            if (WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]))//写入成功 
+            {
+                MessageOutPutMethod("[表格已清空] 信号复位为  0  成功");
+            }
+            else
+            {
+                MessageOutPutMethod("[表格已清空] 信号复位为  0  失败 ，准备重新写入");
+                BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格清空"].value = false;
+            }
+
+
         }
         /// <summary>
         /// 加工结果输出
@@ -341,7 +410,6 @@ namespace ScrewMachineManagementSystem.CenterControl
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
             MessageOutPutMethod("表格已清空 已清除");
 
-            //BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = Encoding.ASCII.GetString(new byte[28]);
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = null;
             WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
 
@@ -378,14 +446,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 if (string.IsNullOrEmpty(snCode))
                 {
-                    MessageOutPutMethod("外部传入SN为空，即将重新发起SN申请");
+                    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
                     point.value = false;
                 }
                 else
                 {
                     if (!WriteSN_ToPLC(snCode))
                     {
-                        MessageOutPutMethod("SN写入失败，即将重新发起SN申请");
+                        MessageOutPutMethod("SN写入失败，准备重新发起SN申请，SN码请求  需为 1");
                         point.value = false;
                     }
 
@@ -426,6 +494,8 @@ namespace ScrewMachineManagementSystem.CenterControl
             if (string.IsNullOrEmpty(_SN_code))
             {
                 MessageOutPutMethod("收到加工请求，但SN码未写入，不处理");
+                point.value = false;
+                System.Threading.Thread.Sleep(1000);
                 return;
             }
             if (Need_lastProcessName_Request != null)
@@ -438,13 +508,15 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 if (string.IsNullOrEmpty(lastProcessIn))
                 {
-                    MessageOutPutMethod("外部传入的上一工序为空，即将重新发起工序校验申请");
+                    MessageOutPutMethod("外部传入的上一工序为空，准备重新发起工序校验申请，是否加工  需为 1");
+                    System.Threading.Thread.Sleep(1000);
                     point.value = false;
                     return;
                 }
                 if (!LastProcessNameCheck(lastProcessIn))
                 {
-                    MessageOutPutMethod("写入工序校验结果失败，即将重新发起工序校验申请");
+                    MessageOutPutMethod("写入工序校验结果失败，准备重新发起工序校验申请，是否加工  需为 1");
+                    System.Threading.Thread.Sleep(1000);
                     point.value = false;
                 }
                 else
@@ -537,9 +609,17 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public void BusinessStop()
         {
-            _plc_monitor.Stop();//停止监控
-            _plcConnect.DisConnect();
-            _isBusinessStart = false;
+            if (_plc_monitor != null)
+            {
+                _plc_monitor.Stop();//停止监控\
+            }
+            if (_plcConnect != null)
+            {
+                _plcConnect.DisConnect();
+            }
+
+
+
 
         }
 

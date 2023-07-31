@@ -1914,6 +1914,9 @@
   <data name="labelMin.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
+  <data name="labelMin.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;labelMin.Name" xml:space="preserve">
     <value>labelMin</value>
   </data>
@@ -1946,6 +1949,9 @@
   </data>
   <data name="labelExit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
+  </data>
+  <data name="labelExit.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;labelExit.Name" xml:space="preserve">
     <value>labelExit</value>
@@ -2923,9 +2929,6 @@
         AB/8AAAAAAAAP/wAAAAAAAA//gAAAAAAAH/+AAAAAAAAf/4AAAAAAAB//8AAAAAAA///8AAAAAAP///8
         AAAAAD////+AAAAB/////+AAAAf//////AAAP///////AAD///8=
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

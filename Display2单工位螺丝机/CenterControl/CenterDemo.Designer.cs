@@ -87,6 +87,7 @@
             this.btn_ClearScrew = new System.Windows.Forms.Button();
             this.chk_subscribe = new System.Windows.Forms.CheckBox();
             this.btn_resetAllData = new System.Windows.Forms.Button();
+            this.btn_scanner = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -234,9 +235,9 @@
             // 
             // btn_clearLog
             // 
-            this.btn_clearLog.Location = new System.Drawing.Point(672, 438);
+            this.btn_clearLog.Location = new System.Drawing.Point(713, 426);
             this.btn_clearLog.Name = "btn_clearLog";
-            this.btn_clearLog.Size = new System.Drawing.Size(100, 36);
+            this.btn_clearLog.Size = new System.Drawing.Size(59, 36);
             this.btn_clearLog.TabIndex = 14;
             this.btn_clearLog.Text = "clear Message";
             this.btn_clearLog.UseVisualStyleBackColor = true;
@@ -721,11 +722,22 @@
             this.btn_resetAllData.UseVisualStyleBackColor = true;
             this.btn_resetAllData.Click += new System.EventHandler(this.btn_resetAllData_Click);
             // 
+            // btn_scanner
+            // 
+            this.btn_scanner.Location = new System.Drawing.Point(648, 425);
+            this.btn_scanner.Name = "btn_scanner";
+            this.btn_scanner.Size = new System.Drawing.Size(59, 36);
+            this.btn_scanner.TabIndex = 31;
+            this.btn_scanner.Text = "扫码";
+            this.btn_scanner.UseVisualStyleBackColor = true;
+            this.btn_scanner.Click += new System.EventHandler(this.btn_scanner_Click);
+            // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 637);
+            this.Controls.Add(this.btn_scanner);
             this.Controls.Add(this.chk_subscribe);
             this.Controls.Add(this.btn_ClearScrew);
             this.Controls.Add(this.groupBox3);
@@ -823,5 +835,6 @@
         private System.Windows.Forms.CheckBox chk_subscribe;
         private System.Windows.Forms.Button btn_clearScrewForce;
         private System.Windows.Forms.Button btn_resetAllData;
+        private System.Windows.Forms.Button btn_scanner;
     }
 }

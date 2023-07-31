@@ -450,5 +450,11 @@ namespace ScrewMachineManagementSystem.CenterControl
                 { ShowMessage("【重置DB2002所有状 态数据[置位为0]】失败"); }
             }
         }
+
+        private void btn_scanner_Click(object sender, EventArgs e)
+        {
+            Frm_GetSN f = new Frm_GetSN();
+            f.ShowDialog();
+        }
     }
 }

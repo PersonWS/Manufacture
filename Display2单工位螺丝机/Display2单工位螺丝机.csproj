@@ -44,6 +44,9 @@
   <PropertyGroup>
     <ApplicationIcon>abncu-hkalz-002.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BitMiracle.LibTiff.NET, Version=2.4.649.0, Culture=neutral, PublicKeyToken=53879b3e20e7a7d6, processorArchitecture=MSIL">
       <HintPath>packages\BitMiracle.LibTiff.NET.2.4.649\lib\net40\BitMiracle.LibTiff.NET.dll</HintPath>
@@ -539,6 +542,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="DOC\display2线三工位工位FS-DS-01%281%29.xlsx" />
     <None Include="DOC\display2线双工位FS-DS-02.xlsx" />
     <None Include="DOC\DK-AC使用说明书-20220120 .pdf" />

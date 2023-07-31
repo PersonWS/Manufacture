@@ -308,7 +308,7 @@ namespace ScrewMachineManagementSystem
             _is_LabelRefreshIng = true;
             ThreadPool.QueueUserWorkItem(InitializeWhileFormOpen, null);
 
-
+             SystemInit();
             //TcpConnect();
             //if (socketSender.Connected)     //联通成功，与电批建立连接
             //{
@@ -331,7 +331,7 @@ namespace ScrewMachineManagementSystem
                 }
                 // PlcConnect();
 
-                // SystemInit();
+
 
                 _businessMain = CenterControl.BusinessMain.GetInstance();
                 _businessMain.MessageOutput += BusinessMainMessageOutput;
@@ -550,11 +550,11 @@ namespace ScrewMachineManagementSystem
         {
             //初始化软件各个状态恢复软件初始值同
             //需要在手动模式下显示系统初时置位DB28.DBX7.0 为 1 按钮松手为0 始化按钮
-            S7NetPlus.WriteDataBool(S7NetPlus.PLC_DSVLock_Bool, !utility.dSV.workMode);
-            isRun = false;
-            utility.struckScanProduct = new struckScanProductSN();
-            luosiIsOver = true;
-            timer1.Enabled = true;
+            //S7NetPlus.WriteDataBool(S7NetPlus.PLC_DSVLock_Bool, !utility.dSV.workMode);
+            //isRun = false;
+            //utility.struckScanProduct = new struckScanProductSN();
+            //luosiIsOver = true;
+            //timer1.Enabled = true;
             this._timer_refreshTime = new System.Threading.Timer(Timer_refreshTime);
             this._timer_refreshTime.Change(0, 1000);
         }
@@ -1233,6 +1233,7 @@ namespace ScrewMachineManagementSystem
                 IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
+                FillInfoLog("开始连接电批...");
                 socketSender.Connect(point);
                 FillInfoLog("电批连接成功");
                 lab_screwState.LedColor = Color.Lime;
@@ -2535,5 +2536,19 @@ namespace ScrewMachineManagementSystem
             Thread.Sleep(1000);
         }
 
+        private void listBoxInfoLog_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            this.listBoxInfoLog.ItemHeight = 16;
+            e.DrawBackground();
+            e.DrawFocusRectangle();
+            StringFormat strFmt = new System.Drawing.StringFormat();
+            strFmt.Alignment = StringAlignment.Near; //文本垂直居中
+            strFmt.LineAlignment = StringAlignment.Center; //文本水平居中
+            if (e.Index==-1)
+            {
+                return;
+            }
+            e.Graphics.DrawString(listBoxInfoLog.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds, strFmt);
+        }
     }
 }

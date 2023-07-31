@@ -1266,6 +1266,7 @@ namespace ScrewMachineManagementSystem
                 if (LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
                 {
                     FillInfoLog("电批连接失败，请检查网络连接是否正常");
+                    _isScrewConnecting = false;
                     return;
                 }
 
@@ -2638,7 +2639,7 @@ namespace ScrewMachineManagementSystem
 
                 while (_isScrewDefender)
                 {
-                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1)&&!_isScrewConnecting)
+                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1) && !_isScrewConnecting && _socketSender_screw != null && !_socketSender_screw.Connected)
                     {
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)

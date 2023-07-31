@@ -30,6 +30,7 @@ namespace ScrewMachineManagementSystem
     {
         string printerName = "ZDesigner ZD888-203dpi";
         private string textBox1Text = "QWERT";
+        private string SN = "";
         string[] barCodes;
         //string[] barCodes = new string[29] {
 
@@ -99,7 +100,7 @@ namespace ScrewMachineManagementSystem
 
         public ManualCodeScanning()
         {
-            
+
             InitializeComponent();
             CreatePrintTemplateFolder();
             //GetPrintTemplateData();
@@ -239,6 +240,7 @@ namespace ScrewMachineManagementSystem
 
         private void FormSeletY_KeyPress(object sender, KeyPressEventArgs e)
         {
+            label5.Text = SN;
             switch (e.KeyChar)
             {
                 // case (char)Keys.Back:
@@ -257,17 +259,8 @@ namespace ScrewMachineManagementSystem
                 default:
                     keyInputs = keyInputs + ((char)e.KeyChar).ToString().ToUpper();
 
-                    labelSN_M.Text = keyInputs;
 
-                    if (keyInputs.Length == 28)
-                    {
-                        Writelog("2_" + keyInputs);
-                        pictureBox2.Image = Generate1(keyInputs, 30, 30);
-                        Writelog("打印二维码开始！" + keyInputs);
-                        execFile(printerName, keyInputs);
-                        //Output(keyInputs);
-                        //dd();
-                    }
+                   
                     //keyInputs = labelSN.Text.ToUpper();  文本框测试用
                     int len = keyInputs.Length;
                     if (len > 0)
@@ -285,6 +278,26 @@ namespace ScrewMachineManagementSystem
                     }
                     break;
 
+
+                    if (keyInputs.Length == 28)
+                    {
+                        labelSN_M.Text = keyInputs;
+
+                        if (SN.Equals(keyInputs))
+                        {
+                            MessageBox.Show("打印失败，该码已打印，请勿重复打印！");
+                            return;
+                        }
+                        Writelog("2_" + keyInputs);
+                        pictureBox2.Image = Generate1(keyInputs, 30, 30);
+                        Writelog("打印二维码开始！" + keyInputs);
+                        SN = keyInputs;
+                        execFile(printerName, keyInputs);
+                        //Output(keyInputs);
+                        //dd();
+                    }
+
+                    Writelog(keyInputs);
             }
         }
 
@@ -296,7 +309,7 @@ namespace ScrewMachineManagementSystem
             try
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory + "\\CreatePrintTemplateFolder\\PrintTemplate.prn";
-                
+
                 if (!File.Exists(path))
                 {
                     MessageBox.Show("打印失败，配置文件PrintTemplate.prn已丢失！请联系管理员！");
@@ -306,7 +319,7 @@ namespace ScrewMachineManagementSystem
                 FileStream aFile = new FileStream(@"CreatePrintTemplateFolder\\PrintTemplate.prn", FileMode.Open);
                 StreamReader stream = new StreamReader(aFile);
                 string strLine = stream.ReadLine();
-               
+
                 var list = new List<string>();
 
                 while (strLine != null)
@@ -363,7 +376,7 @@ namespace ScrewMachineManagementSystem
                 StreamWriter writer = new StreamWriter("execFile.prn", false, Encoding.UTF8);
                 while (index < array.Length)
                 {
-                    Writelog("标识日志");
+                    //Writelog("标识日志");
                     writer.WriteLine(array[index]);
                     index++;
                 }

@@ -441,39 +441,46 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// <summary>
         /// 清理点位的数据，使其置位为0
         /// </summary>
-        private void ClearPointData_Reset0()
+        public bool ClearPointData_Reset0()
         {
             //首先清除上一次的所有指令
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"].value = false;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
+           bool a=  WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["表格已清空"]);
             MessageOutPutMethod("表格已清空 已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"].value = null;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
+            bool b = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["SN码"]);
 
             MessageOutPutMethod("PLC SN码已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"].value = false;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"]);
+            bool c= WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["允许加工请求"]);
 
             MessageOutPutMethod("PLC 允许加工请求 已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"].value = false;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"]);
+            bool d = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["禁止加工请求"]);
             MessageOutPutMethod("PLC 禁止加工请求 已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"].value = false;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"]);
+            bool e = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["互锁结果"]);
             _interlockCheck = false;
             MessageOutPutMethod("PLC 互锁结果 已清除");
 
             BusinessNeedPlcPoint.Dic_gatherPLC_Point["加工结果收到"].value = false;
-            WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["加工结果收到"]);
+            bool f = WriteData_RetryLimit5(BusinessNeedPlcPoint.Dic_gatherPLC_Point["加工结果收到"]);
             _SN_code = "";
             _isManufacturePermission = false;
             _isResultUpload = false;
             _isManufactureResult = false;
             MessageOutPutMethod("PLC 加工结果收到 已清除");
+
+            if (a && b && c && d && e && f)
+            {
+                return true;
+            }
+            else
+            { return false; }
         }
 
         /// <summary>

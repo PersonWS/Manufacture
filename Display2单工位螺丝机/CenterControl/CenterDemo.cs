@@ -439,5 +439,16 @@ namespace ScrewMachineManagementSystem.CenterControl
                 { ShowMessage("强制【表格清空】失败"); }
             }
         }
+
+        private void btn_resetAllData_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show("强制【清空所有数据】会使DB2002所有的点位数据置位为0，确认执行码？", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                if (_businessMain.ClearPointData_Reset0())
+                { ShowMessage("【重置DB2002所有状 态数据[置位为0]】成功"); }
+                else
+                { ShowMessage("【重置DB2002所有状 态数据[置位为0]】失败"); }
+            }
+        }
     }
 }

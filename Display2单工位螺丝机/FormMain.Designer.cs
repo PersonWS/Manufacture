@@ -75,8 +75,6 @@ namespace ScrewMachineManagementSystem
             this.label29 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
-            this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
             this.labelRunMode = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.listBoxInfoLog = new System.Windows.Forms.ListBox();
@@ -114,6 +112,8 @@ namespace ScrewMachineManagementSystem
             this.labelExit = new System.Windows.Forms.Label();
             this.labelLogin = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
+            this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
             this.groupBox3.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -401,37 +401,6 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
-            // 
-            // lab_plcState
-            // 
-            this.lab_plcState.BackColor = System.Drawing.Color.Transparent;
-            this.lab_plcState.BlinkInterval = 500;
-            resources.ApplyResources(this.lab_plcState, "lab_plcState");
-            this.lab_plcState.ForeColor = System.Drawing.Color.Black;
-            this.lab_plcState.Label = "PLC";
-            this.lab_plcState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lab_plcState.LedColor = System.Drawing.Color.Gray;
-            this.lab_plcState.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lab_plcState.Name = "lab_plcState";
-            this.lab_plcState.Renderer = null;
-            this.lab_plcState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lab_plcState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
-            // 
-            // lab_screwState
-            // 
-            this.lab_screwState.BackColor = System.Drawing.Color.Transparent;
-            this.lab_screwState.BlinkInterval = 500;
-            resources.ApplyResources(this.lab_screwState, "lab_screwState");
-            this.lab_screwState.ForeColor = System.Drawing.Color.Black;
-            this.lab_screwState.Label = "电批";
-            this.lab_screwState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
-            this.lab_screwState.LedColor = System.Drawing.Color.Gray;
-            this.lab_screwState.LedSize = new System.Drawing.SizeF(20F, 20F);
-            this.lab_screwState.Name = "lab_screwState";
-            this.lab_screwState.Renderer = null;
-            this.lab_screwState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
-            this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
-            this.lab_screwState.Tag = "";
             // 
             // labelRunMode
             // 
@@ -775,12 +744,43 @@ namespace ScrewMachineManagementSystem
             this.tableLayoutPanel1.Controls.Add(this.groupBox3, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
+            // lab_plcState
+            // 
+            this.lab_plcState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_plcState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_plcState, "lab_plcState");
+            this.lab_plcState.ForeColor = System.Drawing.Color.Black;
+            this.lab_plcState.Label = "PLC";
+            this.lab_plcState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_plcState.LedColor = System.Drawing.Color.Gray;
+            this.lab_plcState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_plcState.Name = "lab_plcState";
+            this.lab_plcState.Renderer = null;
+            this.lab_plcState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_plcState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
+            // 
+            // lab_screwState
+            // 
+            this.lab_screwState.BackColor = System.Drawing.Color.Transparent;
+            this.lab_screwState.BlinkInterval = 500;
+            resources.ApplyResources(this.lab_screwState, "lab_screwState");
+            this.lab_screwState.ForeColor = System.Drawing.Color.Black;
+            this.lab_screwState.Label = "电批";
+            this.lab_screwState.LabelPosition = LBSoft.IndustrialCtrls.Leds.LBLed.LedLabelPosition.Right;
+            this.lab_screwState.LedColor = System.Drawing.Color.Gray;
+            this.lab_screwState.LedSize = new System.Drawing.SizeF(20F, 20F);
+            this.lab_screwState.Name = "lab_screwState";
+            this.lab_screwState.Renderer = null;
+            this.lab_screwState.State = LBSoft.IndustrialCtrls.Leds.LBLed.LedState.On;
+            this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
+            this.lab_screwState.Tag = "";
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "FormMain";
             this.Activated += new System.EventHandler(this.FormMain_Activated);

@@ -350,7 +350,8 @@ namespace ScrewMachineManagementSystem
             lock (_lock_obj)//防止多次执行
             {
                 TcpConnect(null);
-                if (_socketSender_screw.Connected)     //联通成功，与电批建立连接
+                ScrewDefenderThreadStart();
+                if (_socketSender_screw!=null&&_socketSender_screw.Connected)     //联通成功，与电批建立连接
                 {
                     _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
                 }
@@ -1258,10 +1259,14 @@ namespace ScrewMachineManagementSystem
                 IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                 //Get the IP address and port number of the remote server
                 FillInfoLog("开始连接电批...");
+                if (LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                {
+                    FillInfoLog("电批连接失败，请检查网络连接是否正常");
+                    return;
+                }
                 _socketSender_screw.Connect(point);
-                ScrewDefenderThreadStart();
+                SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
                 FillInfoLog("电批连接成功");
-                lab_screwState.LedColor = Color.Lime;
                 _socketSender_screw.Send(DNKE_DKTCP.Cmd_DisConnect);
                 LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                 //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
@@ -2633,9 +2638,10 @@ namespace ScrewMachineManagementSystem
                             FillInfoLog("电批Ping失败已达最大次数，准备重新进行电批连接..");
                             this.ScrewDisConnect();
                             ThreadPool.QueueUserWorkItem(TcpConnect, null);
-
+                            _screw_PingCount = 0;
                         }
                     }
+                    Thread.Sleep(500);
                 }
             }
             catch (Exception e)
@@ -2646,7 +2652,20 @@ namespace ScrewMachineManagementSystem
 
         private void ScrewDisConnect()
         {
+            //中断接收线程
+            try
+            {
+                if (_thread_ScrewDataReceive != null)
+                {
+                    _thread_ScrewDataReceive.Abort();
+                }
+            }
+            catch (Exception)
+            {
 
+                ;
+            }
+            finally { _thread_ScrewDataReceive = null; }
 
             //中断连接
             try

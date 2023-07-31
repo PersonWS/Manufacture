@@ -69,6 +69,7 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         bool _isScrewDefender = false;
 
+        bool _isScrewConnecting = false;
         /// <summary>
         /// 电批的socket连接
         /// </summary>
@@ -79,6 +80,8 @@ namespace ScrewMachineManagementSystem
         int _screw_maxPingCount = 5;
 
         int _screw_PingCount = 0;
+
+
         #endregion
 
 
@@ -1253,6 +1256,7 @@ namespace ScrewMachineManagementSystem
         {
             try
             {
+                _isScrewConnecting = true;
                 //Create socket
                 _socketSender_screw = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
@@ -1264,6 +1268,7 @@ namespace ScrewMachineManagementSystem
                     FillInfoLog("电批连接失败，请检查网络连接是否正常");
                     return;
                 }
+
                 _socketSender_screw.Connect(point);
                 SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
                 FillInfoLog("电批连接成功");
@@ -1275,6 +1280,7 @@ namespace ScrewMachineManagementSystem
                 _thread_ScrewDataReceive.Name = "_thread_ScrewDataReceive";
                 _thread_ScrewDataReceive.IsBackground = true;
                 _thread_ScrewDataReceive.Start();
+                _isScrewConnecting = false;
 
 
             }
@@ -1283,6 +1289,8 @@ namespace ScrewMachineManagementSystem
                 lab_screwState.LedColor = Color.Gray;
                 FillInfoLog("电批连接失败，" + ex.Message);
             }
+            finally
+            { _isScrewConnecting = false; }
         }
 
         private readonly ManualResetEvent TimeoutObject = new ManualResetEvent(false);
@@ -2630,7 +2638,7 @@ namespace ScrewMachineManagementSystem
 
                 while (_isScrewDefender)
                 {
-                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                    if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1)&&!_isScrewConnecting)
                     {
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)

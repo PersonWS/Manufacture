@@ -418,11 +418,11 @@ namespace ScrewMachineManagementSystem.CenterControl
                     MessageOutPutMethod(string.Format("已获得SN:{0} ,本次传入的SN:{1}不生效", _SN_code, snCode));
                     return;
                 }
-                if (string.IsNullOrEmpty(snCode))
-                {
-                    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
-                    point.value = false;
-                }
+                //if (string.IsNullOrEmpty(snCode)) //取消SN空值检测
+                //{
+                //    MessageOutPutMethod("外部传入SN为空，准备重新发起SN申请，SN码请求  需为 1");
+                //    point.value = false;
+                //}
                 else
                 {
                     if (!WriteSN_ToPLC(snCode))

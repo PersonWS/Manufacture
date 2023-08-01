@@ -422,6 +422,7 @@ namespace ScrewMachineManagementSystem
         #region 业务处理事件
         private string Need_SN_Request()
         {
+            _is_frm_GetSN_Closed = false;
             SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
             this.Invoke(new Action(() =>
             {
@@ -430,18 +431,19 @@ namespace ScrewMachineManagementSystem
             }));//清理历史数据
             FillInfoLog("收到SN码写入请求，清空电批数据");
             Need_ClearScrewData();
-            _is_frm_GetSN_Closed = false;
+
             //申请触发时，清空电批的数据
             if (_dt_screwDataTable != null)
             {
                 _dt_screwDataTable.Rows.Clear();
             }
-            _is_frm_GetSN_Closed = false;
+
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
-            if (_frm_GetSN != null)
-            {
-                FillInfoLog("检测到SN扫码窗体已打开，关闭窗体");
+            if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
+             {
+                FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN码扫码申请");
+                FillInfoLog("关闭前一窗体，打开新窗体");
                 _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
                 _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
                 try
@@ -456,7 +458,7 @@ namespace ScrewMachineManagementSystem
             _frm_GetSN = new Frm_GetSN();
             _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
             _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
-
+            _frm_GetSN.TopMost = true;
             DialogResult dr = _frm_GetSN.ShowDialog();
             //                Thread.ResetAbort();
 

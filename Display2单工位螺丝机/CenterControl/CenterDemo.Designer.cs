@@ -80,13 +80,13 @@
             this.btn_set_lastProcessName = new System.Windows.Forms.Button();
             this.btn_saveReult = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btn_resetAllData = new System.Windows.Forms.Button();
             this.btn_clearScrewForce = new System.Windows.Forms.Button();
             this.btn_SNForceWrite = new System.Windows.Forms.Button();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.btn_ClearScrew = new System.Windows.Forms.Button();
             this.chk_subscribe = new System.Windows.Forms.CheckBox();
-            this.btn_resetAllData = new System.Windows.Forms.Button();
             this.btn_scanner = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -646,9 +646,18 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
             // 
+            // btn_resetAllData
+            // 
+            this.btn_resetAllData.Location = new System.Drawing.Point(487, 20);
+            this.btn_resetAllData.Name = "btn_resetAllData";
+            this.btn_resetAllData.Size = new System.Drawing.Size(110, 68);
+            this.btn_resetAllData.TabIndex = 33;
+            this.btn_resetAllData.Text = "重置DB2002所有状 态数据[置位为0]";
+            this.btn_resetAllData.UseVisualStyleBackColor = true;
+            this.btn_resetAllData.Click += new System.EventHandler(this.btn_resetAllData_Click);
+            // 
             // btn_clearScrewForce
             // 
-            this.btn_clearScrewForce.Enabled = false;
             this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
             this.btn_clearScrewForce.Name = "btn_clearScrewForce";
             this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
@@ -710,17 +719,6 @@
             this.chk_subscribe.TabIndex = 30;
             this.chk_subscribe.Text = "订阅事件[仅调试用]";
             this.chk_subscribe.UseVisualStyleBackColor = true;
-            // 
-            // btn_resetAllData
-            // 
-            this.btn_resetAllData.Enabled = false;
-            this.btn_resetAllData.Location = new System.Drawing.Point(487, 20);
-            this.btn_resetAllData.Name = "btn_resetAllData";
-            this.btn_resetAllData.Size = new System.Drawing.Size(110, 68);
-            this.btn_resetAllData.TabIndex = 33;
-            this.btn_resetAllData.Text = "重置DB2002所有状 态数据[置位为0]";
-            this.btn_resetAllData.UseVisualStyleBackColor = true;
-            this.btn_resetAllData.Click += new System.EventHandler(this.btn_resetAllData_Click);
             // 
             // btn_scanner
             // 

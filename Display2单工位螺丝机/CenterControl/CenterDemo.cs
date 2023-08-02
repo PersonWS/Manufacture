@@ -402,6 +402,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_sn_set.Enabled = false;
                 btn_StopCenterControl.Enabled = false;
                 btn_ClearScrew.Enabled = false;
+                btn_clearScrewForce.Enabled = false ;
+                btn_resetAllData.Enabled = false;
                 btn_StartCenterControl.Enabled = true;
             }));
 
@@ -419,6 +421,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_sn_set.Enabled = true;
                 btn_StopCenterControl.Enabled = true;
                 btn_ClearScrew.Enabled = true;
+                btn_clearScrewForce.Enabled = true;
+                btn_resetAllData.Enabled = true;
                 btn_StartCenterControl.Enabled = false;
             }));
 

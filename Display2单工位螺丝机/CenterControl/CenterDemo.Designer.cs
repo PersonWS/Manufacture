@@ -648,6 +648,7 @@
             // 
             // btn_resetAllData
             // 
+            this.btn_resetAllData.Enabled = false;
             this.btn_resetAllData.Location = new System.Drawing.Point(487, 20);
             this.btn_resetAllData.Name = "btn_resetAllData";
             this.btn_resetAllData.Size = new System.Drawing.Size(110, 68);
@@ -658,6 +659,7 @@
             // 
             // btn_clearScrewForce
             // 
+            this.btn_clearScrewForce.Enabled = false;
             this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
             this.btn_clearScrewForce.Name = "btn_clearScrewForce";
             this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
@@ -713,6 +715,7 @@
             // chk_subscribe
             // 
             this.chk_subscribe.AutoSize = true;
+            this.chk_subscribe.Enabled = false;
             this.chk_subscribe.Location = new System.Drawing.Point(14, 33);
             this.chk_subscribe.Name = "chk_subscribe";
             this.chk_subscribe.Size = new System.Drawing.Size(132, 16);

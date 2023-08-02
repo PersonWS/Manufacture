@@ -62,7 +62,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             this._monitorInterval = monitorInterval;
             ThreadPool.SetMaxThreads(10, 20);
             _plcConnectEntity = connect;
-            
+
         }
 
         ~PLC_Monitor()
@@ -73,14 +73,16 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public bool Start()
         {
+            _isDefender = true;
+            StartDefenderThread();
+            _isMonitor = true;
+            StartMonitorThread();
             if (!ConnectPlc())
             {
                 return false;
             };
-            _isMonitor = true;
-            _isDefender = true;
-            StartMonitorThread();
-            StartDefenderThread();
+
+
             return true;
         }
 
@@ -88,10 +90,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             try
             {
-                if (PlcConnectEntity != null && !PlcConnectEntity.PlcEntity.IsConnected)
+                if ((PlcConnectEntity != null))
                 {
-                    MessageOutPutMethod(string.Format("PLC :{0} ,准备进行连接...", this.PlcConnectEntity.PlcEntity.IP));
-                   return PlcConnectEntity.Connect();
+                    return PlcConnectEntity.Connect();
 
                 }
                 else if (PlcConnectEntity == null)
@@ -185,25 +186,29 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             while (_isMonitor)
             {
-                _heartBeat_engine++;
-                    for (int i = 0; i < BusinessNeedPlcPoint.Dic_gatherPLC_Point.Count; i++)
+                for (int i = 0; i < BusinessNeedPlcPoint.Dic_gatherPLC_Point.Count; i++)
+                {
+                    if (!PlcConnectEntity.IsConnected)
                     {
-                        if (!PlcConnectEntity.IsConnected)
-                        {
-                            PlcConnectEntity.Connect();
-                            continue;
-                        }
-                        try
+                       // PlcConnectEntity.Connect();
+                        continue;
+                    }
+                    try
                     {
                         PLC_Point item = BusinessNeedPlcPoint.Dic_gatherPLC_Point[BusinessNeedPlcPoint.Dic_gatherPLC_Point.Keys.ElementAt(i)];
-                         PlcConnectEntity.ReadData(ref item);
-                        if (pointValueChanged != null && item.isValueChanged)
+
+                        if (PlcConnectEntity.ReadData(ref item))
                         {
-                            ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
-                        }
+                            _heartBeat_engine++;
+                            if (pointValueChanged != null && item.isValueChanged)
+                            {
+                                ThreadPool.QueueUserWorkItem((obj) => { pointValueChanged(item); });
+                            }
+                        } ;
+
                     }
                     catch (Exception e)
-                        {
+                    {
 
                         if (e.HResult == -2146233088)
                         {
@@ -211,14 +216,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                         }
                         MessageOutPutMethod(e.ToString());
                     }
-                      
+
                 }
                 Thread.Sleep(_monitorInterval);
 
             }
 
         }
-        
+
 
         /// <summary>
         /// 守护线程
@@ -227,16 +232,28 @@ namespace ScrewMachineManagementSystem.CenterControl
         {
             while (_isDefender)
             {
-                Thread.Sleep(30000);
+                Thread.Sleep(5000);
                 if (_heartbeat_defender != _heartBeat_engine)
                 {
                     _heartbeat_defender = _heartBeat_engine;
                 }
                 else
                 {
+                    if (PlcConnectEntity.IsConnecting)
+                    {
+                        continue;
+                    }
                     if (_isMonitor)
                     {
                         MessageOutPutMethod("Defender 检测到_heartBeat_engine 停止，重新启动监视线程StartMonitorThread");
+                        try
+                        {
+                            PlcConnectEntity.DisConnect();
+                            PlcConnectEntity.Connect();
+                        }
+                        catch (Exception)
+                        {
+                        }
                         StartMonitorThread();
                     }
                 }

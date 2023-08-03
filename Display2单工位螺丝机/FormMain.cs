@@ -356,10 +356,10 @@ namespace ScrewMachineManagementSystem
             {
                 //TcpConnect(null);
                 ScrewDefenderThreadStart();
-                if (_socketSender_screw != null && _socketSender_screw.Connected)     //联通成功，与电批建立连接
-                {
-                    _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
-                }
+                //if (_socketSender_screw != null && _socketSender_screw.Connected)     //联通成功，与电批建立连接
+                //{
+                //    _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
+                //}
                 // PlcConnect();
 
 
@@ -1296,7 +1296,7 @@ namespace ScrewMachineManagementSystem
                     _socketSender_screw.Connect(point);
                     SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
                     FillInfoLog(string.Format("电批：{0}  连接成功", ConfigurationKeys.ScrewMachineIP1));
-                    _socketSender_screw.Send(DNKE_DKTCP.Cmd_DisConnect);
+                    _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
                     LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                     //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
                     //Start a new thread and keep receiving messages sent by the server

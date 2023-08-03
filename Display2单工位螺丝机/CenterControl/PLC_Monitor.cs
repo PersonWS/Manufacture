@@ -177,6 +177,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             _thread_defend.Name = "thread_defend";
             _thread_defend.IsBackground = true;
             _thread_defend.Start();
+            MessageOutPutMethod("PLC 守护线程已启动");
         }
 
         /// <summary>
@@ -230,6 +231,7 @@ namespace ScrewMachineManagementSystem.CenterControl
         /// </summary>
         private void Defender()
         {
+            Thread.Sleep(30000);
             while (_isDefender)
             {
                 Thread.Sleep(5000);
@@ -245,7 +247,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     }
                     if (_isMonitor)
                     {
-                        MessageOutPutMethod("Defender 检测到_heartBeat_engine 停止，重新启动监视线程StartMonitorThread");
+                        MessageOutPutMethod("PLC Defender 检测到 心跳信号 停止，重新尝试连接PLC");
                         try
                         {
                             PlcConnectEntity.DisConnect();

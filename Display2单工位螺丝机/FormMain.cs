@@ -56,6 +56,8 @@ namespace ScrewMachineManagementSystem
         bool _is_LabelRefreshIng = false;
 
         private static readonly object _lock_obj = new object();
+
+        private static readonly object _lock_obj_screwConncet = new object();
         /// <summary>
         /// 电批数据接收的线程
         /// </summary>
@@ -352,7 +354,7 @@ namespace ScrewMachineManagementSystem
         {
             lock (_lock_obj)//防止多次执行
             {
-                TcpConnect(null);
+                //TcpConnect(null);
                 ScrewDefenderThreadStart();
                 if (_socketSender_screw != null && _socketSender_screw.Connected)     //联通成功，与电批建立连接
                 {
@@ -441,7 +443,7 @@ namespace ScrewMachineManagementSystem
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
             //....这里写获得SN号的代码
             if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
-             {
+            {
                 FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN码扫码申请");
                 FillInfoLog("关闭前一窗体，打开新窗体");
                 _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
@@ -556,7 +558,7 @@ namespace ScrewMachineManagementSystem
         {
             if (_is_LabelRefreshIng)
             {
-                MessageBox.Show("初始化未完成，请不要重复点击", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("软件开启后的初始化未完成，请不要重复点击", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return;
             }
             if (DialogResult.OK == MessageBox.Show("初始化操作会断开电批，PLC的连接，并进行重连操作，该操作可能会导致正在执行的数据丢失！ \r\n 确定要对系统进行初始化吗？", "系统初始化", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly))
@@ -920,15 +922,24 @@ namespace ScrewMachineManagementSystem
         string pre_Info = "";
         void FillInfoLog(string info)
         {
-            if (listBoxInfoLog.Items.Count > 500)
-                listBoxInfoLog.Items.Clear();
-            if (pre_Info != info)
+            try
             {
-                listBoxInfoLog.Items.Add(DateTime.Now.ToString("MM-dd HH:mm:ss,") + info);
-                listBoxInfoLog.SelectedIndex = listBoxInfoLog.Items.Count - 1;
-                listBoxInfoLog.TopIndex = listBoxInfoLog.Items.Count - 1;
-                pre_Info = info;
+                if (listBoxInfoLog.Items.Count > 500)
+                    listBoxInfoLog.Items.Clear();
+                if (pre_Info != info)
+                {
+                    listBoxInfoLog.Items.Add(DateTime.Now.ToString("MM-dd HH:mm:ss,") + info);
+                    listBoxInfoLog.SelectedIndex = listBoxInfoLog.Items.Count - 1;
+                    listBoxInfoLog.TopIndex = listBoxInfoLog.Items.Count - 1;
+                    pre_Info = info;
+                }
             }
+            catch (Exception)
+            {
+            }
+
+            LogUtility.ErrorLog_filllog(info);
+
         }
 
 
@@ -1264,44 +1275,48 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         void TcpConnect(object obj)
         {
-            try
+            lock (_lock_obj_screwConncet)
             {
-                _isScrewConnecting = true;
-                //Create socket
-                _socketSender_screw = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
-                IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
-                //Get the IP address and port number of the remote server
-                FillInfoLog("开始连接电批...");
-                if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                try
                 {
-                    FillInfoLog("电批连接失败，请检查网络连接是否正常");
+                    _isScrewConnecting = true;
+                    //Create socket
+                    _socketSender_screw = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
+                    IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
+                    //Get the IP address and port number of the remote server
+                    FillInfoLog(string.Format("电批：{0} 开始尝试连接...", ConfigurationKeys.ScrewMachineIP1));
+                    //if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
+                    //{
+                    //    FillInfoLog("电批连接失败，请检查网络连接是否正常");
+                    //    _isScrewConnecting = false;
+                    //    return;
+                    //}
+
+                    _socketSender_screw.Connect(point);
+                    SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
+                    FillInfoLog(string.Format("电批：{0}  连接成功", ConfigurationKeys.ScrewMachineIP1));
+                    _socketSender_screw.Send(DNKE_DKTCP.Cmd_DisConnect);
+                    LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
+                    //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
+                    //Start a new thread and keep receiving messages sent by the server
+                    _thread_ScrewDataReceive = new Thread(ReciveMessages);
+                    _thread_ScrewDataReceive.Name = "_thread_ScrewDataReceive";
+                    _thread_ScrewDataReceive.IsBackground = true;
+                    _thread_ScrewDataReceive.Start();
                     _isScrewConnecting = false;
-                    return;
+
+
                 }
-
-                _socketSender_screw.Connect(point);
-                SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
-                FillInfoLog("电批连接成功");
-                _socketSender_screw.Send(DNKE_DKTCP.Cmd_DisConnect);
-                LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
-                //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
-                //Start a new thread and keep receiving messages sent by the server
-                _thread_ScrewDataReceive = new Thread(ReciveMessages);
-                _thread_ScrewDataReceive.Name = "_thread_ScrewDataReceive";
-                _thread_ScrewDataReceive.IsBackground = true;
-                _thread_ScrewDataReceive.Start();
-                _isScrewConnecting = false;
-
-
+                catch (Exception ex)
+                {
+                    lab_screwState.LedColor = Color.Gray;
+                    FillInfoLog(string.Format("电批：{0}  连接失败 ex={1}", ConfigurationKeys.ScrewMachineIP1, ex.ToString()));
+                }
+                finally
+                { _isScrewConnecting = false; }
             }
-            catch (Exception ex)
-            {
-                lab_screwState.LedColor = Color.Gray;
-                FillInfoLog("电批连接失败，" + ex.Message);
-            }
-            finally
-            { _isScrewConnecting = false; }
+          
         }
 
         private readonly ManualResetEvent TimeoutObject = new ManualResetEvent(false);
@@ -1346,7 +1361,7 @@ namespace ScrewMachineManagementSystem
                     {
                         byte[] b = new byte[r];
                         Array.Copy(buffer, b, r);
-                        LogUtility.ErrorLog_custom(BitConverter.ToString(b));//记录报文
+                        LogUtility.ErrorLog_custom("电批数据结果已接收：" + BitConverter.ToString(b));//记录报文
                         List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
                         ShowScrewData(ack);
                     }
@@ -2622,7 +2637,7 @@ namespace ScrewMachineManagementSystem
             _isScrewDefender = true;
             _screw_PingCount = 0;
             _thread_ScrewDefender.Start();
-            FillInfoLog("电批守护线程已启动");
+
         }
         /// <summary>
         /// 停止守护线程
@@ -2650,7 +2665,9 @@ namespace ScrewMachineManagementSystem
         {
             try
             {
-
+                FillInfoLog("电批守护线程已启动");
+                //开始前，进行第一次连接
+                TcpConnect(null);
                 while (_isScrewDefender)
                 {
                     if (_isScrewConnecting)
@@ -2662,9 +2679,10 @@ namespace ScrewMachineManagementSystem
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)
                         {
-                            FillInfoLog("电批Ping失败已达最大次数，准备重新进行电批连接..");
+                            FillInfoLog("电批 Defender 检测到电批通讯异常，准备重新进行电批连接..");
                             this.ScrewDisConnect();
-                            ThreadPool.QueueUserWorkItem(TcpConnect, null);
+                            TcpConnect(null);
+                            //ThreadPool.QueueUserWorkItem(TcpConnect, null);
                             _screw_PingCount = 0;
                         }
                     }

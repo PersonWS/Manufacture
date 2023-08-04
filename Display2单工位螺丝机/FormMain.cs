@@ -46,6 +46,15 @@ namespace ScrewMachineManagementSystem
         /// sn
         /// </summary>
         string _SN;
+
+        ///// <summary>
+        ///// 用于判定SN码是否在取得加工结果后产生了变化，如果变了，则在清理表格/SN申请时都不再进行界面显示SN及  字段_SN的清理
+        ///// </summary>
+        //bool _isSN_ChangedByManual = false;
+        /// <summary>
+        /// 用于判定获得SN码的界面是出于自动弹出的方式下还是手动输入的方式下,手动输入模式下获得SN后，则在清理表格/SN申请时都不再进行界面显示SN及  字段_SN的清理
+        /// </summary>
+        bool _isFrm_GetSN_AutoShow = false;
         /// <summary>
         /// 刷新事件显示的定时器
         /// </summary>
@@ -426,11 +435,7 @@ namespace ScrewMachineManagementSystem
         {
             _is_frm_GetSN_Closed = false;
             SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
-            this.Invoke(new Action(() =>
-            {
-                txt_plcSN.Text = "";
-                txt_scannerSN.Text = "";
-            }));//清理历史数据
+
             FillInfoLog("收到SN码写入请求，清空电批数据");
             Need_ClearScrewData();
 
@@ -441,27 +446,7 @@ namespace ScrewMachineManagementSystem
             }
 
             FillInfoLog("收到SN码写入请求，请输入SN码并确认");
-            //....这里写获得SN号的代码
-            if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
-            {
-                FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN码扫码申请");
-                FillInfoLog("关闭前一窗体，打开新窗体");
-                _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
-                _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
-                try
-                {
-                    _frm_GetSN.Close(); _frm_GetSN.Dispose();
-                }
-                catch (Exception)
-                {
-                }
 
-            }
-            _frm_GetSN = new Frm_GetSN();
-            _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
-            _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
-            _frm_GetSN.TopMost = true;
-            DialogResult dr = _frm_GetSN.ShowDialog();
             //                Thread.ResetAbort();
 
 
@@ -474,14 +459,53 @@ namespace ScrewMachineManagementSystem
             return _SN;
 
         }
+
+        /// <summary>
+        /// 展示扫码窗体
+        /// </summary>
+        /// <param name="isAutoShow">是否通过自动触发来展示的</param>
+        private void ShowGetSN_Form(object obj)
+        {
+            this.Invoke(new Action(() =>
+            {
+
+                if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
+                {
+                    FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
+                    FillInfoLog("关闭前一窗体，打开新窗体");
+                    _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
+                    _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
+                    try
+                    {
+                        _frm_GetSN.Close(); _frm_GetSN.Dispose();
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                }
+                _frm_GetSN = new Frm_GetSN();
+                _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
+                _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+                _frm_GetSN.TopMost = true;
+                DialogResult dr = _frm_GetSN.ShowDialog();
+
+            }));
+
+        }
+
         /// <summary>
         /// 获得扫描到的SN
         /// </summary>
         /// <param name="s"></param>
         private void Frm_GetSN_SN_CodeGet(string s)
         {
-            this._SN = s;
-            txt_scannerSN.Text = s;
+            this.Invoke(new Action(() =>
+            {
+                this._SN = s;
+                txt_scannerSN.Text = s;
+            }));
+
         }
         private void Frm_FormClosingByUser()
         {
@@ -519,6 +543,10 @@ namespace ScrewMachineManagementSystem
             bool_SaveInformationToMES_Result_Request = true;
             FillInfoLog("保存加工信息完成");
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
+            //准备弹出SN码扫码请求
+            //....这里写获得SN号的代码
+            _isFrm_GetSN_AutoShow = true;
+            ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
             return bool_SaveInformationToMES_Result_Request;
         }
         #endregion
@@ -1092,29 +1120,31 @@ namespace ScrewMachineManagementSystem
         /// <param name="e"></param>
         private void label1ScanCode_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(utility.structCurrentWorkTask.productCode))
-            {
-                utility.ShowMessage("请先扫描产品任务码！");
-                return;
-            }
+            _isFrm_GetSN_AutoShow = false;
+            ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
+            //if (string.IsNullOrEmpty(utility.structCurrentWorkTask.productCode))
+            //{
+            //    utility.ShowMessage("请先扫描产品任务码！");
+            //    return;
+            //}
 
-            timer3.Enabled = false;
-            FormSeletY f1 = new FormSeletY();
-            if (f1.ShowDialog() == DialogResult.Cancel)
-            {
-                utility.ShowMessage("用户取消扫码和选择工位，操作取消！", 0);
-                return;
-            }
+            //timer3.Enabled = false;
+            //FormSeletY f1 = new FormSeletY();
+            //if (f1.ShowDialog() == DialogResult.Cancel)
+            //{
+            //    utility.ShowMessage("用户取消扫码和选择工位，操作取消！", 0);
+            //    return;
+            //}
 
-            //labelProductSN1.Text = utility.struckScanProduct.productSN;
-            //timerRTU,OK/NG时=true
-            //是否检查工位是否有工件
-            int inputCheckIndex = (int)S7NetPlus.inputDiagitList.工装产品信号1;
+            ////labelProductSN1.Text = utility.struckScanProduct.productSN;
+            ////timerRTU,OK/NG时=true
+            ////是否检查工位是否有工件
+            //int inputCheckIndex = (int)S7NetPlus.inputDiagitList.工装产品信号1;
 
-            if (S7NetPlus.inputDiagitStatus[inputCheckIndex])
-                CheckStation(utility.struckScanProduct.stationId);
+            //if (S7NetPlus.inputDiagitStatus[inputCheckIndex])
+            //    CheckStation(utility.struckScanProduct.stationId);
 
-            setWorkStation();
+            //setWorkStation();
         }
 
         private void labelResetNumber_Click(object sender, EventArgs e)
@@ -1316,7 +1346,7 @@ namespace ScrewMachineManagementSystem
                 finally
                 { _isScrewConnecting = false; }
             }
-          
+
         }
 
         private readonly ManualResetEvent TimeoutObject = new ManualResetEvent(false);
@@ -1519,14 +1549,29 @@ namespace ScrewMachineManagementSystem
                         _dt_screwDataTable.Rows.Clear();
                     }
                 }
-                txt_plcSN.Text = "";
-                txt_scannerSN.Text = "";
-
+                ClearSN();
 
             }));
             SetLabelForecolor(lab_ScrewClearOK_apply, _color_OFF);
             return true;
         }
+
+        /// <summary>
+        /// 清理SN码
+        /// </summary>
+        private void ClearSN()
+        {
+            if (!_isFrm_GetSN_AutoShow)//自动扫码获得的码允许清除，手动扫码获得的不允许清除
+            {
+                this.Invoke(new Action(() =>
+                {
+                    txt_plcSN.Text = "";
+                    txt_scannerSN.Text = "";
+                    _SN = "";
+                }));//清理历史数据
+            }
+        }
+
         /// <summary>
         /// 生成展示的datatable
         /// </summary>

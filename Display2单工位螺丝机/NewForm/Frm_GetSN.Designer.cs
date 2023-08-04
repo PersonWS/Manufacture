@@ -72,7 +72,7 @@
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonOK.Location = new System.Drawing.Point(510, 210);
+            this.buttonOK.Location = new System.Drawing.Point(510, 203);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(118, 38);
             this.buttonOK.TabIndex = 12;

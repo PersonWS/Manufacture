@@ -125,7 +125,7 @@
             this.txt_SN_CheckCode.Name = "txt_SN_CheckCode";
             this.txt_SN_CheckCode.Size = new System.Drawing.Size(320, 35);
             this.txt_SN_CheckCode.TabIndex = 21;
-            this.txt_SN_CheckCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_CheckCode_KeyPress);
+            this.txt_SN_CheckCode.TextChanged += new System.EventHandler(this.txt_SN_CheckCode_TextChanged);
             // 
             // comboBoxCustomer
             // 

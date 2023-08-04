@@ -189,10 +189,6 @@ namespace ScrewMachineManagementSystem
             }
         }
 
-        private void txt_SN_CheckCode_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text + e.KeyChar);
-        }
 
         private void SetInputKeyboard()
         {
@@ -205,6 +201,11 @@ namespace ScrewMachineManagementSystem
                 }
                 // InputLanguage.CurrentInputLanguage
             }
+        }
+
+        private void txt_SN_CheckCode_TextChanged(object sender, EventArgs e)
+        {
+            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text );
         }
     }
 }

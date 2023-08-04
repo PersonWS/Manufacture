@@ -52,9 +52,9 @@ namespace ScrewMachineManagementSystem
         ///// </summary>
         //bool _isSN_ChangedByManual = false;
         /// <summary>
-        /// 用于判定获得SN码的界面是出于自动弹出的方式下还是手动输入的方式下,手动输入模式下获得SN后，则在清理表格/SN申请时都不再进行界面显示SN及  字段_SN的清理
+        /// 只要时在PLC加工结果输出后，PLC，则在清理表格/SN申请时都不再进行界面显示SN及  字段_SN的清理
         /// </summary>
-        bool _isFrm_GetSN_AutoShow = false;
+        bool _isSNChanged_AfterReultOK = false;
         /// <summary>
         /// 刷新事件显示的定时器
         /// </summary>
@@ -382,8 +382,8 @@ namespace ScrewMachineManagementSystem
                 _businessMain.Need_lastProcessName_Request += Need_lastProcessName_Request;
                 _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
                 _businessMain.SaveInformationToMES_Result_Request += SaveInformationToMES_Result_Request;
-                _businessMain.Need_ClearScrewData -= Need_ClearScrewData;
-                _businessMain.Need_ClearScrewData += Need_ClearScrewData;
+                _businessMain.Need_ClearScrewData -= Need_ClearScrewDataCallBack;
+                _businessMain.Need_ClearScrewData += Need_ClearScrewDataCallBack;
 
                 _businessMain.BusinessStartedEvent -= BusinessStarted;
                 _businessMain.BusinessStartedEvent += BusinessStarted;
@@ -433,11 +433,11 @@ namespace ScrewMachineManagementSystem
         #region 业务处理事件
         private string Need_SN_Request()
         {
-            _is_frm_GetSN_Closed = false;
+
             SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
 
             FillInfoLog("收到SN码写入请求，清空电批数据");
-            Need_ClearScrewData();
+            Need_ClearScrewData(false);
 
             //申请触发时，清空电批的数据
             if (_dt_screwDataTable != null)
@@ -466,6 +466,7 @@ namespace ScrewMachineManagementSystem
         /// <param name="isAutoShow">是否通过自动触发来展示的</param>
         private void ShowGetSN_Form(object obj)
         {
+            _is_frm_GetSN_Closed = false;
             this.Invoke(new Action(() =>
             {
 
@@ -500,11 +501,20 @@ namespace ScrewMachineManagementSystem
         /// <param name="s"></param>
         private void Frm_GetSN_SN_CodeGet(string s)
         {
-            this.Invoke(new Action(() =>
+            if (s != _SN)
             {
-                this._SN = s;
-                txt_scannerSN.Text = s;
-            }));
+                _isSNChanged_AfterReultOK = true;
+                this.Invoke(new Action(() =>
+                {
+                    this._SN = s;
+                    txt_scannerSN.Text = s;
+                }));
+                FillInfoLog("扫码获得SN: " + s);
+            }
+            else
+            {
+                _isSNChanged_AfterReultOK = false;
+            }
 
         }
         private void Frm_FormClosingByUser()
@@ -545,10 +555,50 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
             //准备弹出SN码扫码请求
             //....这里写获得SN号的代码
-            _isFrm_GetSN_AutoShow = true;
+            //_isSNChanged_AfterReultOK = true;
             ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
             return bool_SaveInformationToMES_Result_Request;
         }
+
+        private bool Need_ClearScrewDataCallBack()
+        {
+           return  Need_ClearScrewData(true);
+        }
+        /// <summary>
+        /// 清空列表数据
+        /// </summary>
+        private bool Need_ClearScrewData(bool isClearSN_Force)
+        {
+            SetLabelForecolor(lab_ScrewClearOK_apply, _color_ON);
+            this.Invoke(new Action(() =>
+            {
+                if (this.dataGridView1.DataSource != null)//清理电批显示
+                {
+                    lock (this.dataGridView1.DataSource)
+                    {
+                        ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
+                    }
+
+                }
+                if (this._dt_screwDataTable != null)//清理电批数据源
+                {
+                    lock (this._dt_screwDataTable)
+                    {
+                        _dt_screwDataTable.Rows.Clear();
+                    }
+                }
+                if (isClearSN_Force)
+                {
+                    _isSNChanged_AfterReultOK = false;
+                }
+
+                ClearSN();
+
+            }));
+            SetLabelForecolor(lab_ScrewClearOK_apply, _color_OFF);
+            return true;
+        }
+
         #endregion
 
         void initDatagridview()
@@ -1120,7 +1170,7 @@ namespace ScrewMachineManagementSystem
         /// <param name="e"></param>
         private void label1ScanCode_Click(object sender, EventArgs e)
         {
-            _isFrm_GetSN_AutoShow = false;
+            //_isSNChanged_AfterReultOK = true;
             ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
             //if (string.IsNullOrEmpty(utility.structCurrentWorkTask.productCode))
             //{
@@ -1525,43 +1575,14 @@ namespace ScrewMachineManagementSystem
                 }
             }
         }
-        /// <summary>
-        /// 清空列表数据
-        /// </summary>
-        private bool Need_ClearScrewData()
-        {
-            SetLabelForecolor(lab_ScrewClearOK_apply, _color_ON);
-            this.Invoke(new Action(() =>
-            {
 
-                if (this.dataGridView1.DataSource != null)//清理电批显示
-                {
-                    lock (this.dataGridView1.DataSource)
-                    {
-                        ((DataTable)this.dataGridView1.DataSource).Rows.Clear();
-                    }
-
-                }
-                if (this._dt_screwDataTable != null)//清理电批数据源
-                {
-                    lock (this._dt_screwDataTable)
-                    {
-                        _dt_screwDataTable.Rows.Clear();
-                    }
-                }
-                ClearSN();
-
-            }));
-            SetLabelForecolor(lab_ScrewClearOK_apply, _color_OFF);
-            return true;
-        }
 
         /// <summary>
         /// 清理SN码
         /// </summary>
         private void ClearSN()
         {
-            if (!_isFrm_GetSN_AutoShow)//自动扫码获得的码允许清除，手动扫码获得的不允许清除
+            if (!_isSNChanged_AfterReultOK)//自动扫码获得的码允许清除，手动扫码获得的不允许清除
             {
                 this.Invoke(new Action(() =>
                 {

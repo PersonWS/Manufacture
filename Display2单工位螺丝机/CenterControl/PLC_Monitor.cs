@@ -256,7 +256,9 @@ namespace ScrewMachineManagementSystem.CenterControl
                         catch (Exception)
                         {
                         }
-                        StartMonitorThread();
+                        finally
+                        { StartMonitorThread(); }
+
                     }
                 }
             }

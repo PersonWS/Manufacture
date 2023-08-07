@@ -1693,6 +1693,8 @@ namespace ScrewMachineManagementSystem
             catch (Exception e)
             {
                 FillInfoLog("电批数据异常，如果自动连接失败，请使用【初始化】功能重新连接");
+                _socketSender_screw.Dispose();
+                return;
                 //TcpConnect();
             }
             while (true)

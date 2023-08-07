@@ -374,7 +374,11 @@ namespace ScrewMachineManagementSystem
 
 
                 _businessMain = CenterControl.BusinessMain.GetInstance();
-                _businessMain.MessageOutput += BusinessMainMessageOutput;
+                _businessMain.MessageOutput_Business -= BusinessMainMessageOutput;
+                _businessMain.MessageOutput_Business += BusinessMainMessageOutput;
+
+                _businessMain.MessageOutput -= MessageOutput;
+                _businessMain.MessageOutput += MessageOutput;
 
                 _businessMain.Need_SN_Request -= Need_SN_Request;
                 _businessMain.Need_SN_Request += Need_SN_Request;
@@ -427,6 +431,11 @@ namespace ScrewMachineManagementSystem
 
         private void BusinessMainMessageOutput(string s)
         {
+            FillBusinessLog(s);
+        }
+
+        private void MessageOutput(string s)
+        {
             FillInfoLog(s);
         }
 
@@ -436,7 +445,7 @@ namespace ScrewMachineManagementSystem
 
             SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
 
-            FillInfoLog("收到SN码写入请求，清空电批数据");
+            FillBusinessLog("收到SN码写入请求，清空电批数据");
             Need_ClearScrewData(false);
 
             //申请触发时，清空电批的数据
@@ -445,7 +454,7 @@ namespace ScrewMachineManagementSystem
                 _dt_screwDataTable.Rows.Clear();
             }
 
-            FillInfoLog("收到SN码写入请求，请输入SN码并确认");
+            FillBusinessLog("收到SN码写入请求，请输入SN码并确认");
 
             //                Thread.ResetAbort();
 
@@ -454,7 +463,7 @@ namespace ScrewMachineManagementSystem
             //{
             //    Thread.Sleep(500);
             //}
-            FillInfoLog("SN码输入完成");
+            FillBusinessLog("SN码输入完成");
             SetLabelForecolor(lab_snWrite_apply, _color_OFF);
             return _SN;
 
@@ -509,7 +518,7 @@ namespace ScrewMachineManagementSystem
                     this._SN = s;
                     txt_scannerSN.Text = s;
                 }));
-                FillInfoLog("扫码获得SN: " + s);
+                FillBusinessLog("扫码获得SN: " + s);
             }
             else
             {
@@ -532,9 +541,9 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_manufacturePermission_apply, _color_ON);
             SetLabelForecolor(lab_manufactureDeny_apply, _color_ON);
             string lastProcessName = "BYJ";
-            FillInfoLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
+            FillBusinessLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
             //....这里写获得上一工序的代码
-            FillInfoLog("上一工序获取入完成");
+            FillBusinessLog("上一工序获取入完成");
             SetLabelForecolor(lab_interlock_apply, _color_OFF);
             SetLabelForecolor(lab_manufacturePermission_apply, _color_OFF);
             SetLabelForecolor(lab_manufactureDeny_apply, _color_OFF);
@@ -547,11 +556,11 @@ namespace ScrewMachineManagementSystem
         {
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_ON);
             bool bool_SaveInformationToMES_Result_Request = false;
-            FillInfoLog("收到加工完成，保存加工结果请求，请保存并确认");
+            FillBusinessLog("收到加工完成，保存加工结果请求，请保存并确认");
 
             //....这里写保存数据的代码
             bool_SaveInformationToMES_Result_Request = true;
-            FillInfoLog("保存加工信息完成");
+            FillBusinessLog("保存加工信息完成");
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
             //准备弹出SN码扫码请求
             //....这里写获得SN号的代码
@@ -1010,6 +1019,28 @@ namespace ScrewMachineManagementSystem
                     listBoxInfoLog.SelectedIndex = listBoxInfoLog.Items.Count - 1;
                     listBoxInfoLog.TopIndex = listBoxInfoLog.Items.Count - 1;
                     pre_Info = info;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            LogUtility.ErrorLog_filllog(info);
+
+        }
+        string pre_Info2 = "";
+        void FillBusinessLog(string info)
+        {
+            try
+            {
+                if (listBox_businessLog.Items.Count > 500)
+                    listBox_businessLog.Items.Clear();
+                if (pre_Info != info)
+                {
+                    listBox_businessLog.Items.Add(DateTime.Now.ToString("MM-dd HH:mm:ss,") + info);
+                    listBox_businessLog.SelectedIndex = listBox_businessLog.Items.Count - 1;
+                    listBox_businessLog.TopIndex = listBox_businessLog.Items.Count - 1;
+                    pre_Info2 = info;
                 }
             }
             catch (Exception)
@@ -1528,7 +1559,7 @@ namespace ScrewMachineManagementSystem
                         }
                         if ((_screwRunState == null) || (_screwRunState.runState != state.runState || _screwRunState.workResult != state.workResult || _screwRunState.sysErr != state.sysErr))//状态发生变化时输出
                         {
-                            FillInfoLog(string.Format("电批状态：{0}", state.GetStatus()));
+                            FillBusinessLog(string.Format("电批状态：{0}", state.GetStatus()));
                             _screwRunState = state;
                         }
                         break;

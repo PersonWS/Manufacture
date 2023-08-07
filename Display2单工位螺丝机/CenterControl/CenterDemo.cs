@@ -37,7 +37,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
                 _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
                 _businessMain.Need_ClearScrewData += Need_ClearScrewData;
-                _businessMain.MessageOutput -= MessageOutput;
+                _businessMain.MessageOutput_Business -= MessageOutput;
 
             }
         }
@@ -51,7 +51,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             lab_lastProcessName.Text = BusinessMain._lastProcessName;
 
 
-            _businessMain.MessageOutput += MessageOutput;
+            _businessMain.MessageOutput_Business += MessageOutput;
             //订阅关键事件
             if (chk_subscribe.Checked)
             {

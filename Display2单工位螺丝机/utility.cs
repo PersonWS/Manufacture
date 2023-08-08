@@ -34,7 +34,9 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// 登录用户信息
         /// </summary>
-        public static string SystemName = "Display2单工位螺丝机";
+        public static string systemName = "Display2单工位螺丝机";
+
+        public static string SystemName { get { return string.IsNullOrEmpty(LogUtility.ReadConfiguration("SystemName")) ? systemName : LogUtility.ReadConfiguration("SystemName"); } }
         /// <summary>
         /// 参数列表
         /// </summary>

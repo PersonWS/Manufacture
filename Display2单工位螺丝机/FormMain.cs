@@ -463,6 +463,11 @@ namespace ScrewMachineManagementSystem
             //{
             //    Thread.Sleep(500);
             //}
+            //准备弹出SN码扫码请求
+            //....这里写获得SN号的代码
+            //_isSNChanged_AfterReultOK = true;
+            ShowGetSN_Form(null);
+            Thread.Sleep(200);
             FillBusinessLog("SN码输入完成");
             SetLabelForecolor(lab_snWrite_apply, _color_OFF);
             return _SN;
@@ -562,10 +567,7 @@ namespace ScrewMachineManagementSystem
             bool_SaveInformationToMES_Result_Request = true;
             FillBusinessLog("保存加工信息完成");
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
-            //准备弹出SN码扫码请求
-            //....这里写获得SN号的代码
-            //_isSNChanged_AfterReultOK = true;
-            ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
+
             return bool_SaveInformationToMES_Result_Request;
         }
 

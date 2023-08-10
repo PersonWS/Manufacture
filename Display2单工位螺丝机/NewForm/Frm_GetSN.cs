@@ -66,9 +66,9 @@ namespace ScrewMachineManagementSystem
             Int32.TryParse(txt_SN_maxLength.Text, out _max_SN_Leng);
             _SN_Code = txt_SN_Scan.Text.Replace("\r","");
             //检查SN
-            if (_SN_Code.Length > _max_SN_Leng)
+            if (_SN_Code.Length != _max_SN_Leng)
             {
-                MessageBox.Show(string.Format("扫描到的SN:{0} ,长度为：{1} ，超过最大允许长度!", _SN_Code, _SN_Code.Length), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(string.Format("扫描到的SN:{0} \r\n实际扫描的SN长度为：{1} ,要求的SN长度为：{2} .\r\n请检查SN或输入法设置是否正确.", _SN_Code, _SN_Code.Length,_max_SN_Leng), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 txt_SN_Scan.Text = "";
                 return;
             }

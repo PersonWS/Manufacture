@@ -233,7 +233,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(133, 27);
             this.label9.TabIndex = 8;
-            this.label9.Text = "SN码最大长度";
+            this.label9.Text = "SN 码长度";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label8
@@ -291,7 +291,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(133, 27);
             this.label1.TabIndex = 8;
-            this.label1.Text = "SN     校验码";
+            this.label1.Text = "SN 校验码";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txt_SN_Scan

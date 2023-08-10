@@ -46,6 +46,10 @@ namespace ScrewMachineManagementSystem
         /// sn
         /// </summary>
         string _SN;
+        /// <summary>
+        /// SN是否进行写入
+        /// </summary>
+        bool _isSN_Write = false;
 
         ///// <summary>
         ///// 用于判定SN码是否在取得加工结果后产生了变化，如果变了，则在清理表格/SN申请时都不再进行界面显示SN及  字段_SN的清理
@@ -91,6 +95,7 @@ namespace ScrewMachineManagementSystem
         int _screw_maxPingCount = 2;
 
         int _screw_PingCount = 0;
+
 
 
         #endregion
@@ -468,8 +473,17 @@ namespace ScrewMachineManagementSystem
             //_isSNChanged_AfterReultOK = true;
             ShowGetSN_Form(null);
             Thread.Sleep(200);
-            FillBusinessLog("SN码输入完成");
-            SetLabelForecolor(lab_snWrite_apply, _color_OFF);
+            if (_isSN_Write)
+            {
+                FillBusinessLog("SN码输入完成");
+                SetLabelForecolor(lab_snWrite_apply, _color_OFF);
+            }
+            else
+            {
+                FillBusinessLog("SN码输入取消");
+                Thread.ResetAbort();
+            }
+
             return _SN;
 
         }
@@ -489,7 +503,7 @@ namespace ScrewMachineManagementSystem
                     FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
 
                     _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
-                    _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
+                    _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
                     try
                     {
                         FillInfoLog("关闭前一扫码窗体");
@@ -503,11 +517,11 @@ namespace ScrewMachineManagementSystem
                 }
                 _frm_GetSN = new Frm_GetSN();
                 _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
-                _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
+                _frm_GetSN.FormClosing_OK_Cancel += Frm_FormClosingByUser;
                 _frm_GetSN.TopMost = true;
                 FillInfoLog("打开新的扫码窗体");
-                DialogResult dr = _frm_GetSN.ShowDialog();
-                _is_frm_GetSN_Closed = false;
+                DialogResult dr = _frm_GetSN.ShowDialog(); 
+                 _is_frm_GetSN_Closed = false;
 
             }));
 
@@ -535,11 +549,12 @@ namespace ScrewMachineManagementSystem
             }
 
         }
-        private void Frm_FormClosingByUser()
+        private void Frm_FormClosingByUser(bool isOK_Cancel)
         {
+            this._isSN_Write = isOK_Cancel;
             this._is_frm_GetSN_Closed = true;
             _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
-            _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
+            _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
             _frm_GetSN = null;
         }
 

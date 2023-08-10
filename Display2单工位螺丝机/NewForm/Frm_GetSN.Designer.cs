@@ -50,6 +50,7 @@
             this.txt_SN_Scan = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btn_cancel = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoxQty)).BeginInit();
@@ -83,6 +84,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btn_cancel);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.txt_SN_Scan);
             this.panel1.Controls.Add(this.label6);
@@ -325,6 +327,17 @@
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
+            // btn_cancel
+            // 
+            this.btn_cancel.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_cancel.Location = new System.Drawing.Point(17, 203);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(118, 38);
+            this.btn_cancel.TabIndex = 21;
+            this.btn_cancel.Text = "取消";
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
             // Frm_GetSN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -376,5 +389,6 @@
         private System.Windows.Forms.ComboBox comboBoxCustomer;
         private System.Windows.Forms.TextBox textBoxMLenght;
         private System.Windows.Forms.TextBox txt_SN_CheckCode;
+        private System.Windows.Forms.Button btn_cancel;
     }
 }

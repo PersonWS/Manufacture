@@ -14,7 +14,10 @@ namespace ScrewMachineManagementSystem
 
         public event Action<string> SN_CodeGet;
 
-        public event Action FormClosingByUser;
+        /// <summary>
+        /// 0:点击OK 键，写入SN   1：点击取消键，取消写入SN
+        /// </summary>
+        public event Action<bool> FormClosing_OK_Cancel;
 
         List<byte> _byte = new List<byte>();
         List<char> _char = new List<char>();
@@ -96,6 +99,10 @@ namespace ScrewMachineManagementSystem
             {
                 SN_CodeGet(_SN_Code);
             }
+            if (FormClosing_OK_Cancel != null)
+            {
+                FormClosing_OK_Cancel(true);
+            }
             this.Close();
         }
 
@@ -173,10 +180,6 @@ namespace ScrewMachineManagementSystem
         private void Frm_GetSN_FormClosing(object sender, FormClosingEventArgs e)
         {
             InputLanguage.CurrentInputLanguage = _currentLanguage;
-            if (FormClosingByUser != null)
-            {
-                FormClosingByUser();
-            }
         }
 
         private void txt_SN_Scan_KeyPress(object sender, KeyPressEventArgs e)
@@ -206,6 +209,19 @@ namespace ScrewMachineManagementSystem
         private void txt_SN_CheckCode_TextChanged(object sender, EventArgs e)
         {
             LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text );
+        }
+
+        private void btn_cancel_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show(string.Format("手动关闭窗体后，软件将不会向PLC写入SN，如果需要再次写入SN，需要PLC关闭SN申请信号后再重新发起SN申请!\r\n 确认要进行手动关闭操作码？"), "SN码扫码界面关闭提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                _SN_Code = null;
+                if (FormClosing_OK_Cancel != null)
+                {
+                    FormClosing_OK_Cancel(false);
+                }
+                this.Close();
+            }
         }
     }
 }

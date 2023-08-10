@@ -83,7 +83,6 @@ D:\工作相关\吉林长春福赛上位机\Manufacture\Display2单工位螺丝�
 D:\工作相关\吉林长春福赛上位机\Manufacture\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.pdb
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\bin\Debug\LBIndustrialCtrls.dll
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\bin\Debug\LBIndustrialCtrls.pdb
-E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBIndustrialCtrls.csprojAssemblyReference.cache
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBSoft.IndustrialCtrls.Buttons.LBButton.resources
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBSoft.IndustrialCtrls.Knobs.LBKnob.resources
 E:\A_MANU\Display2单工位螺丝机\LBIndustrialCtrls\obj\Debug\LBSoft.IndustrialCtrls.Leds.LBLed.resources

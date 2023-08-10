@@ -480,19 +480,21 @@ namespace ScrewMachineManagementSystem
         /// <param name="isAutoShow">是否通过自动触发来展示的</param>
         private void ShowGetSN_Form(object obj)
         {
-            _is_frm_GetSN_Closed = false;
+
             this.Invoke(new Action(() =>
             {
 
                 if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
                 {
                     FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
-                    FillInfoLog("关闭前一窗体，打开新窗体");
+
                     _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
                     _frm_GetSN.FormClosingByUser -= Frm_FormClosingByUser;
                     try
                     {
+                        FillInfoLog("关闭前一扫码窗体");
                         _frm_GetSN.Close(); _frm_GetSN.Dispose();
+                        _frm_GetSN = null;
                     }
                     catch (Exception)
                     {
@@ -503,7 +505,9 @@ namespace ScrewMachineManagementSystem
                 _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
                 _frm_GetSN.FormClosingByUser += Frm_FormClosingByUser;
                 _frm_GetSN.TopMost = true;
+                FillInfoLog("打开新的扫码窗体");
                 DialogResult dr = _frm_GetSN.ShowDialog();
+                _is_frm_GetSN_Closed = false;
 
             }));
 

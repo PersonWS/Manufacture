@@ -481,6 +481,7 @@ namespace ScrewMachineManagementSystem
             else
             {
                 FillBusinessLog("SN码输入取消");
+                this.Invoke(new Action(() => { txt_plcSN.Text = ""; }));
                 Thread.ResetAbort();
             }
 

@@ -223,5 +223,10 @@ namespace ScrewMachineManagementSystem
                 this.Close();
             }
         }
+
+        private void btn_clearSN_Click(object sender, EventArgs e)
+        {
+            this.txt_SN_Scan.Text = "";
+        }
     }
 }

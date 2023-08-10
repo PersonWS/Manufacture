@@ -51,6 +51,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btn_cancel = new System.Windows.Forms.Button();
+            this.btn_clearSN = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoxQty)).BeginInit();
@@ -73,7 +74,7 @@
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonOK.Location = new System.Drawing.Point(510, 203);
+            this.buttonOK.Location = new System.Drawing.Point(535, 205);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(118, 38);
             this.buttonOK.TabIndex = 12;
@@ -84,6 +85,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btn_clearSN);
             this.panel1.Controls.Add(this.btn_cancel);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.txt_SN_Scan);
@@ -113,9 +115,9 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox3.Location = new System.Drawing.Point(127, 79);
+            this.groupBox3.Location = new System.Drawing.Point(160, 79);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(501, 114);
+            this.groupBox3.Size = new System.Drawing.Size(493, 114);
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "SN/配方信息";
@@ -299,9 +301,9 @@
             // txt_SN_Scan
             // 
             this.txt_SN_Scan.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txt_SN_Scan.Location = new System.Drawing.Point(287, 34);
+            this.txt_SN_Scan.Location = new System.Drawing.Point(163, 34);
             this.txt_SN_Scan.Name = "txt_SN_Scan";
-            this.txt_SN_Scan.Size = new System.Drawing.Size(342, 35);
+            this.txt_SN_Scan.Size = new System.Drawing.Size(338, 35);
             this.txt_SN_Scan.TabIndex = 1;
             this.txt_SN_Scan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_Scan_KeyPress);
             // 
@@ -309,11 +311,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(122, 37);
+            this.label6.Location = new System.Drawing.Point(12, 37);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(125, 28);
+            this.label6.Size = new System.Drawing.Size(146, 28);
             this.label6.TabIndex = 18;
-            this.label6.Text = "请扫描SN码";
+            this.label6.Text = "请扫描SN码：";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pictureBox1
@@ -338,6 +340,17 @@
             this.btn_cancel.UseVisualStyleBackColor = true;
             this.btn_cancel.Visible = false;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
+            // btn_clearSN
+            // 
+            this.btn_clearSN.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_clearSN.Location = new System.Drawing.Point(535, 34);
+            this.btn_clearSN.Name = "btn_clearSN";
+            this.btn_clearSN.Size = new System.Drawing.Size(118, 38);
+            this.btn_clearSN.TabIndex = 22;
+            this.btn_clearSN.Text = "清除SN";
+            this.btn_clearSN.UseVisualStyleBackColor = true;
+            this.btn_clearSN.Click += new System.EventHandler(this.btn_clearSN_Click);
             // 
             // Frm_GetSN
             // 
@@ -391,5 +404,6 @@
         private System.Windows.Forms.TextBox textBoxMLenght;
         private System.Windows.Forms.TextBox txt_SN_CheckCode;
         private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.Button btn_clearSN;
     }
 }

@@ -92,7 +92,7 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// ping 失败允许的最大次数
         /// </summary>
-        int _screw_maxPingCount = 2;
+        int _screw_maxPingCount = 3;
 
         int _screw_PingCount = 0;
 

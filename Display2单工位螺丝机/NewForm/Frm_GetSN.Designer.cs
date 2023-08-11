@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_GetSN));
             this.label2 = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -57,6 +58,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoxQty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // label2
             // 
@@ -328,6 +330,7 @@
             this.txt_SN_Scan.Size = new System.Drawing.Size(382, 35);
             this.txt_SN_Scan.TabIndex = 1;
             this.txt_SN_Scan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_Scan_KeyPress);
+            this.txt_SN_Scan.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // label6
             // 
@@ -343,7 +346,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::ScrewMachineManagementSystem.Properties.Resources.NewTask;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(17, 95);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(86, 98);
@@ -366,6 +369,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormNewTaskOrder";
+            this.Activated += new System.EventHandler(this.Frm_GetSN_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_GetSN_FormClosing);
             this.Load += new System.EventHandler(this.FormNewTaskOrder_Load);
             this.panel1.ResumeLayout(false);

@@ -3,6 +3,10 @@ using ScrewMachineManagementSystem.Model;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
+using System.Threading;
 
 namespace ScrewMachineManagementSystem
 {
@@ -24,12 +28,7 @@ namespace ScrewMachineManagementSystem
 
         InputLanguage _currentLanguage;
 
-        //调用API
-        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
-        public static extern IntPtr GetForegroundWindow(); //获得本窗体的句柄
-        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);//设置此窗体为活动窗体
-                                                                   //定义变量,句柄类
+
         public Frm_GetSN()
         {
             InitializeComponent();
@@ -38,14 +37,15 @@ namespace ScrewMachineManagementSystem
 
             System.Threading.ThreadPool.QueueUserWorkItem(Initialize, null);
              
-            if (this.Handle != GetForegroundWindow()) //持续使该窗体置为最前,屏蔽该行则单次置顶
-            {
-                SetForegroundWindow(this.Handle);
+   
+            //System.Threading.ThreadPool.QueueUserWorkItem( SetInputKeyboard ,null);
 
-            }
-            SetInputKeyboard();
         }
-        ~Frm_GetSN()
+
+        /// <summary>/// 输入法切ENG/// </summary>
+        ///
+
+            ~Frm_GetSN()
         {
 
         }
@@ -207,18 +207,55 @@ namespace ScrewMachineManagementSystem
             }
         }
 
+        //调用API
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetForegroundWindow(); //获得本窗体的句柄
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);//设置此窗体为活动窗体
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern IntPtr SetFocus(HandleRef hWnd);
 
-        private void SetInputKeyboard()
+        public void PlayAround()
         {
-            InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
-            foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
+            Process[] processList = Process.GetProcesses();
+
+            foreach (Process theProcess in processList)
             {
-                if (item.Culture.ToString().ToLower().Contains("en"))
+                if (theProcess.ProcessName == "Display3单工位螺丝机")
                 {
-                    InputLanguage.CurrentInputLanguage = item;
+                    string mainWindowTitle = theProcess.MainWindowTitle;
+                    SetFocus(new HandleRef(null, theProcess.MainWindowHandle));
                 }
-                // InputLanguage.CurrentInputLanguage
+
             }
+
+        }
+        private void SetInputKeyboard(object obj)
+        {
+            Thread.Sleep(300);
+            this.Invoke(new Action(() =>
+            {
+                //这两个方法都失败了
+                //if (this.Handle != GetForegroundWindow()) //持续使该窗体置为最前,屏蔽该行则单次置顶
+                //{
+                //    bool a = SetForegroundWindow(this.Handle);
+
+                //}
+                //PlayAround()
+                this.ImeMode = ImeMode.Off;
+                this.txt_SN_Scan.ImeMode = ImeMode.Off;
+                InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
+                    foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
+                    {
+                        if (item.Culture.ToString().ToLower().Contains("en"))
+                        {
+                            InputLanguage.CurrentInputLanguage = item;
+                        }
+                        // InputLanguage.CurrentInputLanguage
+                    }
+
+
+            }));
         }
 
         private void txt_SN_CheckCode_TextChanged(object sender, EventArgs e)
@@ -242,6 +279,22 @@ namespace ScrewMachineManagementSystem
         private void btn_clearSN_Click(object sender, EventArgs e)
         {
             this.txt_SN_Scan.Text = "";
+        }
+
+        private void Frm_GetSN_Activated(object sender, EventArgs e)
+        {
+            this.ImeMode = ImeMode.Off;
+            this.txt_SN_Scan.ImeMode = ImeMode.Off;
+            InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
+            foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
+            {
+                if (item.Culture.ToString().ToLower().Contains("en"))
+                {
+                    InputLanguage.CurrentInputLanguage = item;
+                }
+                // InputLanguage.CurrentInputLanguage
+            }
+           
         }
 
 

@@ -23,6 +23,13 @@ namespace ScrewMachineManagementSystem
         List<char> _char = new List<char>();
 
         InputLanguage _currentLanguage;
+
+        //调用API
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetForegroundWindow(); //获得本窗体的句柄
+        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);//设置此窗体为活动窗体
+                                                                   //定义变量,句柄类
         public Frm_GetSN()
         {
             InitializeComponent();
@@ -30,6 +37,12 @@ namespace ScrewMachineManagementSystem
             this.TopMost = true;
 
             System.Threading.ThreadPool.QueueUserWorkItem(Initialize, null);
+             
+            if (this.Handle != GetForegroundWindow()) //持续使该窗体置为最前,屏蔽该行则单次置顶
+            {
+                SetForegroundWindow(this.Handle);
+
+            }
             SetInputKeyboard();
         }
         ~Frm_GetSN()
@@ -37,7 +50,9 @@ namespace ScrewMachineManagementSystem
 
         }
 
-        private void Initialize(object obj)
+
+
+    private void Initialize(object obj)
         {
             try
             {
@@ -228,5 +243,10 @@ namespace ScrewMachineManagementSystem
         {
             this.txt_SN_Scan.Text = "";
         }
+
+
+
+        //在窗体加载的时候给变量赋值,即将当前窗体的句柄赋给变量
+
     }
 }

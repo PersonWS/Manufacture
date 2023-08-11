@@ -213,7 +213,7 @@ namespace ScrewMachineManagementSystem
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            if (DialogResult.OK == MessageBox.Show(string.Format("手动关闭窗体后，软件将不会向PLC写入SN，如果需要再次写入SN，需要PLC关闭SN申请信号后再重新发起SN申请!\r\n 确认要进行手动关闭操作码？"), "SN码扫码界面关闭提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            if (DialogResult.OK == MessageBox.Show(string.Format("手动关闭窗体后，软件将不会向PLC写入SN，如果需要再次写入SN，需要使用【扫码】功能手动扫码!\r\n 确认要进行手动关闭操作码？"), "SN码扫码界面关闭提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
             {
                 _SN_Code = null;
                 if (FormClosing_OK_Cancel != null)

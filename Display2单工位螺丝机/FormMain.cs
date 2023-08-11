@@ -47,7 +47,7 @@ namespace ScrewMachineManagementSystem
         /// </summary>
         string _SN;
         /// <summary>
-        /// SN是否进行写入
+        /// SN是否进行写入,当SN扫码界面使用取消按钮时，该值为false ，使用确认按钮为true；
         /// </summary>
         bool _isSN_Write = false;
 
@@ -481,7 +481,7 @@ namespace ScrewMachineManagementSystem
             else
             {
                 FillBusinessLog("SN码输入取消");
-                this.Invoke(new Action(() => { txt_plcSN.Text = ""; }));
+                this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
                 Thread.ResetAbort();
             }
 
@@ -501,13 +501,13 @@ namespace ScrewMachineManagementSystem
 
                 if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
                 {
-                    FillInfoLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
+                    FillBusinessLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
 
                     _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
                     _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
                     try
                     {
-                        FillInfoLog("关闭前一扫码窗体");
+                        FillBusinessLog("关闭前一扫码窗体");
                         _frm_GetSN.Close(); _frm_GetSN.Dispose();
                         _frm_GetSN = null;
                     }
@@ -520,7 +520,7 @@ namespace ScrewMachineManagementSystem
                 _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
                 _frm_GetSN.FormClosing_OK_Cancel += Frm_FormClosingByUser;
                 _frm_GetSN.TopMost = true;
-                FillInfoLog("打开新的扫码窗体");
+                FillBusinessLog("打开新的扫码窗体");
                 DialogResult dr = _frm_GetSN.ShowDialog(); 
                  _is_frm_GetSN_Closed = false;
 
@@ -1224,7 +1224,29 @@ namespace ScrewMachineManagementSystem
         private void label1ScanCode_Click(object sender, EventArgs e)
         {
             //_isSNChanged_AfterReultOK = true;
-            ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
+            //ThreadPool.QueueUserWorkItem(ShowGetSN_Form, null);
+            ShowGetSN_Form(null);
+            if (_isSN_Write)
+            {
+                FillBusinessLog("SN码输入完成");
+                SetLabelForecolor(lab_snWrite_apply, _color_OFF);
+            }
+            else
+            {
+                FillBusinessLog("SN码输入取消");
+                this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
+                return;
+            }
+            if (lab_snRequest.ForeColor!=_color_ON)
+            {
+                FillBusinessLog(string.Format("[错误] 手动扫码后，检测到SN请求信号为 0 ，扫描到的SN不写入，准备清理SN..."));
+                this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
+                return;
+            }
+            if (_businessMain.WriteSN_ToPLC(_SN))
+            {
+                FillBusinessLog(string.Format("手动扫码SN写入成功，SN:{0}",_SN));
+            } ;
             //if (string.IsNullOrEmpty(utility.structCurrentWorkTask.productCode))
             //{
             //    utility.ShowMessage("请先扫描产品任务码！");

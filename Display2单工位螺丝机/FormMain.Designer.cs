@@ -31,8 +31,8 @@ namespace ScrewMachineManagementSystem
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timerScanSN = new System.Windows.Forms.Timer(this.components);
             this.timerRTU = new System.Windows.Forms.Timer(this.components);
@@ -40,7 +40,23 @@ namespace ScrewMachineManagementSystem
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.sqLiteCommand1 = new System.Data.SQLite.SQLiteCommand();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.listBox_businessLog = new System.Windows.Forms.ListBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lab_screwClear_plc = new System.Windows.Forms.Label();
+            this.lab_snRequest = new System.Windows.Forms.Label();
+            this.lab_isManufacture = new System.Windows.Forms.Label();
+            this.lab_ng = new System.Windows.Forms.Label();
+            this.lab_ok = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.lab_ScrewClearOK_apply = new System.Windows.Forms.Label();
             this.lab_ScrewClearOK = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,30 +77,13 @@ namespace ScrewMachineManagementSystem
             this.label8 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.lab_screwClear_plc = new System.Windows.Forms.Label();
-            this.lab_snRequest = new System.Windows.Forms.Label();
-            this.lab_isManufacture = new System.Windows.Forms.Label();
-            this.lab_ng = new System.Windows.Forms.Label();
-            this.lab_ok = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelRunMode = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lab_plcState = new LBSoft.IndustrialCtrls.Leds.LBLed();
             this.lab_screwState = new LBSoft.IndustrialCtrls.Leds.LBLed();
-            this.labelRunMode = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.listBoxInfoLog = new System.Windows.Forms.ListBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.txt_scannerSN = new System.Windows.Forms.TextBox();
-            this.txt_plcSN = new System.Windows.Forms.TextBox();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -93,6 +92,11 @@ namespace ScrewMachineManagementSystem
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.labelTime = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.txt_scannerSN = new System.Windows.Forms.TextBox();
+            this.txt_plcSN = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             this.comboBoxLineMode = new System.Windows.Forms.ComboBox();
             this.labelUserID = new System.Windows.Forms.Label();
             this.labelHostName = new System.Windows.Forms.Label();
@@ -115,21 +119,22 @@ namespace ScrewMachineManagementSystem
             this.labelLogin = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel7.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
+            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // timer2
             // 
@@ -164,14 +169,107 @@ namespace ScrewMachineManagementSystem
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.groupBox9);
-            this.groupBox3.Controls.Add(this.groupBox10);
+            this.groupBox3.Controls.Add(this.listBox_businessLog);
             resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
+            // listBox_businessLog
+            // 
+            this.listBox_businessLog.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.listBox_businessLog, "listBox_businessLog");
+            this.listBox_businessLog.FormattingEnabled = true;
+            this.listBox_businessLog.Name = "listBox_businessLog";
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label7);
+            this.groupBox10.Controls.Add(this.lab_screwClear_plc);
+            this.groupBox10.Controls.Add(this.lab_snRequest);
+            this.groupBox10.Controls.Add(this.lab_isManufacture);
+            this.groupBox10.Controls.Add(this.lab_ng);
+            this.groupBox10.Controls.Add(this.lab_ok);
+            this.groupBox10.Controls.Add(this.label20);
+            this.groupBox10.Controls.Add(this.label19);
+            this.groupBox10.Controls.Add(this.label21);
+            this.groupBox10.Controls.Add(this.label27);
+            this.groupBox10.Controls.Add(this.label28);
+            this.groupBox10.Controls.Add(this.label29);
+            resources.ApplyResources(this.groupBox10, "groupBox10");
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.TabStop = false;
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // lab_screwClear_plc
+            // 
+            resources.ApplyResources(this.lab_screwClear_plc, "lab_screwClear_plc");
+            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
+            // 
+            // lab_snRequest
+            // 
+            resources.ApplyResources(this.lab_snRequest, "lab_snRequest");
+            this.lab_snRequest.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_snRequest.Name = "lab_snRequest";
+            // 
+            // lab_isManufacture
+            // 
+            resources.ApplyResources(this.lab_isManufacture, "lab_isManufacture");
+            this.lab_isManufacture.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_isManufacture.Name = "lab_isManufacture";
+            this.lab_isManufacture.Tag = "";
+            // 
+            // lab_ng
+            // 
+            resources.ApplyResources(this.lab_ng, "lab_ng");
+            this.lab_ng.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ng.Name = "lab_ng";
+            // 
+            // lab_ok
+            // 
+            resources.ApplyResources(this.lab_ok, "lab_ok");
+            this.lab_ok.ForeColor = System.Drawing.Color.DimGray;
+            this.lab_ok.Name = "lab_ok";
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
+            this.label27.Tag = "";
+            // 
+            // label28
+            // 
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.Name = "label28";
+            // 
+            // label29
+            // 
+            resources.ApplyResources(this.label29, "label29");
+            this.label29.Name = "label29";
+            // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.label1);
+            this.groupBox9.Controls.Add(this.label5);
             this.groupBox9.Controls.Add(this.lab_ScrewClearOK_apply);
             this.groupBox9.Controls.Add(this.lab_ScrewClearOK);
             this.groupBox9.Controls.Add(this.label2);
@@ -195,6 +293,16 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.groupBox9, "groupBox9");
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.TabStop = false;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
             // lab_ScrewClearOK_apply
             // 
@@ -308,91 +416,17 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.label17, "label17");
             this.label17.Name = "label17";
             // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.lab_screwClear_plc);
-            this.groupBox10.Controls.Add(this.lab_snRequest);
-            this.groupBox10.Controls.Add(this.lab_isManufacture);
-            this.groupBox10.Controls.Add(this.lab_ng);
-            this.groupBox10.Controls.Add(this.lab_ok);
-            this.groupBox10.Controls.Add(this.label20);
-            this.groupBox10.Controls.Add(this.label19);
-            this.groupBox10.Controls.Add(this.label21);
-            this.groupBox10.Controls.Add(this.label27);
-            this.groupBox10.Controls.Add(this.label28);
-            this.groupBox10.Controls.Add(this.label29);
-            resources.ApplyResources(this.groupBox10, "groupBox10");
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.TabStop = false;
-            // 
-            // lab_screwClear_plc
-            // 
-            resources.ApplyResources(this.lab_screwClear_plc, "lab_screwClear_plc");
-            this.lab_screwClear_plc.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_screwClear_plc.Name = "lab_screwClear_plc";
-            // 
-            // lab_snRequest
-            // 
-            resources.ApplyResources(this.lab_snRequest, "lab_snRequest");
-            this.lab_snRequest.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_snRequest.Name = "lab_snRequest";
-            // 
-            // lab_isManufacture
-            // 
-            resources.ApplyResources(this.lab_isManufacture, "lab_isManufacture");
-            this.lab_isManufacture.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_isManufacture.Name = "lab_isManufacture";
-            this.lab_isManufacture.Tag = "";
-            // 
-            // lab_ng
-            // 
-            resources.ApplyResources(this.lab_ng, "lab_ng");
-            this.lab_ng.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_ng.Name = "lab_ng";
-            // 
-            // lab_ok
-            // 
-            resources.ApplyResources(this.lab_ok, "lab_ok");
-            this.lab_ok.ForeColor = System.Drawing.Color.DimGray;
-            this.lab_ok.Name = "lab_ok";
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
-            // 
-            // label19
-            // 
-            resources.ApplyResources(this.label19, "label19");
-            this.label19.Name = "label19";
-            // 
-            // label21
-            // 
-            resources.ApplyResources(this.label21, "label21");
-            this.label21.Name = "label21";
-            // 
-            // label27
-            // 
-            resources.ApplyResources(this.label27, "label27");
-            this.label27.Name = "label27";
-            this.label27.Tag = "";
-            // 
-            // label28
-            // 
-            resources.ApplyResources(this.label28, "label28");
-            this.label28.Name = "label28";
-            // 
-            // label29
-            // 
-            resources.ApplyResources(this.label29, "label29");
-            this.label29.Name = "label29";
-            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.labelRunMode);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // labelRunMode
+            // 
+            resources.ApplyResources(this.labelRunMode, "labelRunMode");
+            this.labelRunMode.ForeColor = System.Drawing.Color.Black;
+            this.labelRunMode.Name = "labelRunMode";
             // 
             // groupBox4
             // 
@@ -433,12 +467,6 @@ namespace ScrewMachineManagementSystem
             this.lab_screwState.Style = LBSoft.IndustrialCtrls.Leds.LBLed.LedStyle.Circular;
             this.lab_screwState.Tag = "";
             // 
-            // labelRunMode
-            // 
-            resources.ApplyResources(this.labelRunMode, "labelRunMode");
-            this.labelRunMode.ForeColor = System.Drawing.Color.Black;
-            this.labelRunMode.Name = "labelRunMode";
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.listBoxInfoLog);
@@ -453,35 +481,6 @@ namespace ScrewMachineManagementSystem
             this.listBoxInfoLog.FormattingEnabled = true;
             this.listBoxInfoLog.Name = "listBoxInfoLog";
             this.listBoxInfoLog.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxInfoLog_DrawItem);
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.txt_scannerSN);
-            this.panel3.Controls.Add(this.txt_plcSN);
-            this.panel3.Controls.Add(this.label31);
-            this.panel3.Controls.Add(this.label30);
-            resources.ApplyResources(this.panel3, "panel3");
-            this.panel3.Name = "panel3";
-            // 
-            // txt_scannerSN
-            // 
-            resources.ApplyResources(this.txt_scannerSN, "txt_scannerSN");
-            this.txt_scannerSN.Name = "txt_scannerSN";
-            // 
-            // txt_plcSN
-            // 
-            resources.ApplyResources(this.txt_plcSN, "txt_plcSN");
-            this.txt_plcSN.Name = "txt_plcSN";
-            // 
-            // label31
-            // 
-            resources.ApplyResources(this.label31, "label31");
-            this.label31.Name = "label31";
-            // 
-            // label30
-            // 
-            resources.ApplyResources(this.label30, "label30");
-            this.label30.Name = "label30";
             // 
             // groupBox1
             // 
@@ -501,23 +500,23 @@ namespace ScrewMachineManagementSystem
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             resources.ApplyResources(this.dataGridView1, "dataGridView1");
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 30;
@@ -557,6 +556,35 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.txt_scannerSN);
+            this.panel3.Controls.Add(this.txt_plcSN);
+            this.panel3.Controls.Add(this.label31);
+            this.panel3.Controls.Add(this.label30);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // txt_scannerSN
+            // 
+            resources.ApplyResources(this.txt_scannerSN, "txt_scannerSN");
+            this.txt_scannerSN.Name = "txt_scannerSN";
+            // 
+            // txt_plcSN
+            // 
+            resources.ApplyResources(this.txt_plcSN, "txt_plcSN");
+            this.txt_plcSN.Name = "txt_plcSN";
+            // 
+            // label31
+            // 
+            resources.ApplyResources(this.label31, "label31");
+            this.label31.Name = "label31";
+            // 
+            // label30
+            // 
+            resources.ApplyResources(this.label30, "label30");
+            this.label30.Name = "label30";
             // 
             // comboBoxLineMode
             // 
@@ -764,15 +792,18 @@ namespace ScrewMachineManagementSystem
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox10, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox9, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.labelTime, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.pictureBoxLogo, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelTop, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox5, 2, 3);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox5, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 1, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // FormMain
@@ -780,7 +811,7 @@ namespace ScrewMachineManagementSystem
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "FormMain";
             this.Activated += new System.EventHandler(this.FormMain_Activated);
@@ -790,21 +821,21 @@ namespace ScrewMachineManagementSystem
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
             this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.groupBox3.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panelTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -819,7 +850,23 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Timer timer3;
         private System.Data.SQLite.SQLiteCommand sqLiteCommand1;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ListBox listBox_businessLog;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lab_screwClear_plc;
+        private System.Windows.Forms.Label lab_snRequest;
+        private System.Windows.Forms.Label lab_isManufacture;
+        private System.Windows.Forms.Label lab_ng;
+        private System.Windows.Forms.Label lab_ok;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lab_ScrewClearOK_apply;
         private System.Windows.Forms.Label lab_ScrewClearOK;
         private System.Windows.Forms.Label label2;
@@ -840,29 +887,13 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Label lab_screwClear_plc;
-        private System.Windows.Forms.Label lab_snRequest;
-        private System.Windows.Forms.Label lab_isManufacture;
-        private System.Windows.Forms.Label lab_ng;
-        private System.Windows.Forms.Label lab_ok;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox groupBox4;
         private LBSoft.IndustrialCtrls.Leds.LBLed lab_plcState;
         private LBSoft.IndustrialCtrls.Leds.LBLed lab_screwState;
         private System.Windows.Forms.Label labelRunMode;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ListBox listBoxInfoLog;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox txt_scannerSN;
-        private System.Windows.Forms.TextBox txt_plcSN;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel7;
@@ -880,6 +911,11 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label labelExit;
         private System.Windows.Forms.Label labelLogin;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox txt_scannerSN;
+        private System.Windows.Forms.TextBox txt_plcSN;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.ComboBox comboBoxLineMode;
         private System.Windows.Forms.Label labelUserID;
         private System.Windows.Forms.Label labelHostName;
@@ -892,7 +928,6 @@ namespace ScrewMachineManagementSystem
         private System.Windows.Forms.Label labelSystemName;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
 

@@ -3,6 +3,10 @@ using ScrewMachineManagementSystem.Model;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
+using System.Threading;
 
 namespace ScrewMachineManagementSystem
 {
@@ -14,12 +18,17 @@ namespace ScrewMachineManagementSystem
 
         public event Action<string> SN_CodeGet;
 
-        public event Action FormClosingByUser;
+        /// <summary>
+        /// 0:点击OK 键，写入SN   1：点击取消键，取消写入SN
+        /// </summary>
+        public event Action<bool> FormClosing_OK_Cancel;
 
         List<byte> _byte = new List<byte>();
         List<char> _char = new List<char>();
 
         InputLanguage _currentLanguage;
+
+
         public Frm_GetSN()
         {
             InitializeComponent();
@@ -27,14 +36,23 @@ namespace ScrewMachineManagementSystem
             this.TopMost = true;
 
             System.Threading.ThreadPool.QueueUserWorkItem(Initialize, null);
-            SetInputKeyboard();
+             
+   
+            //System.Threading.ThreadPool.QueueUserWorkItem( SetInputKeyboard ,null);
+
         }
-        ~Frm_GetSN()
+
+        /// <summary>/// 输入法切ENG/// </summary>
+        ///
+
+            ~Frm_GetSN()
         {
 
         }
 
-        private void Initialize(object obj)
+
+
+    private void Initialize(object obj)
         {
             try
             {
@@ -64,11 +82,11 @@ namespace ScrewMachineManagementSystem
         private void buttonOK_Click(object sender, EventArgs e)
         {
             Int32.TryParse(txt_SN_maxLength.Text, out _max_SN_Leng);
-            _SN_Code = txt_SN_Scan.Text;
+            _SN_Code = txt_SN_Scan.Text.Replace("\r","");
             //检查SN
-            if (_SN_Code.Length > _max_SN_Leng)
+            if (_SN_Code.Length != _max_SN_Leng)
             {
-                MessageBox.Show(string.Format("扫描到的SN:{0} ,长度为：{1} ，超过最大允许长度!", _SN_Code, _SN_Code.Length), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(string.Format("扫描到的SN:{0} \r\n实际扫描的SN长度为：{1} ,要求的SN长度为：{2} .\r\n请检查SN或输入法设置是否正确.", _SN_Code, _SN_Code.Length,_max_SN_Leng), "SN码长度错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 txt_SN_Scan.Text = "";
                 return;
             }
@@ -95,6 +113,10 @@ namespace ScrewMachineManagementSystem
             if (SN_CodeGet != null)
             {
                 SN_CodeGet(_SN_Code);
+            }
+            if (FormClosing_OK_Cancel != null)
+            {
+                FormClosing_OK_Cancel(true);
             }
             this.Close();
         }
@@ -173,10 +195,6 @@ namespace ScrewMachineManagementSystem
         private void Frm_GetSN_FormClosing(object sender, FormClosingEventArgs e)
         {
             InputLanguage.CurrentInputLanguage = _currentLanguage;
-            if (FormClosingByUser != null)
-            {
-                FormClosingByUser();
-            }
         }
 
         private void txt_SN_Scan_KeyPress(object sender, KeyPressEventArgs e)
@@ -189,13 +207,84 @@ namespace ScrewMachineManagementSystem
             }
         }
 
-        private void txt_SN_CheckCode_KeyPress(object sender, KeyPressEventArgs e)
+        //调用API
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetForegroundWindow(); //获得本窗体的句柄
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);//设置此窗体为活动窗体
+        [System.Runtime.InteropServices.DllImport(@"C:\Windows\System32\user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern IntPtr SetFocus(HandleRef hWnd);
+
+        public void PlayAround()
         {
-            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text + e.KeyChar);
+            Process[] processList = Process.GetProcesses();
+
+            foreach (Process theProcess in processList)
+            {
+                if (theProcess.ProcessName == "Display3单工位螺丝机")
+                {
+                    string mainWindowTitle = theProcess.MainWindowTitle;
+                    SetFocus(new HandleRef(null, theProcess.MainWindowHandle));
+                }
+
+            }
+
+        }
+        private void SetInputKeyboard(object obj)
+        {
+            Thread.Sleep(300);
+            this.Invoke(new Action(() =>
+            {
+                //这两个方法都失败了
+                //if (this.Handle != GetForegroundWindow()) //持续使该窗体置为最前,屏蔽该行则单次置顶
+                //{
+                //    bool a = SetForegroundWindow(this.Handle);
+
+                //}
+                //PlayAround()
+                this.ImeMode = ImeMode.Off;
+                this.txt_SN_Scan.ImeMode = ImeMode.Off;
+                InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
+                    foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
+                    {
+                        if (item.Culture.ToString().ToLower().Contains("en"))
+                        {
+                            InputLanguage.CurrentInputLanguage = item;
+                        }
+                        // InputLanguage.CurrentInputLanguage
+                    }
+
+
+            }));
         }
 
-        private void SetInputKeyboard()
+        private void txt_SN_CheckCode_TextChanged(object sender, EventArgs e)
         {
+            LogUtility.WriteConfiguration("SN_CHECK_STRING", txt_SN_CheckCode.Text );
+        }
+
+        private void btn_cancel_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show(string.Format("手动关闭窗体后，软件将不会向PLC写入SN，如果需要再次写入SN，需要使用【扫码】功能手动扫码!\r\n 确认要进行手动关闭操作码？"), "SN码扫码界面关闭提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                _SN_Code = null;
+                if (FormClosing_OK_Cancel != null)
+                {
+                    FormClosing_OK_Cancel(false);
+                }
+                this.Close();
+            }
+        }
+
+        private void btn_clearSN_Click(object sender, EventArgs e)
+        {
+            this.txt_SN_Scan.Text = "";
+        }
+
+        private void Frm_GetSN_Activated(object sender, EventArgs e)
+        {
+            this.ImeMode = ImeMode.Off;
+            this.txt_SN_Scan.ImeMode = ImeMode.Off;
             InputLanguageCollection c = InputLanguage.InstalledInputLanguages;
             foreach (InputLanguage item in InputLanguage.InstalledInputLanguages)
             {
@@ -205,6 +294,12 @@ namespace ScrewMachineManagementSystem
                 }
                 // InputLanguage.CurrentInputLanguage
             }
+           
         }
+
+
+
+        //在窗体加载的时候给变量赋值,即将当前窗体的句柄赋给变量
+
     }
 }

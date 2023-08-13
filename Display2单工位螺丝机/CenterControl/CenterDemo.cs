@@ -37,7 +37,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 _businessMain.Need_lastProcessName_Request -= Need_lastProcessName_Request;
                 _businessMain.SaveInformationToMES_Result_Request -= SaveInformationToMES_Result_Request;
                 _businessMain.Need_ClearScrewData += Need_ClearScrewData;
-                _businessMain.MessageOutput -= MessageOutput;
+                _businessMain.MessageOutput_Business -= MessageOutput;
 
             }
         }
@@ -51,7 +51,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             lab_lastProcessName.Text = BusinessMain._lastProcessName;
 
 
-            _businessMain.MessageOutput += MessageOutput;
+            _businessMain.MessageOutput_Business += MessageOutput;
             //订阅关键事件
             if (chk_subscribe.Checked)
             {
@@ -402,6 +402,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_sn_set.Enabled = false;
                 btn_StopCenterControl.Enabled = false;
                 btn_ClearScrew.Enabled = false;
+                btn_clearScrewForce.Enabled = false ;
+                btn_resetAllData.Enabled = false;
                 btn_StartCenterControl.Enabled = true;
             }));
 
@@ -419,6 +421,8 @@ namespace ScrewMachineManagementSystem.CenterControl
                 btn_sn_set.Enabled = true;
                 btn_StopCenterControl.Enabled = true;
                 btn_ClearScrew.Enabled = true;
+                btn_clearScrewForce.Enabled = true;
+                btn_resetAllData.Enabled = true;
                 btn_StartCenterControl.Enabled = false;
             }));
 
@@ -438,6 +442,23 @@ namespace ScrewMachineManagementSystem.CenterControl
                 else
                 { ShowMessage("强制【表格清空】失败"); }
             }
+        }
+
+        private void btn_resetAllData_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.OK == MessageBox.Show("强制【清空所有数据】会使DB2002所有的点位数据置位为0，确认执行码？", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                if (_businessMain.ClearPointData_Reset0())
+                { ShowMessage("【重置DB2002所有状 态数据[置位为0]】成功"); }
+                else
+                { ShowMessage("【重置DB2002所有状 态数据[置位为0]】失败"); }
+            }
+        }
+
+        private void btn_scanner_Click(object sender, EventArgs e)
+        {
+            Frm_GetSN f = new Frm_GetSN();
+            f.ShowDialog();
         }
     }
 }

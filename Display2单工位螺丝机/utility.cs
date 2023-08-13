@@ -34,7 +34,9 @@ namespace ScrewMachineManagementSystem
         /// <summary>
         /// 登录用户信息
         /// </summary>
-        public static string SystemName = "Display2单工位螺丝机";
+        public static string systemName = "Display2单工位螺丝机";
+
+        public static string SystemName { get { return string.IsNullOrEmpty(LogUtility.ReadConfiguration("SystemName")) ? systemName : LogUtility.ReadConfiguration("SystemName"); } }
         /// <summary>
         /// 参数列表
         /// </summary>
@@ -560,6 +562,49 @@ namespace ScrewMachineManagementSystem
             }
         }
 
+
+        public static void ErrorLog_filllog(string error_custom, string fileNameOnCurrentDir=null)
+        {
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                if (LogHappenEvent != null)
+                {
+                    LogHappenEvent(o.ToString());
+                }
+            }, error_custom);
+            try
+            {
+                lock (obj)
+                {
+                    string path = Assembly.GetExecutingAssembly().Location;
+                    path = System.IO.Path.Combine(path.Substring(0, path.LastIndexOf('\\')), "Log");
+                    System.IO.Directory.CreateDirectory(path);
+                    string fileName = "";
+                    if (string.IsNullOrEmpty(fileNameOnCurrentDir))
+                    {
+                        fileName = path + "\\Log" + DateTime.Today.ToString("yyyy-MM-dd") +"FillLog"+ ".txt";
+                    }
+                    else
+                    {
+                        fileName = path + "\\" + fileNameOnCurrentDir + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+                    }
+
+
+                    using (System.IO.FileStream file = new System.IO.FileStream(fileName, FileMode.Append, FileAccess.Write))
+                    {
+                        System.IO.StreamWriter sw = new StreamWriter(file);
+                        sw.WriteLine("当前时间：" + DateTime.Now.ToString());
+                        sw.WriteLine("提示信息：" + error_custom);
+                        sw.WriteLine();
+                        sw.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                WriteLog(e.Message, EventLogEntryType.Error);
+            }
+        }
 
         public static void UsrLogRecord(byte[][] array)
         {

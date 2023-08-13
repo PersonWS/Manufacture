@@ -80,12 +80,14 @@
             this.btn_set_lastProcessName = new System.Windows.Forms.Button();
             this.btn_saveReult = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btn_resetAllData = new System.Windows.Forms.Button();
+            this.btn_clearScrewForce = new System.Windows.Forms.Button();
             this.btn_SNForceWrite = new System.Windows.Forms.Button();
             this.btn_forceResultOK = new System.Windows.Forms.Button();
             this.btn_ForceManufacturePermission = new System.Windows.Forms.Button();
             this.btn_ClearScrew = new System.Windows.Forms.Button();
             this.chk_subscribe = new System.Windows.Forms.CheckBox();
-            this.btn_clearScrewForce = new System.Windows.Forms.Button();
+            this.btn_scanner = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -233,9 +235,9 @@
             // 
             // btn_clearLog
             // 
-            this.btn_clearLog.Location = new System.Drawing.Point(672, 438);
+            this.btn_clearLog.Location = new System.Drawing.Point(713, 426);
             this.btn_clearLog.Name = "btn_clearLog";
-            this.btn_clearLog.Size = new System.Drawing.Size(100, 36);
+            this.btn_clearLog.Size = new System.Drawing.Size(59, 36);
             this.btn_clearLog.TabIndex = 14;
             this.btn_clearLog.Text = "clear Message";
             this.btn_clearLog.UseVisualStyleBackColor = true;
@@ -632,6 +634,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btn_resetAllData);
             this.groupBox3.Controls.Add(this.btn_clearScrewForce);
             this.groupBox3.Controls.Add(this.btn_SNForceWrite);
             this.groupBox3.Controls.Add(this.btn_forceResultOK);
@@ -642,6 +645,28 @@
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "强制指令区域";
+            // 
+            // btn_resetAllData
+            // 
+            this.btn_resetAllData.Enabled = false;
+            this.btn_resetAllData.Location = new System.Drawing.Point(487, 20);
+            this.btn_resetAllData.Name = "btn_resetAllData";
+            this.btn_resetAllData.Size = new System.Drawing.Size(110, 68);
+            this.btn_resetAllData.TabIndex = 33;
+            this.btn_resetAllData.Text = "重置DB2002所有状 态数据[置位为0]";
+            this.btn_resetAllData.UseVisualStyleBackColor = true;
+            this.btn_resetAllData.Click += new System.EventHandler(this.btn_resetAllData_Click);
+            // 
+            // btn_clearScrewForce
+            // 
+            this.btn_clearScrewForce.Enabled = false;
+            this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
+            this.btn_clearScrewForce.Name = "btn_clearScrewForce";
+            this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
+            this.btn_clearScrewForce.TabIndex = 32;
+            this.btn_clearScrewForce.Text = "强制清表格";
+            this.btn_clearScrewForce.UseVisualStyleBackColor = true;
+            this.btn_clearScrewForce.Click += new System.EventHandler(this.btn_clearScrewForce_Click);
             // 
             // btn_SNForceWrite
             // 
@@ -690,6 +715,7 @@
             // chk_subscribe
             // 
             this.chk_subscribe.AutoSize = true;
+            this.chk_subscribe.Enabled = false;
             this.chk_subscribe.Location = new System.Drawing.Point(14, 33);
             this.chk_subscribe.Name = "chk_subscribe";
             this.chk_subscribe.Size = new System.Drawing.Size(132, 16);
@@ -697,22 +723,22 @@
             this.chk_subscribe.Text = "订阅事件[仅调试用]";
             this.chk_subscribe.UseVisualStyleBackColor = true;
             // 
-            // btn_clearScrewForce
+            // btn_scanner
             // 
-            this.btn_clearScrewForce.Enabled = false;
-            this.btn_clearScrewForce.Location = new System.Drawing.Point(370, 20);
-            this.btn_clearScrewForce.Name = "btn_clearScrewForce";
-            this.btn_clearScrewForce.Size = new System.Drawing.Size(110, 68);
-            this.btn_clearScrewForce.TabIndex = 32;
-            this.btn_clearScrewForce.Text = "强制清表格";
-            this.btn_clearScrewForce.UseVisualStyleBackColor = true;
-            this.btn_clearScrewForce.Click += new System.EventHandler(this.btn_clearScrewForce_Click);
+            this.btn_scanner.Location = new System.Drawing.Point(648, 425);
+            this.btn_scanner.Name = "btn_scanner";
+            this.btn_scanner.Size = new System.Drawing.Size(59, 36);
+            this.btn_scanner.TabIndex = 31;
+            this.btn_scanner.Text = "扫码";
+            this.btn_scanner.UseVisualStyleBackColor = true;
+            this.btn_scanner.Click += new System.EventHandler(this.btn_scanner_Click);
             // 
             // CenterDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 637);
+            this.Controls.Add(this.btn_scanner);
             this.Controls.Add(this.chk_subscribe);
             this.Controls.Add(this.btn_ClearScrew);
             this.Controls.Add(this.groupBox3);
@@ -809,5 +835,7 @@
         private System.Windows.Forms.Button btn_ClearScrew;
         private System.Windows.Forms.CheckBox chk_subscribe;
         private System.Windows.Forms.Button btn_clearScrewForce;
+        private System.Windows.Forms.Button btn_resetAllData;
+        private System.Windows.Forms.Button btn_scanner;
     }
 }

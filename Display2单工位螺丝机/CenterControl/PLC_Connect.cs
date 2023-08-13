@@ -19,6 +19,8 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public bool IsConnected = false;
 
+        public bool IsConnecting = true;
+
         private bool _isWriting = false;
 
         /// <summary>
@@ -38,33 +40,52 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         private static readonly object _obj2 = new object();
 
+        private CpuType _cpuType;
+        public string _ip;
+        private short _rack;
+        private short _slot;
+        private int _port;
+
         public PLC_Connect(CpuType type, string ip, short rack, short slot, int port = 102)
         {
             //创建PLC对象
             //_plcEntity = new Plc(CpuType.S71200, ConfigurationKeys.PLC_IP, port, ConfigurationKeys.PLC_Rack, ConfigurationKeys.PLC_Slot);
-            _plcEntity = new Plc(type, ip, port, rack, slot);
+            this._cpuType = type;
+            this._ip = ip;
+            this._rack = rack;
+            this._slot = slot;
+            this._port = port;
         }
 
 
         public bool Connect()
         {
-            try
+            lock (_obj2)
             {
-                PlcEntity.Open();
-                IsConnected = true;
-                if (PlcConnected != null)
+                try
                 {
-                    PlcConnected(this);
+                    IsConnecting = true;
+                    _plcEntity = new Plc(_cpuType, _ip, _port, _rack, _slot); _plcEntity.ReadTimeout = 3; _plcEntity.WriteTimeout = 3;
+                    MessageOutPutMethod(string.Format("PLC:{0} 开始尝试连接...", this.PlcEntity.IP));
+                    _plcEntity.Open();
+                    IsConnected = true;
+                    if (PlcConnected != null)
+                    {
+                        PlcConnected(this);
+                    }
+                    MessageOutPutMethod(string.Format("PLC:{0} 连接成功！", this.PlcEntity.IP));
+                    return true;
                 }
-                MessageOutPutMethod(string.Format("PLC:{0} 连接成功！", this.PlcEntity.IP));
-                return true;
+                catch (Exception ex)
+                {
+                    MessageOutPutMethod(string.Format("PLC:{0} 连接失败！ \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
+                    IsConnected = false;
+                    return false;
+                }
+                finally
+                { IsConnecting = false; }
             }
-            catch (Exception ex)
-            {
-                MessageOutPutMethod(string.Format("PLC:{0} 连接失败！ \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
-                IsConnected = false;
-                return false;
-            }
+
         }
 
 
@@ -76,7 +97,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     Thread.Sleep(50);
                 }
-                if (_plcEntity!=null)
+                if (_plcEntity != null)
                 {
                     _plcEntity.Close();
                     IsConnected = false;
@@ -98,7 +119,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
         }
 
-        public void ReadData(ref PLC_Point item)
+        public bool ReadData(ref PLC_Point item)
         {
             item.isValueChanged = false;
             item.isReadSucess = false;
@@ -144,7 +165,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         item.isReadSucess = true;
                         if (sre1 != null && sre1.Length > 0)
                         {
-                            byte[] sre2 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1[1]+2);
+                            byte[] sre2 = PlcEntity.ReadBytes(DataType.DataBlock, item.DataBlock, item.DataAdress, sre1[1] + 2);
                             string str = Encoding.ASCII.GetString(sre2.Skip(2).Take(sre2.Length - 2).ToArray()).Replace("\0", "");
                             if (str != (string)item.value)
                             {
@@ -156,10 +177,16 @@ namespace ScrewMachineManagementSystem.CenterControl
                     default:
                         break;
                 }
+                return true;
             }
             catch (Exception e)
             {
+                //MessageOutput("plc_connect: ReadData" + e.ToString());
+                return false;
+                //if (true)
+                //{
 
+                //}
                 //throw e;
             }
 

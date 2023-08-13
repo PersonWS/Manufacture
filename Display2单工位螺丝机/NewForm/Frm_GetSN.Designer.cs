@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_GetSN));
             this.label2 = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_clearSN = new System.Windows.Forms.Button();
+            this.btn_cancel = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txt_SN_CheckCode = new System.Windows.Forms.TextBox();
             this.comboBoxCustomer = new System.Windows.Forms.ComboBox();
@@ -55,6 +58,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoxQty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // label2
             // 
@@ -72,7 +76,7 @@
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonOK.Location = new System.Drawing.Point(510, 210);
+            this.buttonOK.Location = new System.Drawing.Point(535, 205);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(118, 38);
             this.buttonOK.TabIndex = 12;
@@ -83,6 +87,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btn_clearSN);
+            this.panel1.Controls.Add(this.btn_cancel);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.txt_SN_Scan);
             this.panel1.Controls.Add(this.label6);
@@ -92,6 +98,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(680, 260);
             this.panel1.TabIndex = 12;
+            // 
+            // btn_clearSN
+            // 
+            this.btn_clearSN.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_clearSN.Location = new System.Drawing.Point(535, 33);
+            this.btn_clearSN.Name = "btn_clearSN";
+            this.btn_clearSN.Size = new System.Drawing.Size(118, 38);
+            this.btn_clearSN.TabIndex = 22;
+            this.btn_clearSN.Text = "清除SN";
+            this.btn_clearSN.UseVisualStyleBackColor = true;
+            this.btn_clearSN.Click += new System.EventHandler(this.btn_clearSN_Click);
+            // 
+            // btn_cancel
+            // 
+            this.btn_cancel.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_cancel.Location = new System.Drawing.Point(17, 203);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(118, 38);
+            this.btn_cancel.TabIndex = 21;
+            this.btn_cancel.Text = "取消";
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // groupBox3
             // 
@@ -111,9 +139,9 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox3.Location = new System.Drawing.Point(142, 79);
+            this.groupBox3.Location = new System.Drawing.Point(147, 79);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(486, 114);
+            this.groupBox3.Size = new System.Drawing.Size(506, 114);
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "SN/配方信息";
@@ -125,7 +153,7 @@
             this.txt_SN_CheckCode.Name = "txt_SN_CheckCode";
             this.txt_SN_CheckCode.Size = new System.Drawing.Size(320, 35);
             this.txt_SN_CheckCode.TabIndex = 21;
-            this.txt_SN_CheckCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_CheckCode_KeyPress);
+            this.txt_SN_CheckCode.TextChanged += new System.EventHandler(this.txt_SN_CheckCode_TextChanged);
             // 
             // comboBoxCustomer
             // 
@@ -229,11 +257,11 @@
             // label9
             // 
             this.label9.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(0, 73);
+            this.label9.Location = new System.Drawing.Point(6, 72);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(139, 27);
+            this.label9.Size = new System.Drawing.Size(133, 27);
             this.label9.TabIndex = 8;
-            this.label9.Text = "SN码最大长度";
+            this.label9.Text = "SN 码长度";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label8
@@ -287,38 +315,39 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(0, 29);
+            this.label1.Location = new System.Drawing.Point(6, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 27);
+            this.label1.Size = new System.Drawing.Size(133, 27);
             this.label1.TabIndex = 8;
-            this.label1.Text = "SN    校验码";
+            this.label1.Text = "SN 校验码";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txt_SN_Scan
             // 
             this.txt_SN_Scan.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txt_SN_Scan.Location = new System.Drawing.Point(287, 34);
+            this.txt_SN_Scan.Location = new System.Drawing.Point(147, 34);
             this.txt_SN_Scan.Name = "txt_SN_Scan";
-            this.txt_SN_Scan.Size = new System.Drawing.Size(342, 35);
+            this.txt_SN_Scan.Size = new System.Drawing.Size(382, 35);
             this.txt_SN_Scan.TabIndex = 1;
             this.txt_SN_Scan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SN_Scan_KeyPress);
+            this.txt_SN_Scan.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(122, 37);
+            this.label6.Location = new System.Drawing.Point(12, 37);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(125, 28);
+            this.label6.Size = new System.Drawing.Size(146, 28);
             this.label6.TabIndex = 18;
-            this.label6.Text = "请扫描SN码";
+            this.label6.Text = "请扫描SN码：";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::ScrewMachineManagementSystem.Properties.Resources.NewTask;
-            this.pictureBox1.Location = new System.Drawing.Point(39, 95);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(17, 95);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(86, 98);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -340,6 +369,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormNewTaskOrder";
+            this.Activated += new System.EventHandler(this.Frm_GetSN_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_GetSN_FormClosing);
             this.Load += new System.EventHandler(this.FormNewTaskOrder_Load);
             this.panel1.ResumeLayout(false);
@@ -376,5 +406,7 @@
         private System.Windows.Forms.ComboBox comboBoxCustomer;
         private System.Windows.Forms.TextBox textBoxMLenght;
         private System.Windows.Forms.TextBox txt_SN_CheckCode;
+        private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.Button btn_clearSN;
     }
 }

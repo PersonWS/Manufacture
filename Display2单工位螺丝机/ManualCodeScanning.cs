@@ -18,11 +18,10 @@ using System.Globalization;
 using static Dapper.SqlMapper;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading.Tasks;
-using ScrewMachineManagementSystem.Contract;
 using System.Data;
-using ScrewMachineManagementSystem.Print;
-using DevExpress.XtraReports.UI;
 using System.Collections.Generic;
+using ScrewMachineManagementSystem.Print;
+using System.Text.RegularExpressions;
 
 namespace ScrewMachineManagementSystem
 {
@@ -32,6 +31,12 @@ namespace ScrewMachineManagementSystem
         private string textBox1Text = "QWERT";
         private string SN = "";
         string[] barCodes;
+        private string SNlen = "28";
+        private string SNtou = "";
+        private string type = "";
+
+        List<char> _char = new List<char>();
+
         //string[] barCodes = new string[29] {
 
 
@@ -108,7 +113,9 @@ namespace ScrewMachineManagementSystem
             textBox1.Enabled = false;
             button2.Visible = false;
             button3.Visible = false;
-            //execFile(printerName, "5595959595959");
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
+            textBox4.Enabled = false;
         }
         private void FormSeletY_Load(object sender, EventArgs e)
         {
@@ -238,54 +245,56 @@ namespace ScrewMachineManagementSystem
         string keyInputs = "";
 
 
+
+
+
         private void FormSeletY_KeyPress(object sender, KeyPressEventArgs e)
         {
-            label5.Text = SN;
-            switch (e.KeyChar)
+            //keyInputs = keyInputs + ((char)e.KeyChar).ToString().ToUpper();
+
+            //Writelog("方法_" + keyInputs);
+
+            if (e.KeyChar == '\r')
             {
-                // case (char)Keys.Back:
-                //     if (keyInputs.Length > 0)
-                //     {
-                //         keyInputs = keyInputs.Substring(0, keyInputs.Length - 1);
-                //         labelSN.Text = keyInputs;
-                //         labelScanedLenght.Text = String.Format("扫码长度:{0}", keyInputs.Length);
-                //     }
-                //     break;
-                case (char)Keys.Escape:
-                    DialogResult = DialogResult.Cancel;
-                    Close();
-                    break;
+                keyInputs = String.Join("", _char);
+             
+                if (keyInputs.Length < 5)
+                {
+                    _char = new List<char>();
+                    return;
+                }
 
-                default:
-                    keyInputs = keyInputs + ((char)e.KeyChar).ToString().ToUpper();
+                Writelog("list_" + keyInputs);
+                Writelog("长度_" + keyInputs.Length);
+                Writelog("snlen" + SNlen);
 
 
-                   
-                    //keyInputs = labelSN.Text.ToUpper();  文本框测试用
-                    int len = keyInputs.Length;
-                    if (len > 0)
+                if (keyInputs.Length != Convert.ToInt32(SNlen))
+                {
+                    //MessageBox.Show("长度超限, 请重新扫码");
+                    PrintData("SN码长度超限, 请重新扫码！", false);
+                    keyInputs = labelMsg.Text = "";
+                    labelSN_M.Text = "";
+                   _char = new List<char>();
+                    return;
+                }
+                else
+                {
+                    var ss = keyInputs.Substring(0, SNtou.Length);
+                    if (!ss.Equals(SNtou))
                     {
-                        labelScanedLenght.Text = String.Format("扫码长度:{0}", keyInputs.Length);
-                        labelMsg.Text = "正在扫码...";
-
-                        if (len > 28)
-                        {
-                            MessageBox.Show("长度超限, 请重新扫码");
-                            keyInputs = labelMsg.Text = "";
-
-                            return;
-                        }
+                        PrintData("扫码内容与SN首位标识符不符, 请重新扫码！", false);
+                        _char = new List<char>();
                     }
-                    break;
-
-
-                    if (keyInputs.Length == 28)
+                    else
                     {
                         labelSN_M.Text = keyInputs;
 
                         if (SN.Equals(keyInputs))
                         {
-                            MessageBox.Show("打印失败，该码已打印，请勿重复打印！");
+                            //MessageBox.Show("打印失败，该码已打印，请勿重复打印！");
+                            PrintData("打印失败，该码已打印，请勿重复打印！", false);
+                            _char = new List<char>();
                             return;
                         }
                         Writelog("2_" + keyInputs);
@@ -293,12 +302,87 @@ namespace ScrewMachineManagementSystem
                         Writelog("打印二维码开始！" + keyInputs);
                         SN = keyInputs;
                         execFile(printerName, keyInputs);
-                        //Output(keyInputs);
-                        //dd();
+                        Writelog(keyInputs);
                     }
 
-                    Writelog(keyInputs);
+
+                }
             }
+            else
+            {
+                _char.Add(e.KeyChar);
+            }
+
+
+            //switch (e.KeyChar)
+            //{
+            //    // case (char)Keys.Back:
+            //    //     if (keyInputs.Length > 0)
+            //    //     {
+            //    //         keyInputs = keyInputs.Substring(0, keyInputs.Length - 1);
+            //    //         labelSN.Text = keyInputs;
+            //    //         labelScanedLenght.Text = String.Format("扫码长度:{0}", keyInputs.Length);
+            //    //     }
+            //    //     break;
+            //    case (char)Keys.Escape:
+            //        DialogResult = DialogResult.Cancel;
+            //        Close();
+            //        break;
+
+            //    default:
+            //        keyInputs = keyInputs + ((char)e.KeyChar).ToString().ToUpper();
+
+
+
+            //        //keyInputs = labelSN.Text.ToUpper();  文本框测试用
+            //        int len = keyInputs.Length;
+            //        if (len > 0)
+            //        {
+            //            labelScanedLenght.Text = String.Format("扫码长度:{0}", keyInputs.Length);
+            //            labelMsg.Text = "正在扫码...";
+
+
+
+
+            //        }
+
+
+
+            //        break;
+
+
+            //}
+        }
+        private void ssss()
+        {
+            keyInputs = "49819498498498";
+            var ss = keyInputs.Substring(0, SNtou.Length);
+            if (!ss.Equals(SNtou))
+            {
+                PrintData("扫码内容与SN首位标识符不符, 请重新扫码！", false);
+            }
+            else
+            {
+                labelSN_M.Text = keyInputs;
+
+                if (SN.Equals(keyInputs))
+                {
+                    //MessageBox.Show("打印失败，该码已打印，请勿重复打印！");
+                    PrintData("打印失败，该码已打印，请勿重复打印！", false);
+                    return;
+                }
+                Writelog("2_" + keyInputs);
+                pictureBox2.Image = Generate1(keyInputs, 30, 30);
+                Writelog("打印二维码开始！" + keyInputs);
+                SN = keyInputs;
+                execFile(printerName, keyInputs);
+                Writelog(keyInputs);
+            }
+        }
+
+        private void PrintTemp()
+        {
+
         }
 
         #region 二维码
@@ -312,7 +396,8 @@ namespace ScrewMachineManagementSystem
 
                 if (!File.Exists(path))
                 {
-                    MessageBox.Show("打印失败，配置文件PrintTemplate.prn已丢失！请联系管理员！");
+                    //MessageBox.Show("");
+                    PrintData("打印失败，配置文件PrintTemplate.prn已丢失！请联系管理员！", false);
                     return;
                 }
 
@@ -358,13 +443,17 @@ namespace ScrewMachineManagementSystem
                     {
                         array[i] = array[i].Replace("P123456789001234567891234567", codes);
                     }
+                    else if (array[i].Contains("46990000025A2023071100D00385"))
+                    {
+                        array[i] = array[i].Replace("46990000025A2023071100D00385", codes);
+                    }
                     else if (array[i].Contains("PPBB"))
                     {
                         array[i] = array[i].Replace("PPBB", codes.Substring(codes.Length - 7, 7));
                     }
                     else if (array[i].Contains("DT1013/22"))
                     {
-                        array[i] = array[i].Replace("DT1013/22", "DT" + codes.Substring(6, 4) + "/" + codes.Substring(10, 2));
+                        array[i] = array[i].Replace("DT1013/22", type);
                     }
                     else if (array[i].Contains("PPPA"))
                     {
@@ -387,12 +476,16 @@ namespace ScrewMachineManagementSystem
 
                 if (res)
                 {
-                    MessageBox.Show("打印成功呢");
+                    label5.Text = SN;
+                    labelSN_M.Text = "";
+                    PrintData("打印成功！", true); ;
+                    _char = new List<char>();
                 }
                 else
                 {
-                    MessageBox.Show("打印失败呢");
-
+                    //MessageBox.Show("");
+                    PrintData("打印失败呢！", false);
+                    _char = new List<char>();
                 }
 
 
@@ -403,6 +496,17 @@ namespace ScrewMachineManagementSystem
                 Writelog("打印异常：" + ex.Message);
                 return false;
             }
+        }
+
+
+        public void PrintData(string msg, bool yesOrNo)
+        {
+            label7.Text = msg;
+            label7.ForeColor = yesOrNo ? Color.Black : Color.Red;
+            //label7.BackColor = Color.Green;
+            //label7.ForeColor = Color.Red;
+
+
         }
 
         public void Print(string no)
@@ -449,49 +553,6 @@ namespace ScrewMachineManagementSystem
 
 
         }
-
-        private XtraPrint xtraPrint { get; set; }
-
-        /// <summary>
-        /// 打印
-        /// </summary>
-        /// <param name="no"></param>
-        /// <returns></returns>
-        public bool Output(string no)
-        {
-            Writelog("打印方法进入");
-            bool result = false;
-            DsPrintInfo ds = new DsPrintInfo();
-            DataRow drNew = ds.th_print.NewRow();
-            drNew["DateTime"] = DateTime.Now.ToString();
-            drNew["IDCode"] = "456789";
-            drNew["SNCode"] = "123456";
-            drNew["BarCode"] = "666666";
-            ds.th_print.Rows.Add(drNew);
-
-            xtraPrint = new XtraPrint();
-            xtraPrint.DataSource = ds;
-            xtraPrint.DataMember = "th_print";
-            xtraPrint.CreateDocument();
-            xtraPrint.PrintingSystem.ShowMarginsWarning = false;
-            try
-            {
-                //测试注释
-                xtraPrint.Print();
-                Writelog("打了");
-                xtraPrint.Dispose();    //释放资源
-                result = true;
-            }
-            catch (Exception ex)
-            {
-                result = false;
-                Writelog("异常了," + ex.Message);
-            }
-            return result;
-        }
-
-
-
 
 
         /// <summary>
@@ -697,6 +758,9 @@ namespace ScrewMachineManagementSystem
         private void button1_Click(object sender, EventArgs e)
         {
             textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            textBox3.Enabled = true;
+            textBox4.Enabled = true;
             button2.Visible = true;
             button3.Visible = true;
             button1.Visible = false;
@@ -709,9 +773,33 @@ namespace ScrewMachineManagementSystem
         private void button2_Click(object sender, EventArgs e)
         {
             textBox1Text = textBox1.Text;
+
+            if (IsNumber(textBox2.Text))
+            {
+                PrintData("SN长度不为数字，输入有误，请从新输入！", false);
+            }
+            else
+            {
+                SNlen = textBox2.Text;
+            }
+
+            if (textBox3.Text.ToString().Length > Convert.ToInt32(SNlen))
+            {
+                PrintData("SN首位标识符不能大于SN长度！", false);
+            }
+            else
+            {
+                SNtou = textBox3.Text;
+            }
+            _char = new List<char>();
+            type = textBox4.Text;
             textBox1.Enabled = false;
             button2.Visible = false;
             button3.Visible = false;
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
+            textBox4.Enabled = false;
+            //ssss();
             button1.Visible = true;
         }
         /// <summary>
@@ -721,11 +809,26 @@ namespace ScrewMachineManagementSystem
         /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
+            _char = new List<char>();
             textBox1.Text = textBox1Text;
+            textBox2.Text = SNlen;
+            textBox3.Text = SNtou;
+            textBox4.Text = type;
             textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            textBox3.Enabled = false;
             button2.Visible = false;
             button3.Visible = false;
+            textBox4.Enabled = false;
             button1.Visible = true;
+        }
+
+        private bool IsNumber(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+            string pattern = "^[0-9]*$";
+            Regex rx = new Regex(pattern);
+            return !rx.IsMatch(s);
         }
     }
 }

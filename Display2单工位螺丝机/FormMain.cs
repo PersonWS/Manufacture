@@ -489,75 +489,6 @@ namespace ScrewMachineManagementSystem
 
         }
 
-        /// <summary>
-        /// 展示扫码窗体
-        /// </summary>
-        /// <param name="isAutoShow">是否通过自动触发来展示的</param>
-        private void ShowGetSN_Form(object obj)
-        {
-
-            this.Invoke(new Action(() =>
-            {
-
-                if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
-                {
-                    FillBusinessLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
-
-                    _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
-                    _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
-                    try
-                    {
-                        FillBusinessLog("关闭前一扫码窗体");
-                        _frm_GetSN.Close(); _frm_GetSN.Dispose();
-                        _frm_GetSN = null;
-                    }
-                    catch (Exception)
-                    {
-                    }
-
-                }
-                _frm_GetSN = new Frm_GetSN();
-                _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
-                _frm_GetSN.FormClosing_OK_Cancel += Frm_FormClosingByUser;
-                _frm_GetSN.TopMost = true;
-                FillBusinessLog("打开新的扫码窗体");
-                DialogResult dr = _frm_GetSN.ShowDialog(); 
-                 _is_frm_GetSN_Closed = false;
-
-            }));
-
-        }
-
-        /// <summary>
-        /// 获得扫描到的SN
-        /// </summary>
-        /// <param name="s"></param>
-        private void Frm_GetSN_SN_CodeGet(string s)
-        {
-            if (s != _SN)
-            {
-                _isSNChanged_AfterReultOK = true;
-                this.Invoke(new Action(() =>
-                {
-                    this._SN = s;
-                    txt_scannerSN.Text = s;
-                }));
-                FillBusinessLog("扫码获得SN: " + s);
-            }
-            else
-            {
-                _isSNChanged_AfterReultOK = false;
-            }
-
-        }
-        private void Frm_FormClosingByUser(bool isOK_Cancel)
-        {
-            this._isSN_Write = isOK_Cancel;
-            this._is_frm_GetSN_Closed = true;
-            _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
-            _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
-            _frm_GetSN = null;
-        }
 
         /// 获取上一工序名称 传出的string为SN码
         private string Need_lastProcessName_Request(string SN)
@@ -632,6 +563,80 @@ namespace ScrewMachineManagementSystem
 
         #endregion
 
+        #region 扫码窗体相关函数
+        /// <summary>
+        /// 展示扫码窗体
+        /// </summary>
+        /// <param name="isAutoShow">是否通过自动触发来展示的</param>
+        private void ShowGetSN_Form(object obj)
+        {
+
+            this.Invoke(new Action(() =>
+            {
+
+                if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
+                {
+                    FillBusinessLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
+
+                    _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
+                    _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
+                    try
+                    {
+                        FillBusinessLog("关闭前一扫码窗体");
+                        _frm_GetSN.Close(); _frm_GetSN.Dispose();
+                        _frm_GetSN = null;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                }
+                _frm_GetSN = new Frm_GetSN();
+                _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
+                _frm_GetSN.FormClosing_OK_Cancel += Frm_FormClosingByUser;
+                _frm_GetSN.TopMost = true;
+                FillBusinessLog("打开新的扫码窗体");
+                DialogResult dr = _frm_GetSN.ShowDialog();
+                _is_frm_GetSN_Closed = false;
+
+            }));
+
+        }
+
+        /// <summary>
+        /// 获得扫描到的SN
+        /// </summary>
+        /// <param name="s"></param>
+        private void Frm_GetSN_SN_CodeGet(string s)
+        {
+            if (s != _SN)
+            {
+                _isSNChanged_AfterReultOK = true;
+                this.Invoke(new Action(() =>
+                {
+                    this._SN = s;
+                    txt_scannerSN.Text = s;
+                }));
+                FillBusinessLog("扫码获得SN: " + s);
+            }
+            else
+            {
+                _isSNChanged_AfterReultOK = false;
+            }
+
+        }
+        private void Frm_FormClosingByUser(bool isOK_Cancel)
+        {
+            this._isSN_Write = isOK_Cancel;
+            this._is_frm_GetSN_Closed = true;
+            _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
+            _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
+            _frm_GetSN = null;
+        }
+
+        #endregion
+
+
         void initDatagridview()
         {
             //dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -648,19 +653,20 @@ namespace ScrewMachineManagementSystem
 
         private void label8_Click(object sender, EventArgs e)
         {
-            Byte[] b = new byte[100];
-            List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
-            ShowScrewData(ack);
-            /*
-            //停止才能重新登录
-            if (!isRun && utility.LoginModeEngineer)
-            {
-                FormSystem f = new FormSystem();
-                f.ShowDialog();
-            }
-            else
-                utility.ShowMessage("请停止运行，并启用工程模式！");
-                */
+            //Byte[] b = new byte[100];
+            //List<ScrewDriverData_ACK> ack = AnalysisScrewACK_Data(b);//解析数据
+            //ShowScrewData(ack);
+            FormSystem f = new FormSystem();
+            f.ShowDialog();
+            ////停止才能重新登录
+            //if (!isRun && utility.LoginModeEngineer)
+            //{
+            //    FormSystem f = new FormSystem();
+            //    f.ShowDialog();
+            //}
+            //else
+            //    utility.ShowMessage("请停止运行，并启用工程模式！");
+
         }
 
         private void labelRefresh_Click(object sender, EventArgs e)
@@ -720,6 +726,9 @@ namespace ScrewMachineManagementSystem
             }
             labelUserID.Text = utility.loginUserID;
             labelSystem.Visible = utility.LoginModeEngineer;
+
+            //强制启动
+            labelSystem.Visible=true;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

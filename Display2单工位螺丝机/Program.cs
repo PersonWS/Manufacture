@@ -70,14 +70,16 @@ namespace ScrewMachineManagementSystem
                 return;
             }
 
-            FormLogin f = new FormLogin();
-            if (f.ShowDialog() == DialogResult.OK)
-            {
-                f.Dispose();
-                f.Close();
-                Application.Run(new FormMain());
+            Application.Run(new FormMain());
 
-            }
+            //FormLogin f = new FormLogin();
+            //if (f.ShowDialog() == DialogResult.OK)
+            //{
+            //    f.Dispose();
+            //    f.Close();
+            //    Application.Run(new FormMain());
+
+            //}
             // Application.Run(new FormLogin());
             //界面转换
             //FormLogin loginForm = new FormLogin();

@@ -134,7 +134,6 @@ namespace ScrewMachineManagementSystem
             this.panel7.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             // 
             // timer2
             // 

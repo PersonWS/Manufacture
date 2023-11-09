@@ -436,12 +436,12 @@ namespace ScrewMachineManagementSystem
 
         private void BusinessMainMessageOutput(string s)
         {
-            FillBusinessLog(s);
+            FillBusinessLog(s, 255);
         }
 
         private void MessageOutput(string s)
         {
-            FillInfoLog(s);
+            FillInfoLog(s,255);
         }
 
         #region 业务处理事件
@@ -450,7 +450,7 @@ namespace ScrewMachineManagementSystem
 
             SetLabelForecolor(lab_snWrite_apply, _color_ON);//设定申请显示
 
-            FillBusinessLog("收到SN码写入请求，清空电批数据");
+            FillBusinessLog("收到SN码写入请求，清空电批数据", 0);
             Need_ClearScrewData(false);
 
             //申请触发时，清空电批的数据
@@ -459,7 +459,7 @@ namespace ScrewMachineManagementSystem
                 _dt_screwDataTable.Rows.Clear();
             }
 
-            FillBusinessLog("收到SN码写入请求，请输入SN码并确认");
+            FillBusinessLog("收到SN码写入请求，请输入SN码并确认", 0);
 
             //                Thread.ResetAbort();
 
@@ -475,12 +475,12 @@ namespace ScrewMachineManagementSystem
             Thread.Sleep(200);
             if (_isSN_Write)
             {
-                FillBusinessLog("SN码输入完成");
+                FillBusinessLog("SN码输入完成", 0);
                 SetLabelForecolor(lab_snWrite_apply, _color_OFF);
             }
             else
             {
-                FillBusinessLog("SN码输入取消");
+                FillBusinessLog("SN码输入取消", 0);
                 this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
                 Thread.ResetAbort();
             }
@@ -497,9 +497,9 @@ namespace ScrewMachineManagementSystem
             SetLabelForecolor(lab_manufacturePermission_apply, _color_ON);
             SetLabelForecolor(lab_manufactureDeny_apply, _color_ON);
             string lastProcessName = "BYJ";
-            FillBusinessLog("收到上一工序校验及互锁请求，请输入上一工序号并确认");
+            FillBusinessLog("收到上一工序校验及互锁请求，请输入上一工序号并确认", 0);
             //....这里写获得上一工序的代码
-            FillBusinessLog("上一工序获取入完成");
+            FillBusinessLog("上一工序获取入完成", 0);
             SetLabelForecolor(lab_interlock_apply, _color_OFF);
             SetLabelForecolor(lab_manufacturePermission_apply, _color_OFF);
             SetLabelForecolor(lab_manufactureDeny_apply, _color_OFF);
@@ -512,11 +512,11 @@ namespace ScrewMachineManagementSystem
         {
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_ON);
             bool bool_SaveInformationToMES_Result_Request = false;
-            FillBusinessLog("收到加工完成，保存加工结果请求，请保存并确认");
+            FillBusinessLog("收到加工完成，保存加工结果请求，请保存并确认", 0);
 
             //....这里写保存数据的代码
             bool_SaveInformationToMES_Result_Request = true;
-            FillBusinessLog("保存加工信息完成");
+            FillBusinessLog("保存加工信息完成", 0);
             SetLabelForecolor(lab_manufactureResultRecept_apply, _color_OFF);
 
             return bool_SaveInformationToMES_Result_Request;
@@ -524,7 +524,7 @@ namespace ScrewMachineManagementSystem
 
         private bool Need_ClearScrewDataCallBack()
         {
-           return  Need_ClearScrewData(true);
+            return Need_ClearScrewData(true);
         }
         /// <summary>
         /// 清空列表数据
@@ -576,13 +576,13 @@ namespace ScrewMachineManagementSystem
 
                 if (_frm_GetSN != null && _is_frm_GetSN_Closed == false)
                 {
-                    FillBusinessLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请");
+                    FillBusinessLog("【错误】在SN扫码窗体已开始后，再次收到SN扫码窗体打开申请", 1);
 
                     _frm_GetSN.SN_CodeGet -= Frm_GetSN_SN_CodeGet;
                     _frm_GetSN.FormClosing_OK_Cancel -= Frm_FormClosingByUser;
                     try
                     {
-                        FillBusinessLog("关闭前一扫码窗体");
+                        FillBusinessLog("关闭前一扫码窗体", 0);
                         _frm_GetSN.Close(); _frm_GetSN.Dispose();
                         _frm_GetSN = null;
                     }
@@ -595,7 +595,7 @@ namespace ScrewMachineManagementSystem
                 _frm_GetSN.SN_CodeGet += Frm_GetSN_SN_CodeGet;
                 _frm_GetSN.FormClosing_OK_Cancel += Frm_FormClosingByUser;
                 _frm_GetSN.TopMost = true;
-                FillBusinessLog("打开新的扫码窗体");
+                FillBusinessLog("打开新的扫码窗体", 0);
                 DialogResult dr = _frm_GetSN.ShowDialog();
                 _is_frm_GetSN_Closed = false;
 
@@ -617,7 +617,7 @@ namespace ScrewMachineManagementSystem
                     this._SN = s;
                     txt_scannerSN.Text = s;
                 }));
-                FillBusinessLog("扫码获得SN: " + s);
+                FillBusinessLog("扫码获得SN: " + s, 0);
             }
             else
             {
@@ -696,9 +696,9 @@ namespace ScrewMachineManagementSystem
 
         private void DisposeConnectAndReConnect(object obj)
         {
-            FillInfoLog("系统即将开始初始化...");
+            FillInfoLog("系统即将开始初始化...", 0);
             this.DisposeSource(null);
-            FillInfoLog("重新建立连接...");
+            FillInfoLog("重新建立连接...", 0);
             InitializeWhileFormOpen(null);
         }
 
@@ -728,7 +728,7 @@ namespace ScrewMachineManagementSystem
             labelSystem.Visible = utility.LoginModeEngineer;
 
             //强制启动
-            labelSystem.Visible=true;
+            labelSystem.Visible = true;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -741,6 +741,7 @@ namespace ScrewMachineManagementSystem
             else
             {
                 LogHelper.WriteLog("用户退出系统");
+
                 this.Dispose();//可以阻止Application.Exit()这句代码执行后再次Form2_FormClosing（）方法，需要点两次关闭
                 Application.Exit();
             }
@@ -943,7 +944,7 @@ namespace ScrewMachineManagementSystem
             }
             catch (Exception ex)
             {
-                FillInfoLog("checkMotionControlMachiningStatus," + ex.Message);
+                FillInfoLog("checkMotionControlMachiningStatus," + ex.Message, 1);
             }
         }
         /// <summary>
@@ -1038,7 +1039,7 @@ namespace ScrewMachineManagementSystem
         }
 
         string pre_Info = "";
-        void FillInfoLog(string info)
+        void FillInfoLog(string info, int level)
         {
             try
             {
@@ -1055,12 +1056,12 @@ namespace ScrewMachineManagementSystem
             catch (Exception)
             {
             }
-
+            LogUtility.RecordLog(level, info);
             LogUtility.ErrorLog_filllog(info);
 
         }
         string pre_Info2 = "";
-        void FillBusinessLog(string info)
+        void FillBusinessLog(string info, int level)
         {
             try
             {
@@ -1073,11 +1074,12 @@ namespace ScrewMachineManagementSystem
                     listBox_businessLog.TopIndex = listBox_businessLog.Items.Count - 1;
                     pre_Info2 = info;
                 }
+
             }
             catch (Exception)
             {
             }
-
+            LogUtility.RecordLog(level, info);
             LogUtility.ErrorLog_filllog(info);
 
         }
@@ -1209,7 +1211,7 @@ namespace ScrewMachineManagementSystem
                 }
                 else
                 {
-                    FillInfoLog(stationName[utility.struckScanProduct.stationId - 1] + "检查完成");
+                    FillInfoLog(stationName[utility.struckScanProduct.stationId - 1] + "检查完成", 0);
                 }
             }
             else
@@ -1237,25 +1239,25 @@ namespace ScrewMachineManagementSystem
             ShowGetSN_Form(null);
             if (_isSN_Write)
             {
-                FillBusinessLog("SN码输入完成");
+                FillBusinessLog("SN码输入完成", 0);
                 SetLabelForecolor(lab_snWrite_apply, _color_OFF);
             }
             else
             {
-                FillBusinessLog("SN码输入取消");
+                FillBusinessLog("SN码输入取消", 0);
                 this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
                 return;
             }
-            if (lab_snRequest.ForeColor!=_color_ON)
+            if (lab_snRequest.ForeColor != _color_ON)
             {
-                FillBusinessLog(string.Format("[错误] 手动扫码后，检测到SN请求信号为 0 ，扫描到的SN不写入，准备清理SN..."));
+                FillBusinessLog(string.Format("[错误] 手动扫码后，检测到SN请求信号为 0 ，扫描到的SN不写入，准备清理SN..."), 1);
                 this.Invoke(new Action(() => { txt_scannerSN.Text = ""; }));
                 return;
             }
             if (_businessMain.WriteSN_ToPLC(_SN))
             {
-                FillBusinessLog(string.Format("手动扫码SN写入成功，SN:{0}",_SN));
-            } ;
+                FillBusinessLog(string.Format("手动扫码SN写入成功，SN:{0}", _SN), 0);
+            };
             //if (string.IsNullOrEmpty(utility.structCurrentWorkTask.productCode))
             //{
             //    utility.ShowMessage("请先扫描产品任务码！");
@@ -1449,7 +1451,7 @@ namespace ScrewMachineManagementSystem
                     IPAddress ip = IPAddress.Parse(ConfigurationKeys.ScrewMachineIP1);
                     IPEndPoint point = new IPEndPoint(ip, ConfigurationKeys.ScrewMachinePort1);
                     //Get the IP address and port number of the remote server
-                    FillInfoLog(string.Format("电批：{0} 开始尝试连接...", ConfigurationKeys.ScrewMachineIP1));
+                    FillInfoLog(string.Format("电批：{0} 开始尝试连接...", ConfigurationKeys.ScrewMachineIP1), 0);
                     //if (!LogUtility.Ping(ConfigurationKeys.ScrewMachineIP1))
                     //{
                     //    FillInfoLog("电批连接失败，请检查网络连接是否正常");
@@ -1459,7 +1461,7 @@ namespace ScrewMachineManagementSystem
 
                     _socketSender_screw.Connect(point);
                     SetLabel_LED_Forecolor(this.lab_screwState, _color_ON);
-                    FillInfoLog(string.Format("电批：{0}  连接成功", ConfigurationKeys.ScrewMachineIP1));
+                    FillInfoLog(string.Format("电批：{0}  连接成功", ConfigurationKeys.ScrewMachineIP1), 0);
                     _socketSender_screw.Send(DNKE_DKTCP.Cmd_Connect);
                     LogUtility.ErrorLog_custom("握手信号发送：" + BitConverter.ToString(DNKE_DKTCP.Cmd_Connect));
                     //socketSender.Send(DNKE_DKTCP.Cmd_Connect);
@@ -1475,7 +1477,7 @@ namespace ScrewMachineManagementSystem
                 catch (Exception ex)
                 {
                     lab_screwState.LedColor = Color.Gray;
-                    FillInfoLog(string.Format("电批：{0}  连接失败 ex={1}", ConfigurationKeys.ScrewMachineIP1, ex.ToString()));
+                    FillInfoLog(string.Format("电批：{0}  连接失败 ex={1}", ConfigurationKeys.ScrewMachineIP1, ex.ToString()), 1);
                 }
                 finally
                 { _isScrewConnecting = false; }
@@ -1612,7 +1614,7 @@ namespace ScrewMachineManagementSystem
                         }
                         if ((_screwRunState == null) || (_screwRunState.runState != state.runState || _screwRunState.workResult != state.workResult || _screwRunState.sysErr != state.sysErr))//状态发生变化时输出
                         {
-                            FillBusinessLog(string.Format("电批状态：{0}", state.GetStatus()));
+                            FillBusinessLog(string.Format("电批状态：{0}", state.GetStatus()), 0);
                             _screwRunState = state;
                         }
                         break;
@@ -1745,7 +1747,7 @@ namespace ScrewMachineManagementSystem
             }
             catch (Exception e)
             {
-                FillInfoLog("电批数据异常，如果自动连接失败，请使用【初始化】功能重新连接");
+                FillInfoLog("电批数据异常，如果自动连接失败，请使用【初始化】功能重新连接", 1);
                 _socketSender_screw.Dispose();
                 return;
                 //TcpConnect();
@@ -2099,7 +2101,7 @@ namespace ScrewMachineManagementSystem
                 }
                 catch (Exception ex)
                 {
-                    FillInfoLog("电批数据处理异常," + sflag + "," + ex.Message);
+                    FillInfoLog("电批数据处理异常," + sflag + "," + ex.Message, 1);
                 }
             }
         }
@@ -2142,7 +2144,7 @@ namespace ScrewMachineManagementSystem
                 string result = isok ? "Passed" : "Failed";
                 LogHelper.WriteLog(utility.struckScanProduct.productSN + "过站完成,结果：" + result);
                 writeLog(LogType.Error, msg);
-                FillInfoLog(msg);
+                FillInfoLog(msg, 0);
             }
 
         }
@@ -2191,11 +2193,11 @@ namespace ScrewMachineManagementSystem
                     plc_Td.Start();
                 }
                 else
-                    FillInfoLog("PLC 连接不成功，请检查IP地址、机架、插槽等是否正确");
+                    FillInfoLog("PLC 连接不成功，请检查IP地址、机架、插槽等是否正确", 1);
             }
             catch (Exception ex)
             {
-                FillInfoLog("PLC 连接不成功，请检查IP地址、机架、插槽等是否正确" + ex.Message);
+                FillInfoLog("PLC 连接不成功，请检查IP地址、机架、插槽等是否正确" + ex.Message, 1);
             }
         }
 
@@ -2393,7 +2395,7 @@ namespace ScrewMachineManagementSystem
                 }
                 catch (Exception ex)
                 {
-                    FillInfoLog("连接访问PLC出错，" + ex.Message);
+                    FillInfoLog("连接访问PLC出错，" + ex.Message, 1);
                 }
             }
         }
@@ -2725,7 +2727,7 @@ namespace ScrewMachineManagementSystem
             _isMonitor = false;
             try
             {
-                FillInfoLog("强制中断电批连接...");
+                FillInfoLog("强制中断电批连接...", 1);
                 ScrewDefenderThreadStop();
                 ScrewDisConnect();
 
@@ -2738,7 +2740,7 @@ namespace ScrewMachineManagementSystem
 
             try
             {
-                FillInfoLog("强制中断PLC连接...");
+                FillInfoLog("强制中断PLC连接...", 1);
                 if (_businessMain != null)
                 {
                     _businessMain.BusinessStop();
@@ -2750,7 +2752,7 @@ namespace ScrewMachineManagementSystem
 
             }
             finally
-            { _businessMain = null; FillInfoLog("PLC连接已断开"); }
+            { _businessMain = null; FillInfoLog("PLC连接已断开", 0); }
             Thread.Sleep(1000);
         }
 
@@ -2811,13 +2813,13 @@ namespace ScrewMachineManagementSystem
 
             }
             finally
-            { _thread_ScrewDefender = null; FillInfoLog("电批守护线程已停止"); }
+            { _thread_ScrewDefender = null; FillInfoLog("电批守护线程已停止", 0); }
         }
         private void ScrewDefenderProcess()
         {
             try
             {
-                FillInfoLog("电批守护线程已启动");
+                FillInfoLog("电批守护线程已启动", 0);
                 //开始前，进行第一次连接
                 TcpConnect(null);
                 while (_isScrewDefender)
@@ -2831,7 +2833,7 @@ namespace ScrewMachineManagementSystem
                         _screw_PingCount++;
                         if (_screw_PingCount >= _screw_maxPingCount)
                         {
-                            FillInfoLog("电批 Defender 检测到电批通讯异常，准备重新进行电批连接..");
+                            FillInfoLog("电批 Defender 检测到电批通讯异常，准备重新进行电批连接..", 1);
                             this.ScrewDisConnect();
                             TcpConnect(null);
                             //ThreadPool.QueueUserWorkItem(TcpConnect, null);
@@ -2881,7 +2883,7 @@ namespace ScrewMachineManagementSystem
             finally
             {
                 SetLabel_LED_Forecolor(this.lab_screwState, _color_OFF);
-                _socketSender_screw = null; FillInfoLog("电批连接已断开");
+                _socketSender_screw = null; FillInfoLog("电批连接已断开", 1);
             }
 
 

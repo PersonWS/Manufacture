@@ -97,14 +97,14 @@ namespace ScrewMachineManagementSystem.CenterControl
                 }
                 else if (PlcConnectEntity == null)
                 {
-                    MessageOutPutMethod("PLC_Monitor--Start _plcConnectEntity is null");
+                    MessageOutPutMethod("PLC_Monitor--Start _plcConnectEntity is null", 0);
                     return false;
                 }
                 return true;
             }
             catch (Exception es)
             {
-                MessageOutPutMethod("PLC_Monitor--Start  ConnectPlc error ,ex=" + es.ToString());
+                MessageOutPutMethod("PLC_Monitor--Start  ConnectPlc error ,ex=" + es.ToString(), 1);
                 return false;
             }
         }
@@ -177,7 +177,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             _thread_defend.Name = "thread_defend";
             _thread_defend.IsBackground = true;
             _thread_defend.Start();
-            MessageOutPutMethod("PLC 守护线程已启动");
+            MessageOutPutMethod("PLC 守护线程已启动", 0);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                         {
                             PlcConnectEntity.DisConnect();
                         }
-                        MessageOutPutMethod(e.ToString());
+                        MessageOutPutMethod(e.ToString(), 1);
                     }
 
                 }
@@ -247,7 +247,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     }
                     if (_isMonitor)
                     {
-                        MessageOutPutMethod("PLC Defender 检测到 心跳信号 停止，重新尝试连接PLC");
+                        MessageOutPutMethod("PLC Defender 检测到 心跳信号 停止，重新尝试连接PLC", 1);
                         try
                         {
                             PlcConnectEntity.DisConnect();
@@ -267,8 +267,9 @@ namespace ScrewMachineManagementSystem.CenterControl
 
 
 
-        private void MessageOutPutMethod(string s)
+        private void MessageOutPutMethod(string s, int level)
         {
+            LogUtility.RecordLog(level, s);
             if (MessageOutput != null)
             {
                 MessageOutput(s);

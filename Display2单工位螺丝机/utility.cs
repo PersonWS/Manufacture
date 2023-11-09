@@ -434,7 +434,7 @@ namespace ScrewMachineManagementSystem
         }
     }
 
-
+    /*
     public delegate void LogHappenEventHandler(string log);
     public class LogUtility
     {
@@ -792,7 +792,7 @@ namespace ScrewMachineManagementSystem
 
 
     }
-
+    */
 
 }
 

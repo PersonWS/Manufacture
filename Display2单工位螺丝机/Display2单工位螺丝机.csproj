@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\output\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -82,7 +82,7 @@
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NFPublicLib">
-      <HintPath>..\Display2三工位螺丝机\bin\Debug\NFPublicLib.dll</HintPath>
+      <HintPath>CommonDll\NFPublicLib.dll</HintPath>
     </Reference>
     <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\NModbus4.2.1.0\lib\net40\NModbus4.dll</HintPath>
@@ -223,6 +223,7 @@
     <Compile Include="CenterControl\CenterDemo.Designer.cs">
       <DependentUpon>CenterDemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="CenterControl\Log.cs" />
     <Compile Include="CenterControl\PLC_Connect.cs" />
     <Compile Include="CenterControl\PLC_Monitor.cs" />
     <Compile Include="CenterControl\PLC_Point.cs" />
@@ -593,6 +594,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NewForm\Frm_GetSN.resx">
       <DependentUpon>Frm_GetSN.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

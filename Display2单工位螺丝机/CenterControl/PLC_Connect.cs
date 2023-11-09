@@ -66,19 +66,19 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     IsConnecting = true;
                     _plcEntity = new Plc(_cpuType, _ip, _port, _rack, _slot); _plcEntity.ReadTimeout = 3; _plcEntity.WriteTimeout = 3;
-                    MessageOutPutMethod(string.Format("PLC:{0} 开始尝试连接...", this.PlcEntity.IP));
+                    MessageOutPutMethod(string.Format("PLC:{0} 开始尝试连接...", this.PlcEntity.IP), 0);
                     _plcEntity.Open();
                     IsConnected = true;
                     if (PlcConnected != null)
                     {
                         PlcConnected(this);
                     }
-                    MessageOutPutMethod(string.Format("PLC:{0} 连接成功！", this.PlcEntity.IP));
+                    MessageOutPutMethod(string.Format("PLC:{0} 连接成功！", this.PlcEntity.IP), 0);
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    MessageOutPutMethod(string.Format("PLC:{0} 连接失败！ \r\n ex={1}", this.PlcEntity.IP, ex.ToString()));
+                    MessageOutPutMethod(string.Format("PLC:{0} 连接失败！ \r\n ex={1}", this.PlcEntity.IP, ex.ToString()), 0);
                     IsConnected = false;
                     return false;
                 }
@@ -102,7 +102,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                     _plcEntity.Close();
                     IsConnected = false;
 
-                    MessageOutPutMethod(string.Format("PLC:{0} 连接已断开", this.PlcEntity.IP));
+                    MessageOutPutMethod(string.Format("PLC:{0} 连接已断开", this.PlcEntity.IP), 0);
                     if (PlcDisConnected != null)
                     {
                         PlcDisConnected(this);
@@ -114,7 +114,7 @@ namespace ScrewMachineManagementSystem.CenterControl
             }
             catch (Exception ex)
             {
-                MessageOutPutMethod("DisConnect failed" + ex.ToString());
+                MessageOutPutMethod("DisConnect failed" + ex.ToString(),1);
                 return false;
             }
         }
@@ -243,7 +243,7 @@ namespace ScrewMachineManagementSystem.CenterControl
                 {
                     WriteFail(p);
 
-                    MessageOutPutMethod("PLC_Connect-- WriteData error ex=" + ex.ToString());
+                    MessageOutPutMethod("PLC_Connect-- WriteData error ex=" + ex.ToString(), 1);
                     return false;
                 }
                 finally
@@ -255,8 +255,9 @@ namespace ScrewMachineManagementSystem.CenterControl
         }
 
 
-        private void MessageOutPutMethod(string s)
+        private void MessageOutPutMethod(string s, int level)
         {
+            LogUtility.RecordLog(level, s);
             if (MessageOutput != null)
             {
                 MessageOutput(s);

@@ -633,14 +633,18 @@ namespace ScrewMachineManagementSystem.CenterControl
 
         public void BusinessStop()
         {
-            if (_plc_monitor != null)
+            if (_registerID--==0)
             {
-                _plc_monitor.Stop();//停止监控\
+                if (_plc_monitor != null)
+                {
+                    _plc_monitor.Stop();//停止监控\
+                }
+                if (_plcConnect != null)
+                {
+                    _plcConnect.DisConnect();
+                }
             }
-            if (_plcConnect != null)
-            {
-                _plcConnect.DisConnect();
-            }
+
 
 
 
